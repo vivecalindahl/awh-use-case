@@ -1,0 +1,2 @@
+Run './sequence-to-pdb.sh' to turn './sequences.txt' into pdbs.
+Output will be created in directory './build'.
