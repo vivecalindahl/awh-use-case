@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# gmx binary to use
-gmx="gmx"
-
 # Given a pdb with sequence XYZ, add an extra residue X' yielding XYZX' such that pdb2gmx
 # gives us the topology terms needed for later periodically connecting Z to X  (...-XYZ-XYZ-...).
 
@@ -10,6 +7,11 @@ gmx="gmx"
 # i.e. an end residue should have the same atoms as if it were a central residue.
 pdb_in=$1;
 [ -z "$pdb_in" ] && echo "No pdb given" && exit
+
+[ ! -e "$pdb_in" ] && echo "$pdb_in does not exist" && exit 1
+
+# gmx binary to use
+gmx="gmx"
 
 pdb_work="work.pdb"
 
