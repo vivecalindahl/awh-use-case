@@ -12,6 +12,8 @@ pdb_in=$1;
 
 # gmx binary to use
 gmx="gmx"
+forcefield="charmm27"
+water="tips3p"
 
 pdb_work="work.pdb"
 
@@ -32,9 +34,7 @@ $pdb_in  > $pdb_work
 
 # Need to add a hack to the terminal data base file for pdb2gmx to accept the ends
 # without modification.
-#forcefield="charmm27"
 gmx_loc=`echo \`which $gmx\` | awk -F 'bin' '{print $1}'`
-forcefield="charmm27"
 forcefield_dir=`find $gmx_loc -name "${forcefield}.ff"`
 [ ! -d "$forcefield_dir" ] && { echo "Force field ${forcefield} not found in gmx installation directory $gmx_loc"; exit 1; }
 local_ff="./${forcefield}.ff"
@@ -53,7 +53,7 @@ tmp_log="tmp.log"
 nchains=`awk -v chaincol=$chain_col '/^ATOM/{chain=$chaincol; print chain}' $pdb_in  | sort -u  | wc -l`
 nter=$((nchains*2))
 sel_str=""; for ((i=0; i < ${nter}; i++)); do sel_str=$sel_str"0\\n"; done; 
-echo -e "$sel_str" | $gmx pdb2gmx -v -f $pdb_work -ff ${forcefield} -water tip3p -ter -o "tmp" -p "tmp" &> $tmp_log
+echo -e "$sel_str" | $gmx pdb2gmx -v -f $pdb_work -ff ${forcefield} -water ${water} -ter -o "tmp" -p "tmp" &> $tmp_log
 
 ter_selection=`awk '/Select start/{sel="hack"; getline; while(sel != $2){getline}; print $1};
 /Select end/{sel="None"; getline; while(sel != $2){getline}; print $1}' ${tmp_log} \
@@ -70,7 +70,7 @@ done;
 
 # Top and gro from unmodified config
 nonperiodic="non-periodic"
-echo -e "$sel_str" | $gmx pdb2gmx -v -f $pdb_in -ff ${forcefield} -water tip3p -ter -o "${nonperiodic}.gro" -p "${nonperiodic}.top"  &> $tmp_log
+echo -e "$sel_str" | $gmx pdb2gmx -v -f $pdb_in -ff ${forcefield} -water ${water} -ter -o "${nonperiodic}.gro" -p "${nonperiodic}.top"  &> $tmp_log
 
 chain_itps=(`grep  "chain.*itp" ${nonperiodic}.top | awk '{print $NF}' | awk -F  \" '{print $2}'`)
 
@@ -83,7 +83,7 @@ for itp in ${chain_itps[@]}; do
 done
 
 # Top and gro from "capped" config
-echo -e "$sel_str" | $gmx pdb2gmx -v -f $pdb_work -ff ${forcefield} -water tip3p -ter -o "extra.gro" -p "extra.top"  &> $tmp_log
+echo -e "$sel_str" | $gmx pdb2gmx -v -f $pdb_work -ff ${forcefield} -water ${water} -ter -o "extra.gro" -p "extra.top"  &> $tmp_log
 extra_itps=(`grep  "chain.*itp" "extra.top" | awk '{print $NF}' | awk -F  \" '{print $2}'`)
 
 #-------------  Modify the topology
@@ -145,7 +145,7 @@ for itp in ${chain_itps[@]}; do
 done
 
 # Modify the forcefield entry to not expect a force field in the current directory
-sed -i "s/.\/${forcefield}/${forcefield}/" ${nonperiodic}.top
+sed -i "s/.\/${forcefield}/${forcefield}/" ${top_out}
 
 gro_out="conf.gro"
 mv ${nonperiodic}.gro $gro_out
