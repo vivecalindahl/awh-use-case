@@ -1,35 +1,64 @@
 #!/bin/bash
 
 gro_in=$1
+top_in=$2
 
 # input
 gmx=gmx
 
+gro_in=`readlink -e $gro_in`
+top_in=`readlink -e $top_in`
+
+
+rm -rf build; mkdir -p build; cd build
+
 # Solvate in the more general sense of taking a solute molecul and putting it in a box of solvent (water)
 # with ions of a given concentration.
-boxtype="dodecahedron"
-#boxtype="triclinic"
-soluteboxdistance=1
-tmp_gro="tmp.gro"
 
-# box vectors a, b, c. 
-# dna is (assumed to be) z aligned (TODO: add alignment step)
-# so periodic chain ==> 
-# c = z, and
-# a = x by gmx convention.
-# b
-# ==> angle ac = 90 deg.
-# box vector angles:
+# Use periodic boundary conditions with 
+# unit cell defined by the box vectors a, b, c. 
+# For DNA periodically connected along z use
+# one box vector parallel to z (c) and the
+# put the other two (a,b) in the xy-plane with
+# with a relative angle 60 deg.
+# ==> box vector angles:
 bc=90
 ac=90
 ab=60
-
+boxangles=($bc $ac $ab)
 # z box vector from diameter along z
-# xy box vectors from  average/max diameter along x and  y. Add 1 nm * 2 to have 1 nm to box edge.
-d=0; for i in 4 5; d=`awk -v col=$i 'BEGIN{zmin=100; zmax=-100;}{while(NR <= 2){getline}; z=$col; if (NF==3){exit}; if(z > zmax){zmax=z}; if(z < zmin){zmin=z;}}END{print zmax-zmin}' conf.gro`; done
+# xy box vectors from  average/max diameter along x (~circle in the xy plane) . Add 1 nm * 2 to have 1 nm to box edge.
+
+# Molecule dimaeter along each dimension: d = (max - min)
+# gro file has xyz values in  cols 4, 5, 6
+dxyz=( `for i in 4 5 6 ;  
+do awk -v col=$i 'BEGIN{zmin=100; zmax=-100;}{while(NR <= 2){getline}; z=$col; if (NF==3){exit}; if(z > zmax){zmax=z}; if(z < zmin){zmin=z;}}END{print zmax-zmin}' $gro_in ;done`
+)
+
+# Dna is roughly circular in x, y. Use dx as diameter and add 2 nm
+# to ensure that periodic images are ~ 2 nm apart.
+boxx=`awk -v dx=${dxyz[0]} 'BEGIN{print dx+2.0}'`
+boxy=$boxx
+boxz=${dxyz[2]}
+boxvectors=($boxx $boxy $boxz)
+
 # Make a box
-$gmx editconf -f $gro_in -angles $bc $ac $ab -box  $((xylen+1)) $xylen  3.95500 -c -o $tmp_gro
+box_gro="boxed.gro"
+$gmx editconf -f $gro_in -angles ${boxangles[@]} -box ${boxvectors[@]} -c -o $box_gro &> "boxed.log"
 
-# Put water in the box
+# Put water in the box with the solute
+cp $top_in solvated.top
+gmx solvate -cp "boxed.gro"  -cs -o "solvated.gro"  -p "solvated.top" &> "solvated.log"
 
 
+dummy="tmp"
+touch "${dummy}.mdp";
+gmx grompp -f "${dummy}.mdp" -c "solvated.gro" -p "solvated.top"  -o "${dummy}.tpr" &> "${dummy}.log"
+rm "${dummy}".*
+
+cp "solvated.top" "ionated.top";q
+
+echo -e "SOL\n" | gmx genion -s "${dummy}.tpr" -neutral -pname  NA -o "ionated.gro"  -p "ionated.top" &> "ionated.log"
+
+
+rm \#* 
