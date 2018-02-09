@@ -74,10 +74,12 @@ echo -e "$sel_str" | $gmx pdb2gmx -v -f $pdb_in -ff ${forcefield} -water tip3p -
 
 chain_itps=(`grep  "chain.*itp" ${nonperiodic}.top | awk '{print $NF}' | awk -F  \" '{print $2}'`)
 
-# Extract the last atom index of the uncapped topology
+# Extract the last atom index of the uncapped topology, for each chain
+imaxs=()
 for itp in ${chain_itps[@]}; do
     name='atoms'
     imax=`awk -v  name=$name 'BEGIN{found=0;};/^ *\[ /{ if ($2 == name){found=1; getline;} else { found=0 }};{if (found && $1 != ";"  && $1 !~ /^ *#/ && NF>0){imax=$1};}END{print imax}' $itp`
+    imaxs+=($imax)
 done
 
 # Top and gro from "capped" config
@@ -86,7 +88,9 @@ extra_itps=(`grep  "chain.*itp" "extra.top" | awk '{print $NF}' | awk -F  \" '{p
 
 #-------------  Modify the topology
 
-for top_in in ${extra_itps[@]}; do
+for chain in ${!extra_itps[@]}; do
+    top_in=${extra_itps[chain]}
+    imax=${imaxs[chain]}
     top_out=`echo ${top_in} | awk -F "extra_" '{print "periodic_"$2}'`
     
     # array with the number of atoms listed for each type of interaction
@@ -120,39 +124,32 @@ else{print} }' $top_work > $top_out
     done; 
 done
 
+# Tweak entries of final topology, rename to the default topol.top
+top_out="topol.top"
 sed -i 's/extra/periodic/' extra.top;
-mv extra.top periodic.top
+mv extra.top $top_out
+
+# Merge top and itps, just to get a single topology file.
+
+# Replace include of chain itp with the contents
+# (would like to use something like
+#  sed  '/^ *\#include \"\(.*\)\"/r  \1' topol.top 
+# but did not work.)
+chain_itps=(`grep  "chain.*itp" $top_out | awk '{print $NF}' | awk -F  \" '{print $2}'`)
+for itp in ${chain_itps[@]}; do
+    # sed r command appends the itp file after the matching include statement
+    sed -i "/^ *\#include *\"$itp/r  $itp" ${top_out};
+
+    # delete the include statement
+    sed  -i "s/^ *\#include *\"$itp.*//g"  ${top_out};
+done
 
 # Modify the forcefield entry to not expect a force field in the current directory
-sed -i "s/.\/${forcefield}/${forcefield}/" ${nonperiodic}.top  periodic.top
+sed -i "s/.\/${forcefield}/${forcefield}/" ${nonperiodic}.top
 
-mv ${nonperiodic}.gro "conf.gro"
+gro_out="conf.gro"
+mv ${nonperiodic}.gro $gro_out
 
-# Clean up (TODO: should do work in a directory and mv out what is wanted)
-rm -rf \#* $tmp_log $top_work posre*itp tmp.* $pdb_work ./${forcefield}.ff extra*.*
-
-
-
-
-
-exit
-#---------------------- TRASH
-
-### no need to do this manually. Can use pdb2gmx
-if false; then
-#-------------  Modify the config file
-# Remove residue n+1. Modify the number of atoms accordingly.
-gro_in="conf.gro"
-gro_work="work.gro"
-gro_out="out.gro"
-nheader=2;
-nfooter=1;
-ntot=`wc -l $gro_in | awk '{print $1}'` ;
-awk -v nheader=$nheader -v nfooter=$nfooter -v imax=$imax -v ntot=$ntot \
-'{if(NR <= nheader || NR > (ntot - nfooter) || $3 <= imax){print}}' \
-$gro_in > $gro_work
-
-natoms=$((`wc -l $gro_work | awk '{print $1}'` - nfooter - nheader ))
-awk -v natoms=$natoms '{if (NR==2){print natoms} else{print}}' $gro_work > $gro_out
-fi
-####
+# Clean up
+ls  | grep -v "$gro_out" | grep -v "$top_out" | xargs -n 1 rm -rf
+#rm -rf \#* $tmp_log $top_work posre*itp tmp.* $pdb_work ./${forcefield}.ff extra*.* ${nonperiodic}*.* periodic*chain*.itp
