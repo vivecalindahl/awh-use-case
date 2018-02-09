@@ -35,11 +35,11 @@ for pdb in ${pdbs[@]}; do
 
     mkdir $name
     cd $name
-    echo "in `pwd -P`" 
     $connect_dna $pdb || { echo "There was a problem." && exit 1; }
 
     cd $outdir
 done
 
+echo "Output written to $outdir"
 
 
