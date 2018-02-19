@@ -54,11 +54,13 @@ gmx solvate -cp "boxed.gro"  -cs -o "solvated.gro"  -p "solvated.top" &> "solvat
 dummy="tmp"
 touch "${dummy}.mdp";
 gmx grompp -f "${dummy}.mdp" -c "solvated.gro" -p "solvated.top"  -o "${dummy}.tpr" &> "${dummy}.log"
-rm "${dummy}".*
 
-cp "solvated.top" "ionated.top";q
+cp "solvated.top" "ionated.top";
 
 echo -e "SOL\n" | gmx genion -s "${dummy}.tpr" -neutral -pname  NA -o "ionated.gro"  -p "ionated.top" &> "ionated.log"
 
-
+mv ionated.gro conf.gro
+mv ionated.top topol.top
+rm boxed.* mdout.mdp solvated.* ionated.log
+rm "${dummy}".*
 rm \#* 
