@@ -1,0 +1,16 @@
+integrator               = steep
+emtol			 = 1000.0
+emstep 			 = 0.01
+nsteps			 = 50000
+
+coulombtype              = PME
+rcoulomb                 = 1.2
+fourierspacing           = 0.14
+
+vdwtype                  = cut-off
+cut-off-scheme           = verlet
+vdw-modifier             = force-switch
+rvdw-switch              = 0.8
+rvdw                     = 1.2
+
+periodic-molecules       = yes
