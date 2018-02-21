@@ -38,6 +38,10 @@ def run_in_shell(command):
 
     return stdout.strip()
 
+def absolute_path(path):
+    stdout = run_in_shell('readlink -f ' + path)
+    return stdout
+
 
 #--------------------------------------------
 # Main function
@@ -48,23 +52,32 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Sets up the MD simulations of periodically connected DNA chains. \
     Generates the gromacs input files generates run directories for equilibration.")
 
+    #condreq_args = parser.add_argument_group(title='conditionally required')
+
     # Positional args
-    #parser.add_argument('filename', type=str, nargs='+', help='data file to plot')
-    parser.add_argument(dest='pdbfiles', nargs = '+', type=str, help="list of pdb-files")
+    parser.add_argument(dest='pdbfiles', nargs = '+', type=str, help="list of pdb-files (.pdb) (the system name will be inferred from the filename)")
 
     # Optional args
     parser.add_argument("--gmx", dest='gmx', type=str, help="gmx binary to use")
     parser.add_argument('-f', dest='force', action='store_true', help="force overwriting of old output")
+    parser.add_argument('-o', '--out', dest='outdir', type=str, default='build',
+                        help='name of output directory to create')
+
+    #parser.add_argument(dest='pdbfiles', nargs = '+', type=str, help="list of pdb-files (.pdb) (the system name will be inferred from the filename)")
+
+    #condreq_args.add_argument('-p', dest='mdps', type=str, nargs='+',
+    #                          help='parameter files (.mdp)', required=True)
 
     parsed_args = parser.parse_args()
-
     pdbs = parsed_args.pdbfiles
+    outdir = parsed_args.outdir
     forceful = parsed_args.force
 
-    # This script has dependencies e.g. on shell scripts.
-    # Assume all scripts are in the same directory as this script.
-    scriptsdir=run_in_shell('dirname ' + os.path.realpath(__file__))
-    scriptsdir=run_in_shell('readlink -f ' + scriptsdir)
+    # This script has dependencies on shell scripts.
+    # For now, assume all scripts are in the same directory as this script
+    # and make use an environment variable. Not sure how this should be done most
+    # elegantly...
+    scriptsdir=absolute_path(run_in_shell('dirname ' + os.path.realpath(__file__)))
     os.putenv('SETUP_MD_SCRIPTS', scriptsdir)
 
     # Check existence of input files and types
@@ -75,10 +88,9 @@ if __name__ == "__main__":
         if filetype != 'pdb':
             sys.exit(pdb + ' does not look like a .pdb file')
 
-    pdbs=[ run_in_shell('readlink -f ' + pdb) for pdb in pdbs]
+    pdbs=[ absolute_path(pdb) for pdb in pdbs]
 
-    outdir ='./build'
-    outdir=run_in_shell('readlink -f ' + outdir)
+    outdir = absolute_path(outdir)
     if os.path.exists(outdir) and not forceful:
         sys.exit(outdir + ' already exists. Use -f to force overwrite.')
     else:
@@ -89,10 +101,10 @@ if __name__ == "__main__":
         if len(name) == 0:
             sys.exit('Give ' + pdb + ' an non-empty descriptive name')
 
-        pdbpath = run_in_shell('readlink -f ' + pdb)
-        outpath='/'.join([outdir, name, 'equil'])    
+        outpath='/'.join([outdir, name, 'setup'])    
         run_in_shell('mkdir -p ' + outpath)
         os.chdir(outpath)
-        script='/'.join([scriptsdir, "gmx-equil-setup.sh"])
-        command=' '.join([script, pdb])
-        stdout=run_in_shell(command)
+
+        print "Setting up system " + name + " in " + outpath
+        stdout=run_in_shell(scriptsdir + '/gmx-equil-setup.sh ' + pdb)
+        print stdout
