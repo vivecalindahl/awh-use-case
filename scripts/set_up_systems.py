@@ -106,5 +106,5 @@ if __name__ == "__main__":
         os.chdir(outpath)
 
         print "Setting up system " + name + " in " + outpath
-        stdout=run_in_shell(scriptsdir + '/gmx-equil-setup.sh ' + pdb)
+        stdout=run_in_shell(scriptsdir + '/pdb-to-solvated-gmx-system.sh ' + pdb)
         print stdout
