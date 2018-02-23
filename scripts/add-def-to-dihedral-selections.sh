@@ -20,7 +20,12 @@ shift
 # The resids
 base_up=$((base + 1)); base_down=$((base - 1)); partner_up=$((partner - 1)); partner_down=$((partner + 1));
 # string with the selections needed to be added
-def="base=resid $base; partner=resid $partner; base_up=resid $base_up; base_down=resid $base_down; partner_up=resid $partner_up; partner_down=resid $partner_down;";
+def="base=resid $base;
+partner=resid $partner;
+base_up=resid $base_up;
+base_down=resid $base_down;
+partner_up=resid $partner_up;
+partner_down=resid $partner_down;";
 out=selection_bp${base}-${partner}.txt;
 echo $def #> $out ;
 cat $template  #>> selections-dihedral-template.txt  >> $out
