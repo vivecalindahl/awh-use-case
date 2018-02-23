@@ -1,1 +1,1 @@
-26916  #rfirst=1; rlast=22; rmin=$((rmin+1)); rmax=$((rlast-1)); for i in {1..22}; do j=$((rmin + rmax - i)); ../../scripts/add-def-to-dihedral-selections.sh $i $j ../../scripts/dihedral-selection-template.txt > dihedral-selections-${i}-${j}.txt  ; done;
+27095  #ifirst=1; ilast=22; imin=$((ifirst+1)); imax=$((ilast-1)); for ((i=$rmin; i <= $rmax; i++)); do j=$((rfirst + rlast - i)); ../../scripts/add-def-to-dihedral-selections.sh $i $j ../../scripts/dihedral-selection-template.txt > dihedral-selections-${i}-${j}.txt  ; done;
