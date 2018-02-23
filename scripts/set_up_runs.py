@@ -43,25 +43,6 @@ def absolute_path(path):
     stdout = run_in_shell('readlink -f ' + path)
     return stdout
 
-def mdfiles(keyvalue):
-    try:
-        key, value = keyvalue.split('=')
-    except:
-        raise argparse.ArgumentTypeError('use "key=value" format')
-
-    allowed_keys={'params', 'paramgrps', 'nreplicas', 'nmultisim', 'name'}
-    if not key in allowed_keys:
-        raise argparse.ArgumentTypeError(key + " is not a recognized key")
-
-    filetypes={'params':'mdp', 'paramgrps':'.txt'}        
-    othertypes={'nreplicas':int, 'nmultisim':int}
-
-    if key in filetypes:
-        if not key.endswith(keyfiletypes[key]):
-            raise argparse.ArgumentTypeError("Value for " + key + " needs to be file of type " + keyfiletypes[key])
-
-    # mdp, groupdefs, 
-    return value
 #--------------------------------------------
 # Main function
 #--------------------------------------------
@@ -71,89 +52,61 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Sets up the MD simulations of periodically connected DNA chains. \
     Generates run directories for equilibration.")
 
-
-    required_args = parser.add_argument_group(title='Required')
-    required_args.add_argument('-p', '--params', dest='mdp', type=str, required=False, help="MD parameter file (.mdp)", nargs='+')
-    required_args.add_argument('-c', '--config', dest='gro', type=str, required=False, help="configuration (.gro) files", nargs='+')
-    required_args.add_argument('-t', '--top', dest='top', type=str, required=False, help="topology (.top) files", nargs='+')
-
-    # Positional args
-
-    #    parser.add_argument(dest='mdpfile', nargs = '+', type=str, help="list of pdb-files (.pdb) (the system name will be inferred from the filename)")
-    #parser.add_argument(dest='pdbfiles', nargs = '+', type=str, help="list of pdb-files (.pdb) (the system name will be inferred from the filename)")
+    parser.add_argument(dest='pdbfiles', nargs = '+', type=str, help="list of pdb-files (.pdb) (the system name will be inferred from the filename)")
 
     # Optional args
     parser.add_argument('-f', dest='force', action='store_true', help="force overwriting of old output")
     parser.add_argument('-o', '--out', dest='outdir', type=str, default='build',
                         help='name of output directory to create')
     parser.add_argument("--gmx", dest='gmx', type=str, help="gmx binary to use")
-    #parser.add_argument('-f', dest='force', action='store_true', help="force overwriting of old output")
-    #parser.add_argument('-o', '--out', dest='outdir', type=str, default='build',
-    #                        help='name of output directory to create')
 
-    #parser.add_argument(dest='pdbfiles', nargs = '+', type=str, help="list of pdb-files (.pdb) (the system name will be inferred from the filename)")
-
-    #condreq_args.add_argument('-p', dest='mdps', type=str, nargs='+',
-    #                          help='parameter files (.mdp)', required=True)
-
-
-
-    allowed_keys={'params', 'paramgrps', 'nreplicas', 'nmultisim', 'name'}
-
-    keytypes={'params':'.mdp', 'paramgrps':'.txt', 'nreplicas':'int', 'nmultisim':'int', 'name':'str'}
-
+    # Defines a keyvalue argument type for the parser
+    allowed_types={'name':'str', 'params':'.mdp', 'paramgrps':'.txt'}
     def keyvalue(keyvalue):
         try:
+            # value is a string
             key, value = keyvalue.split('=')
         except:
             raise argparse.ArgumentTypeError('use "key=value" format')
     
-        #allowed_keys={'params', 'paramgrps', 'nreplicas', 'nmultisim', 'name'}
-        if not key in allowed_keys:
-            raise argparse.ArgumentTypeError(key + " is not a recognized key")
-    
-    
-        if key in keytypes:
-            if not key.endswith(keytypes[key]):
-                raise argparse.ArgumentTypeError("Value for " + key + " needs to be file of type " + keytypes[key])
-    
-        # mdp, groupdefs, 
-        return value
-    
-    parser.add_argument('--run', dest='run', action='append', 
+        if not key in allowed_types:
+            raise argparse.ArgumentTypeError(key + " is not a recognized key")        
+
+        # Check that value strings are consistent with their key and convert to
+        # the right non-string type if needed.
+        valuetype = allowed_types[key]
+        if valuetype.startswith('.'):
+            #  value is a file
+            #  should should have the right filename extension
+            if not value.endswith(valuetype):
+                raise argparse.ArgumentTypeError("Value for " + key + " needs to be file of type '" + valuetype + "'")
+        else:
+            # value is number or string
+            # try converting to the right type                            
+            try:
+                value=eval(valuetype)(value)
+            except:
+                raise argparse.ArgumentTypeError(value + ' is not of the right type (' + valuetype + ')')
+
+        return [key,value]
+
+    parser.add_argument('--run', '-r', dest='runs', action='append', 
                         help="defines a run using 'key=value' format. "
-                        "Allowed keys: " +  ', '.join([k + '=<' + str(v) + '>' for k,v in keytypes.items()]),
+                        "Allowed keys: " +  ', '.join([k + '=<' + str(v) + '>' for k,v in allowed_types.items()]),
                         type=keyvalue, nargs='+')
 
     parsed_args = parser.parse_args()
 
-    run=parsed_args.run
-    print run
-
-    top = parsed_args.top
-    gro= parsed_args.gro
-    mdp = parsed_args.mdp
+    pdbs = parsed_args.pdbfiles
     outdir = parsed_args.outdir
     forceful = parsed_args.force
 
+    runs = parsed_args.runs
 
-    sys.exit()
-    # Each run requires a (top, gro) pair.
-    # If there is only one mdp file given, it is used for all runs.
-    if len(gro) != len(top):
-        sys.exit("The number of given configuration (.gro) and topology (.top) files need to be equal.")
-    if len(mdp) > 1 and len(mdp) != len(gro): 
-        sys.exit("The number of given parameter (.mdp) files need to be either one or one for each topology/configuration file (.top/.gro).")
-    if len(mdp) == 1:
-        mdp = mdp*len(gro)
-
-    outdir = absolute_path(outdir)
-    if os.path.exists(outdir) and not forceful:
-        sys.exit(outdir + ' already exists. Use -f to force overwrite.')
-
-    for mdp, top, gro in zip(mdp, top, gro):
-        print i
-        outpath='/'.join([outdir, name, 'setup'])    
+    if runs:
+        runs=[{k:v for k, v in run} for run in runs]
+    else:
+        runs=[]
 
     # This script has dependencies on shell scripts.
     # For now, assume all scripts are in the same directory as this script
@@ -161,3 +114,56 @@ if __name__ == "__main__":
     # elegantly...
     scriptsdir=absolute_path(run_in_shell('dirname ' + os.path.realpath(__file__)))
     os.putenv('SETUP_MD_SCRIPTS', scriptsdir)
+
+    # Check existence of input files and types
+    for pdb in pdbs:
+        filetype=pdb.split('/')[-1].split('.')[-1]
+        if not os.path.exists(pdb):
+            sys.exit(pdb + ": pdb does not exist")
+        if filetype != 'pdb':
+            sys.exit(pdb + ' does not look like a .pdb file')
+
+    pdbs=[ absolute_path(pdb) for pdb in pdbs]
+
+    for run in runs:                        
+        if 'params' in run:
+            run['params'] = absolute_path(run['params'])
+
+    outdir = absolute_path(outdir)
+    if os.path.exists(outdir) and not forceful:
+        sys.exit(outdir + ' already exists. Use -f to force overwrite.')
+    else:
+        run_in_shell('rm -rf ' + outdir)
+
+    for pdb in pdbs:
+        name  = pdb.split('/')[-1].split('.pdb')[-2]
+        if len(name) == 0:
+            sys.exit('Give ' + pdb + ' an non-empty descriptive name')
+
+        setup='/'.join([outdir, name, 'setup'])    
+        run_in_shell('mkdir -p ' + setup)
+        os.chdir(setup)
+
+        print "Setting up system " + name + " in " + setup
+        stdout=run_in_shell(scriptsdir + '/pdb-to-solvated-gmx-system.sh ' + pdb)
+        #print stdout
+
+        topology = setup + '/topol.top'
+        config = setup + '/conf.gro'
+        #groups = setup + '/index.ndx'
+
+        for run in runs:
+            if 'name' in run:
+                runid=run['name']
+            else:
+                sys.exit("give all runs names")
+
+            path='/'.join([outdir, name, runid, 'template'])
+            run_in_shell('mkdir -p ' + path)
+
+            params=run['params']
+            for runfile, defaultname in zip([config, topology, params], ['conf.gro', 'topol.top', 'grompp.mdp']):
+                shutil.copy(runfile, path + '/' + defaultname)
+
+    # TODO test that gmx grompp works
+    # TODO add functionality for index group
