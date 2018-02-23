@@ -1,0 +1,55 @@
+base=8; partner=15; base_up=9; base_down=7; partner_up=14; partner_down=16;
+# Note: definition of groups used below but not defined above need to be provided "interactively",
+# by modifying this file or using 'gmx -select'.
+
+# variable input
+# base = BASE
+# partner = partner
+
+# Would like to get these by evaluating arithmetic expressions,
+# but I can't get gmx select to work without syntax error!
+# instead use a hack:
+# e.g. base=3; partner=3; base=3;partner=4; base_up=$((base + 1)); base_down=$((base - 1)); partner_up=$((partner - 1)); partner_down=$((partner + 1)); def="base=$base; partner=$partner; base_up=$base_up; base_down=$base_down; partner_up=$partner_up; partner_down=$partner_down;"; out=selection_bp${base}-${partner}.txt; echo $def > $out ; cat selections-dihedral-template.txt  >> selections-dihedral-template.txt  >> $out
+
+# Id increase from 5' to 3' along strand.
+## base_up = base + 1
+## base_down = base - 1
+
+# Ids on opposite strands increases in opposite direction
+## partner_up = partner - 1
+## partner_down = partner + 1
+
+# Predefined groups. 
+backbone = atomname "C1'" "C2'" "C3'" "C4'" "O4'" "C5'" "O3'" "O5'" "P" "O1P" "O2P" ;
+phosphate_down = atomname "P" "O1P" "O2P" "O5'" ;
+phosphate_up = atomname "O3'" ;
+heavy_dna = group "DNA" and not atomname "H*" ;
+six_rings = atomname "C2" "C4" "C5" "C6" "N1" "N3" ;
+five_rings = atomname "C4" "C5" "C8" "N7" "N9" ;
+
+base = resid $base; \
+partner = resid $partner;\
+base_up = resid $base_up;\
+base_down = resid $base_down;\
+partner_up = resid $partner_up;\
+partner_down = resid $partner_down;" 
+
+# Combine groups into new temporary groups
+middle = base and backbone;
+lower = phosphate_down and base_down;
+upper = phosphate_up and base_up;
+rings = six_rings or five_rings;
+
+base_backbone = lower or middle or upper;
+base_rings = base and rings;
+basepair_up_heavy = (base_up or partner_up) and heavy_dna;
+basepair_down_heavy = (base_down or partner_down) and heavy_dna;
+basepair_up_down_heavy = basepair_up_heavy or basepair_down_heavy ;
+
+# Resulting selections to output
+base_backbone;
+base_rings;
+basepair_up_down_heavy;
+basepair_up_heavy;
+basepair_down_heavy;
+
