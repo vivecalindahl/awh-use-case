@@ -26,17 +26,28 @@ import subprocess
 # Description:
 # YYYYYYYYY
 #
+
 def run_in_shell(command):
-    ##
-    #    print command.split()
     proc = subprocess.Popen((command).split(), preexec_fn=os.setsid, close_fds = True,
                             stdout = subprocess.PIPE, stderr = subprocess.PIPE)
     stdout, stderr = proc.communicate()
+    stdout = stdout.strip()
 
-    if proc.returncode != 0:
+    error = proc.returncode != 0
+    if error:
         sys.exit("Failed to execute command: " + command)
 
-    return stdout.strip()
+    return stdout
+
+def run_in_shell_allow_error(command):
+    proc = subprocess.Popen((command).split(), preexec_fn=os.setsid, close_fds = True,
+                            stdout = subprocess.PIPE, stderr = subprocess.PIPE)
+    stdout, stderr = proc.communicate()
+    stdout = stdout.strip()
+
+    error = proc.returncode != 0
+
+    return stdout, error
 
 # TODO: put into a separate script
 def absolute_path(path):
@@ -158,12 +169,36 @@ if __name__ == "__main__":
             else:
                 sys.exit("give all runs names")
 
-            path='/'.join([outdir, name, runid, 'template'])
-            run_in_shell('mkdir -p ' + path)
+            runpath='/'.join([outdir, name, runid])
 
+            template='/'.join([runpath, 'template'])
+            run_in_shell('mkdir -p ' + template)
+
+            # copy the files needed
             params=run['params']
             for runfile, defaultname in zip([config, topology, params], ['conf.gro', 'topol.top', 'grompp.mdp']):
-                shutil.copy(runfile, path + '/' + defaultname)
+                shutil.copy(runfile, template + '/' + defaultname)
 
-    # TODO test that gmx grompp works
-    # TODO add functionality for index group
+
+            # Make a run input file (.tpr) as input, because it might be needed for generating an index file from the
+            # selections and for testing (for the actual run however, a new tpr likely has to
+            # be generated since another configuration file might be required).
+            tmp='/'.join([runpath, 'tmp'])
+            run_in_shell('cp -r ' + template + ' ' + tmp)
+            os.chdir(tmp)
+
+            grompp_command = 'gmx grompp'
+            stdout, error = run_in_shell_allow_error(grompp_command)
+            if error:
+                stdout, error = run_in_shell_allow_error(grompp_command + ' -maxwarn 10')
+                if error:
+                    sys.exit(grompp_command + " failed")
+                else:
+                    print(grompp_command + " generated warnings")
+
+
+            # Evaluate the selections, if given. Output is an index file with the selected groups.
+            # gmx select requires tpr-file as input.
+
+            #           "gmx select -s topol.tpr -sf dihedral-selections-3-20.txt   -on test.ndx"
+
