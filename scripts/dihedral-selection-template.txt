@@ -2,14 +2,13 @@
 # by modifying this file or using 'gmx -select'.
 
 # variable input
-# base = BASE
-# partner = partner
+# base = resid BASE_ID
+# partner = resid PARTNER_ID
 
 # Would like to get the selections below by evaluating arithmetic expressions,
 # and only have base and partner be variables,
 # but I can't get gmx select to work without syntax error!
 # Instead hack by adding an extra step in the terminal.
-# base=3; partner=3; base=3;partner=4; base_up=$((base + 1)); base_down=$((base - 1)); partner_up=$((partner - 1)); partner_down=$((partner + 1)); def="base=$base; partner=$partner; base_up=$base_up; base_down=$base_down; partner_up=$partner_up; partner_down=$partner_down;"; out=selection_bp${base}-${partner}.txt; echo $def > $out ; cat selections-dihedral-template.txt  >> selections-dihedral-template.txt  >> $out
 
 # Id increase from 5' to 3' along strand.
 # base_up = base + 1
