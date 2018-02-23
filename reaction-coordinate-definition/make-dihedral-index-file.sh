@@ -20,7 +20,7 @@ shift
 # INPUT
 # ======================================================================
 tpr='topol.tpr'
-dihedraldef='dihedral-def.dat'
+dihedraldef='dihedral-def.txt'
 
 # OUTPUT
 # ======================================================================
