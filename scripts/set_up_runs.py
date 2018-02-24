@@ -28,9 +28,41 @@ import subprocess
 #
 
 def run_in_shell(command):
+    if command.count('|') > 1:
+        return run_in_shell_piped(command)
+
     proc = subprocess.Popen((command).split(), preexec_fn=os.setsid, close_fds = True,
                             stdout = subprocess.PIPE, stderr = subprocess.PIPE)
     stdout, stderr = proc.communicate()
+    stdout = stdout.strip()
+
+    error = proc.returncode != 0
+    if error:
+        print stdout, error
+        sys.exit("Failed to execute command: " + command + 
+                 " (in: " + os.getcwd() + ")")
+
+    return stdout
+
+def run_in_shell_piped(command):
+    commands = command.split('|') # this could fail
+
+    # Chain piped commands together
+    prev_proc = None;
+    proc_piped=[]
+
+    for c in commands:
+        prev_stdout = None
+        if prev_proc != None:
+            prev_stdout = prev_proc.stdout
+
+        proc = subprocess.Popen(c.split(), preexec_fn=os.setsid, close_fds = True,
+                                           stdout = subprocess.PIPE, stderr= subprocess.PIPE,
+                                           stdin = prev_stdout)
+        proc_piped.append(proc)
+        prev_proc = proc
+
+    stdout, stderr = proc_piped[-1].communicate()
     stdout = stdout.strip()
 
     error = proc.returncode != 0
@@ -47,7 +79,7 @@ def run_in_shell_allow_error(command):
 
     error = proc.returncode != 0
 
-    return stdout, error
+    return stdout, stderr, error
 
 # TODO: put into a separate script
 def absolute_path(path):
@@ -139,6 +171,8 @@ if __name__ == "__main__":
     for run in runs:                        
         if 'params' in run:
             run['params'] = absolute_path(run['params'])
+        if 'paramgrps' in run:
+            run['paramgrps'] = absolute_path(run['paramgrps'])
 
     outdir = absolute_path(outdir)
     if os.path.exists(outdir) and not forceful:
@@ -179,26 +213,29 @@ if __name__ == "__main__":
             for runfile, defaultname in zip([config, topology, params], ['conf.gro', 'topol.top', 'grompp.mdp']):
                 shutil.copy(runfile, template + '/' + defaultname)
 
+            if 'paramgrps' in run:
+                selections = run['paramgrps']
+                tmp='/'.join([runpath, 'tmp'])
+                run_in_shell('cp -r ' + template + ' ' + tmp)
+                os.chdir(tmp)                                    
+                stdout = run_in_shell(scriptsdir + 
+                                      '/selections-to-index-file.sh ' + selections)
+                run_in_shell("cp ./index.ndx " + template)
+                run_in_shell('rm -r ' + tmp)
 
-            # Make a run input file (.tpr) as input, because it might be needed for generating an index file from the
-            # selections and for testing (for the actual run however, a new tpr likely has to
-            # be generated since another configuration file might be required).
+            # Test if we are now able to generate a run file with errors.
             tmp='/'.join([runpath, 'tmp'])
             run_in_shell('cp -r ' + template + ' ' + tmp)
             os.chdir(tmp)
-
-            grompp_command = 'gmx grompp'
-            stdout, error = run_in_shell_allow_error(grompp_command)
+            grompp = 'gmx grompp'
+            stdout, stderr, error = run_in_shell_allow_error(grompp)
             if error:
-                stdout, error = run_in_shell_allow_error(grompp_command + ' -maxwarn 10')
+                stdout, stderr, error = run_in_shell_allow_error(grompp + ' -maxwarn 10')
                 if error:
-                    sys.exit(grompp_command + " failed")
+                    sys.exit(grompp + " failed")
                 else:
-                    print(grompp_command + " generated warnings")
+                    print(grompp + " generated warnings")
+            run_in_shell('rm -r ' + tmp)
 
-
-            # Evaluate the selections, if given. Output is an index file with the selected groups.
-            # gmx select requires tpr-file as input.
-
-            #           "gmx select -s topol.tpr -sf dihedral-selections-3-20.txt   -on test.ndx"
+            
 
