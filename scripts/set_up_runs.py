@@ -237,7 +237,6 @@ if __name__ == "__main__":
                     sys.exit("'" + grompp + "'" + " failed")
                 else:
                     print("'" + grompp + "'" + " generated warnings")
-                    print stderr, stdout
 
             run_in_shell('rm -r ' + tmp)
                 
