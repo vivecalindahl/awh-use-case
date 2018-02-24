@@ -213,13 +213,13 @@ if __name__ == "__main__":
             for runfile, defaultname in zip([config, topology, params], ['conf.gro', 'topol.top', 'grompp.mdp']):
                 shutil.copy(runfile, template + '/' + defaultname)
 
+                # Generate an index file from the selections
             if 'paramgrps' in run:
                 selections = run['paramgrps']
                 tmp='/'.join([runpath, 'tmp'])
                 run_in_shell('cp -r ' + template + ' ' + tmp)
                 os.chdir(tmp)                                    
-                stdout = run_in_shell(scriptsdir + 
-                                      '/selections-to-index-file.sh ' + selections)
+                stdout = run_in_shell(scriptsdir + '/selections-to-index-file.sh ' + selections)                                      
                 run_in_shell("cp ./index.ndx " + template)
                 run_in_shell('rm -r ' + tmp)
 
@@ -228,14 +228,16 @@ if __name__ == "__main__":
             run_in_shell('cp -r ' + template + ' ' + tmp)
             os.chdir(tmp)
             grompp = 'gmx grompp'
+            if 'paramgrps' in run:
+                grompp += ' -n'
             stdout, stderr, error = run_in_shell_allow_error(grompp)
             if error:
                 stdout, stderr, error = run_in_shell_allow_error(grompp + ' -maxwarn 10')
                 if error:
-                    sys.exit(grompp + " failed")
+                    sys.exit("'" + grompp + "'" + " failed")
                 else:
-                    print(grompp + " generated warnings")
+                    print("'" + grompp + "'" + " generated warnings")
+                    print stderr, stdout
+
             run_in_shell('rm -r ' + tmp)
-
-            
-
+                
