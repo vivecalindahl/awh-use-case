@@ -6,7 +6,7 @@ nstlog                   = 5000000
 nstenergy                = 50000
 nstxtcout                = 500000
 
-coulombtype              = PME
+coulombtype              = pme
 rcoulomb                 = 1.2
 fourierspacing           = 0.14
 
