@@ -50,7 +50,6 @@ pull-coord1-groups       = 1 2
 pull-coord1-type         = external-potential
 pull-coord1-potential-provider = AWH
 pull-coord1-geometry     = distance
-pull-coord1-k            = 128000
 
 pull-coord2-groups       = 3 4
 pull-coord2-type         = flat-bottom-high
@@ -68,3 +67,4 @@ awh1-dim1-pull-coord     = 1
 awh1-dim1-diffusion      = 5e-5 
 awh1-dim1-start          = 0.25
 awh1-dim1-end            = 0.60
+awh1-dim1-force-constant = 128000
