@@ -104,7 +104,7 @@ if __name__ == "__main__":
     parser.add_argument("--gmx", dest='gmx', type=str, help="gmx binary to use")
 
     # Defines a keyvalue argument type for the parser
-    allowed_types={'name':'str', 'params':'.mdp', 'paramgrps':'.txt'}
+    allowed_types={'name':'str', 'params':'.mdp', 'selections':'.txt'}
     def keyvalue(keyvalue):
         try:
             # value is a string
@@ -171,8 +171,8 @@ if __name__ == "__main__":
     for run in runs:                        
         if 'params' in run:
             run['params'] = absolute_path(run['params'])
-        if 'paramgrps' in run:
-            run['paramgrps'] = absolute_path(run['paramgrps'])
+        if 'selections' in run:
+            run['selections'] = absolute_path(run['selections'])
 
     outdir = absolute_path(outdir)
     if os.path.exists(outdir) and not forceful:
@@ -214,8 +214,8 @@ if __name__ == "__main__":
                 shutil.copy(runfile, template + '/' + defaultname)
 
                 # Generate an index file from the selections
-            if 'paramgrps' in run:
-                selections = run['paramgrps']
+            if 'selections' in run:
+                selections = run['selections']
                 tmp='/'.join([runpath, 'tmp'])
                 run_in_shell('cp -r ' + template + ' ' + tmp)
                 os.chdir(tmp)                                    
@@ -228,7 +228,7 @@ if __name__ == "__main__":
             run_in_shell('cp -r ' + template + ' ' + tmp)
             os.chdir(tmp)
             grompp = 'gmx grompp'
-            if 'paramgrps' in run:
+            if 'selections' in run:
                 grompp += ' -n'
             stdout, stderr, error = run_in_shell_allow_error(grompp)
             if error:
