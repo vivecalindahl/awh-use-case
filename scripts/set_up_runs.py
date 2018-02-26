@@ -38,7 +38,7 @@ def run_in_shell(command):
 
     error = proc.returncode != 0
     if error:
-        print stdout, error
+        print stdout, stderr
         sys.exit("Failed to execute command: " + command + 
                  " (in: " + os.getcwd() + ")")
 
@@ -203,6 +203,8 @@ if __name__ == "__main__":
             else:
                 sys.exit("give all runs names")
 
+            print 'Adding ' + runid
+
             runpath='/'.join([outdir, name, runid])
 
             template='/'.join([runpath, 'template'])
@@ -232,11 +234,8 @@ if __name__ == "__main__":
                 grompp += ' -n'
             stdout, stderr, error = run_in_shell_allow_error(grompp)
             if error:
-                stdout, stderr, error = run_in_shell_allow_error(grompp + ' -maxwarn 10')
-                if error:
-                    sys.exit("'" + grompp + "'" + " failed")
-                else:
-                    print("'" + grompp + "'" + " generated warnings")
+                stdout = run_in_shell(grompp + ' -maxwarn 10')
+                print("'" + grompp + "'" + " generated warnings")
 
             run_in_shell('rm -r ' + tmp)
                 
