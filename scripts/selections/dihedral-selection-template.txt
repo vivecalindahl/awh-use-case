@@ -45,3 +45,8 @@ basepair_up_down_heavy;
 basepair_up_heavy;
 basepair_down_heavy;
 
+# temporary, modularize better later
+base_6ring = base and six_rings;
+partner_6ring = partner and six_rings;
+base_6ring;
+partner_6ring;
