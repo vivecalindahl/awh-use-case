@@ -50,7 +50,7 @@ for current in ${stages[@]}; do
 	#if ["${current}" ==" ${stages[-1]}"]; then        
 	((ndone++))
 	if [ ${ndone} -eq ${#stages[@]} ]; then
-	    echo "---> Already finished last stage"
+	    echo "---> Nothing to do. Already finished last stage."
 	    exit 0
 	fi
         # Otheriwse use this config as input at next dependent stage
