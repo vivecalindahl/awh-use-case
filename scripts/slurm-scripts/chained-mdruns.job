@@ -33,9 +33,10 @@ gro="conf.gro"
 for current in "em" "equil" "dihedral-6-17"; do   
     # Find the first run that isn't done, i.e.
     # does not have final gro file
-    if [ -f "${groout}" ]; then
+    groout_relpath=${current}/${data}/${groout}
+    if [ -f "${groout_relpath}" ]; then
         # use for input at next dependent stage
-	gro=`readlink -f $groout`
+	gro_abspath=`readlink -f $groout_relpath`
 	continue
     else
 	# run at this stage
@@ -58,7 +59,7 @@ if [ ! -f "$tpr" ]; then
     ndxflag=""
     [ -e "$ndx" ] && ndxflag="-n"
     echo "---> grompp at stage $current"
-    $gmx grompp $ndxflag -c $gro -f $mdp $grompp_opts -o $tpr &> grompp.log || exit 1
+    $gmx grompp $ndxflag -c $gro_abspath -f $mdp $grompp_opts -o $tpr &> grompp.log || exit 1
 fi
 
 # Start/continue mdrun. 
