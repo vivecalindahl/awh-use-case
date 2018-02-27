@@ -66,20 +66,21 @@ fi
 # aprun settings
 aprun_opts="-cc none"
 
+cont_opts="-cpi -maxh 0.25" # NOTE: -maxh should correspond to the allocated time
 if [ "${current}" == "em" ]; then
-    mdrun="$gmx_mpi mdrun -v"
-    aprun_opts+="-n 1 -N 1"
+    mdrun="$gmx_mpi mdrun -v $cont_opts"
+    aprun_opts+="  -n 1 -N 1 "
 else
     npme=2; nstlist=40; dlb=no; ntomp=2; #-ddorder pp_pme"
     std_opts="-pin on -quiet -v -stepout 10000 -nstlist ${nstlist} -dlb ${dlb} -npme ${npme} -ntomp ${ntomp}" 
-    cont_opts="-cpi -maxh 0.25" # NOTE: -maxh should correspond to the allocated time
 
-    mdrun="$gmx_mpi mdrun $std_opts $cont_opts -nsteps 1"
-    aprun_opts+="-n $SLURM_NTASKS -N $SLURM_NTASKS_PER_NODE"
+    mdrun="$gmx_mpi mdrun $std_opts $cont_opts"
+    aprun_opts+=" -n $SLURM_NTASKS -N $SLURM_NTASKS_PER_NODE "
 fi
 
 echo "---> mdrun at stage $current"
-aprun $aprun_opts $mdrun -nsteps 1 ###
+echo "---> aprun $aprun_opts $mdrun"
+aprun $aprun_opts $mdrun
 
 # If the run was short, we just exit earlier than we had to.
 echo "---> Reached end of run script."
