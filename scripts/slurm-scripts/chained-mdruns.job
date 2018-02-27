@@ -33,7 +33,7 @@ gro="conf.gro"
 for current in "em" "equil" "dihedral-6-17"; do   
     # Find the first run that isn't done, i.e.
     # does not have final gro file
-    groout_relpath=${current}/${data}/${groout}
+    groout_relpath="${current}/data/${groout}"
     if [ -f "${groout_relpath}" ]; then
         # use for input at next dependent stage
 	gro_abspath=`readlink -f $groout_relpath`
