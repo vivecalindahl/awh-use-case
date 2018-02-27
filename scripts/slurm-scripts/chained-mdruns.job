@@ -39,12 +39,17 @@ start_conf=""
 
 # Find the first run that isn't done, i.e.
 # does not have the final config file.
+ndone=0
 for current in ${stages[@]}; do   
     current_data="${current}/data"
     confout_abspath=`readlink -f "${current_data}/${confout}"`
     if [ -f "${confout_abspath}" ]; then
         # if this is the last stage, we're done.
-	if ["${current}" ==" ${stages[-1]}"]; then
+
+        # only works for bash versions >= 4.2
+	#if ["${current}" ==" ${stages[-1]}"]; then        
+	((ndone++))
+	if [ ${ndone} -eq ${#stages[@]} ]; then
 	    echo "---> Already finished last stage"
 	    exit 0
 	fi
@@ -54,7 +59,7 @@ for current in ${stages[@]}; do
     fi
     # No final config here, so run this stage.
     # Use local config file if it is the first stage.
-    if ["${current}" ==" ${stages[0]}"]; then
+    if [ "${current}" == "${stages[0]}" ]; then
 	start_conf="./${conf}"
     fi  
     break    
