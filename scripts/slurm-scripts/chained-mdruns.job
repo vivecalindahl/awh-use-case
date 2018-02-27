@@ -2,7 +2,7 @@
 
 #SBATCH --account=2017-11-25
 
-#SBATCH -J dna
+#SBATCH -J equil
 
 #SBATCH -t 00:15:00
 
@@ -28,7 +28,8 @@ gmx=gmx_seq
 
 # Sequence of runs, depending on each other.
 # Find which stage we are at and continue running from there.
-stages=( "em" "equil" "dihedral-6-17" )
+#stages=( "em" "equil" "dihedral-6-17" )
+stages=( "em" "equil" )
 
 # default in and out config filenames
 confout="confout.gro";
@@ -74,6 +75,7 @@ template="${current}/template"
 cd $data
 
 # Make a tpr file if there isn't one already
+tpr="topol.tpr"
 if [ ! -f "$tpr" ]; then	
     mdp="grompp.mdp"
     ndx="index.ndx"
