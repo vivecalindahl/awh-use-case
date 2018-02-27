@@ -174,11 +174,13 @@ if __name__ == "__main__":
         if 'selections' in run:
             run['selections'] = absolute_path(run['selections'])
 
-    outdir = absolute_path(outdir)
     if os.path.exists(outdir) and not forceful:
         sys.exit(outdir + ' already exists. Use -f to force overwrite.')
     else:
         run_in_shell('rm -rf ' + outdir)
+
+    run_in_shell('mkdir -p ' + outdir)
+    outdir = absolute_path(outdir)
 
     for pdb in pdbs:
         name  = pdb.split('/')[-1].split('.pdb')[-2]
