@@ -1,0 +1,5 @@
+28038  #deltai=3; args=(); ifirst=1; ilast=22; imin=$((ifirst+deltai)); imax=$((ilast-deltai)); for ((i=$imin; i <= $imax; i++)); do j=$((ifirst + ilast - i)); args+=(" -r name=dihedral-${i}-${j} params=../md-files/awh-dihedral.mdp selections=../md-files/dihedral-selections/dihedral-selections-${i}-${j}.txt "); done ; echo ${#args[@]}
+
+28035  #../scripts/set_up_runs.py ../md-files/pdbs/GCGCGTGCGCG.pdb -f -r params=../md-files/em.mdp  name=em  -r params=../md-files/npt.mdp name=equil  ${args[@]}
+28110  #./scripts/set_up_runs.py --out build/first-testing-one-sequence  md-files/pdbs/GCGCGTGCGCG.pdb -f -r params=md-files/em.mdp  name=em  -r params=md-files/npt.mdp name=equil ${args[@]}
+28114  deltai=3; args=(); ifirst=1; ilast=22; imin=$((ifirst+deltai)); imax=$((ilast-deltai)); for ((i=$imin; i <= $imax; i++)); do j=$((ifirst + ilast - i)); args+=(" -r name=dihedral-${i}-${j} params=md-files/awh-dihedral.mdp selections=md-files/dihedral-selections/dihedral-selections-${i}-${j}.txt "); done ; echo ${#args[@]}
