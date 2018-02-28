@@ -3,23 +3,29 @@
 args=( "$@" )
 function print_usage_exit
 {
-    echo "Usage: $0 <template>"
+    echo "Usage: $0 <template> <nreplicas> [<nwalkers>] "
     exit 0
 }
+
+nargsmin=3
+[ "${#args[@]}" -lt $nargsmin ] && { echo "Too few arguments given." && print_usage_exit; }
+template=${args[0]}
+[ ! -d $template ] && { echo "directory $template not found"; exit 1; } 
+template=`readlink -f $template`
+nreplicas=${args[1]}
+
+nwalkers=()
+for ((i=2; i<${#args[@]}; i++)); do
+    nwalkers+=(${args[$i]})
+done
+
+echo "Making $nreplicas replicas for each number of walkers ${nwalkers[@]} from $template"
+
+start=`pwd -P`
 
 # gromacs binary
 module load gromacs/2018.1
 gmx=gmx_seq
-
-nargs=1
-[ "${#args[@]}" -ne $nargs ] && { echo "No input arguments given." && print_usage_exit; }
-template=$1
-[ ! -d $template ] && { echo "directory $template not found"; exit 1; } 
-template=`readlink -f $template`
-
-nreplicas=4;
-nwalkers=( 1 2 4 8 16 32 64 );
-start=`pwd -P`
 
 # work from the template, to generate tprs
 cp -r template template_work
