@@ -1,0 +1,61 @@
+#!/bin/bash -l
+
+#SBATCH --account=2017-11-25
+
+#SBATCH -J dna
+
+#SBATCH -t 00:15:00
+
+#SBATCH --constraint=[group-0|group-1|group-2|group-3|group-4]
+
+# On Beskow: 2 cpus x 16 cores (+hyperthreading) = 32 (x 2) 
+# These are overridden by commandline arguments.
+#SBATCH -N 1
+#SBATCH -n 32
+
+#SBATCH --ntasks-per-node=32
+#SBATCH --cpus-per-task=1
+
+# MPICH
+export MPICH_GNI_MAX_EAGER_MSG_SIZE=131072
+
+# Environment settings
+# (here only to get a bunch of necessart modules loaded, not for the gmx binaries)
+module load gromacs/2018.1
+
+# My own gmx build
+gmx=/cfs/klemming/nobackup/v/vivecal/programs/gromacs/2018.1/bin/gmx
+gmx_mpi=$gmx
+
+grompp_opts="-maxwarn 1"
+
+# Start/continue mdrun. 
+
+# aprun settings
+aprun_opts="-cc none"
+
+cont_opts="-cpi -maxh 0.25" # NOTE: -maxh should correspond to the allocated time
+
+[ -z "${GMX_NPME}" ] &&  GMX_NPME=2
+
+npme=${GMX_NPME}; nstlist=40; dlb=no; ntomp=2;
+std_opts="-pin on -quiet -v -stepout 10000 -nstlist ${nstlist} -dlb ${dlb} -npme ${npme} -ntomp ${ntomp}" 
+
+nwalkers=$GMX_NWALKERS
+walker_indices=($(seq  0 $((nwalkers-1))))
+
+walker_dirs=()
+prefix='walker-'
+for i in ${walker_indices[@]}; do
+    walker_dirs+=("${prefix}${i}")
+done
+
+mdrun="$gmx_mpi mdrun $std_opts $cont_opts -multidir ${walker_dirs[@]}"
+aprun_opts+=" -n $SLURM_NTASKS -N $SLURM_NTASKS_PER_NODE "
+
+echo "---> mdrun at stage $current"
+echo "---> aprun $aprun_opts $mdrun"
+aprun $aprun_opts $mdrun
+
+# If the run was short, we just exit earlier than we had to.
+echo "---> Reached end of run script."
