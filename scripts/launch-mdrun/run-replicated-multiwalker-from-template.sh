@@ -135,7 +135,7 @@ done
 for nw in ${nwalkers[@]}; do
     for ((i=0; i<${nreplicas}; i++)); do
 
-	mdrundir=${start}/data/${n}-walkers/replica-${i}
+	mdrundir=${start}/data/${nw}-walkers/replica-${i}
 	cd $mdrundir 
 	job=x${nw}-${i}.job
 	generate_and_submit_job_script $nw $i $job
