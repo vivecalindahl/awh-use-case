@@ -61,7 +61,7 @@ rm -r template_work
 
 # Generate a slurm job script for the given number of walkers and with
 # a unique job name given by the replica index.
-generate_job_script()
+generate_and_submit_job_script()
 {
 nw=$1 # number of walkers
 i=$2  # replica index (warning for bad variable name...)   
@@ -120,12 +120,17 @@ $mdrun_cmd
 echo '---> Reached end of run script.'
 " \
 > $job    
-}
 
 # Here calculate the number of jobs to run based on the maximum total allocated run time.
 totalhours=24
 # no. of jobs = total time/time per job
 njobs=$(awk -v hours=$hours -v totalhours=$totalhours 'BEGIN{print int(totalhours/hours)}')
+
+# launch dependent (chained) jobs for this replica
+for ((j=0; j<${njobs}; j++)); do 
+    sbatch --dependency=singleton $job
+done
+}
 
 for nw in ${nwalkers[@]}; do
     for ((i=0; i<${nreplicas}; i++)); do
@@ -133,10 +138,6 @@ for nw in ${nwalkers[@]}; do
 	mdrundir=${start}/data/${n}-walkers/replica-${i}
 	cd $mdrundir 
 	job=x${nw}-${i}.job
-	generate_job_script $nw $i $job
-
-        # launch dependent (chained) jobs for this replica
-	for ((j=0; j<${njobs}; j++)); do 
-	    sbatch --dependency=singleton $job
-	done
+	generate_and_submit_job_script $nw $i $job
+    done
 done
