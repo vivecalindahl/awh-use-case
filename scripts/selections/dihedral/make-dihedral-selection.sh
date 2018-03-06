@@ -1,6 +1,9 @@
 #!/bin/bash
 
 # Add required variable definitions to beginning of template file for dihedral selections.
+# Ideally the arithmetics of this script should be done by gmx select, but because of a
+# bug (https://redmine.gromacs.org/issues/2427) it doesn't work currently.
+# If that would work this script would just define (numerically) the basepair resids.
 
 nargsmin=3
 if [ $# -lt $nargsmin ] || [ "$1" == "-h" ]; then
@@ -17,6 +20,7 @@ shift
 template=$1
 shift
 
+
 # The resids
 base_up=$((base + 1)); base_down=$((base - 1)); partner_up=$((partner - 1)); partner_down=$((partner + 1));
 # string with the selections needed to be added
@@ -26,6 +30,7 @@ base_up=resid $base_up;
 base_down=resid $base_down;
 partner_up=resid $partner_up;
 partner_down=resid $partner_down;";
-out=selection_bp${base}-${partner}.txt;
+
+# spit it out
 echo $def
 cat $template
