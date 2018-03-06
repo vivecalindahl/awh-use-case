@@ -82,7 +82,7 @@ constraint="[group-0|group-1|group-2|group-3|group-4]"
 hours=$(echo "${time}" | awk -F ':' '{print $1 + $2/60 + $3/(60*60)}')
 cont_opts="-cpi -maxh $hours"
 npme=2; nstlist=40; dlb=no; ntomp=2;
-std_opts="-pin on -quiet -v -stepout 10000 -nstlist ${nstlist} -dlb ${dlb} -npme ${npme} -ntomp ${ntomp}"
+std_opts="-pin on -quiet -v -stepout 10000 -nstlist ${nstlist} -dlb ${dlb} -npme ${npme} -ntomp ${ntomp} -notunepme"
 walker_indices=($(seq  0 $((nw-1))))
 
 walker_dirs=()
