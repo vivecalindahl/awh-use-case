@@ -41,8 +41,8 @@ pull-nstfout             = 0
 pull-ngroups             = 4
 pull-ncoords             = 2
 
-pull-group1-name         = base_N
-pull-group2-name         = partner_N
+pull-group1-name         = base_N1orN3
+pull-group2-name         = partner_N1orN3
 pull-group3-name         = base_6ring
 pull-group4-name         = partner_6ring
 

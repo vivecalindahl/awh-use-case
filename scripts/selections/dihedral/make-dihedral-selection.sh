@@ -14,12 +14,8 @@ if [ $# -lt $nargsmin ] || [ "$1" == "-h" ]; then
 fi
 
 base=$1
-shift
-partner=$1
-shift
-template=$1
-shift
-
+partner=$2
+template=$3
 
 # The resids
 base_up=$((base + 1)); base_down=$((base - 1)); partner_up=$((partner - 1)); partner_down=$((partner + 1));
@@ -32,5 +28,6 @@ partner_up=resid $partner_up;
 partner_down=resid $partner_down;";
 
 # spit it out
+echo -e "# Definitions added by $(basename $0)"
 echo $def
 cat $template
