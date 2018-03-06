@@ -35,7 +35,7 @@ template="${scriptsdir}/distance-selection-template.txt"
 [ ! -e "$template" ] && { echo "Not found $template"; exit 1; }
 
 # Generate all  pairs
-for ((n=2; n<$N; n++)); do
+for ((n=1; n<=$N; n++)); do
     prefix="distance-selections"
 
     n1=$n; 
