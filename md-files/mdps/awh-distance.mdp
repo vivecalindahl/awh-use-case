@@ -60,8 +60,12 @@ pull-coord2-k            = 128000
 
 awh                      = yes
 awh-nbias                = 1
-awh-nstout               = 250000
-awh1-ndim                = 2
+awh-nstout 		 = 500000
+
+awh-share-multisim       = yes
+awh1-share-group	 = 1
+
+awh1-ndim                = 1
 awh1-error-init          = 5
 awh1-dim1-pull-coord     = 1
 awh1-dim1-diffusion      = 5e-5 
