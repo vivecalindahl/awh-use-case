@@ -1,21 +1,19 @@
+# Definitions added by make-dihedral-selection.sh
 base=resid 21; partner=resid 2; base_up=resid 22; base_down=resid 20; partner_up=resid 1; partner_down=resid 3;
-# Note: definition of groups used below but not defined above need to be provided "interactively",
-# by modifying this file or using 'gmx -select'.
+# *** NOTE *** 
+# Before using this file as selection with 'gmx select -sf'
+# BASE_ID and PARTNER_ID below need to be replaced by real numbers
+# by modifying this file or providing the definitions using 
+# 'gmx select -select'.
 
-# variable input
 # base = resid BASE_ID
 # partner = resid PARTNER_ID
 
-# Would like to get the selections below by evaluating arithmetic expressions,
-# and only have base and partner be variables,
-# but I can't get gmx select to work without syntax error!
-# Instead hack by adding an extra step in the terminal.
-
-# Id increase from 5' to 3' along strand.
+## Id increase from 5' to 3' along strand.
 # base_up = base + 1
 # base_down = base - 1
 
-# Ids on opposite strands increases in opposite direction
+## Ids on opposite strands increases in opposite direction
 # partner_up = partner - 1
 # partner_down = partner + 1
 
