@@ -29,8 +29,8 @@ five_rings = atomname "C4" "C5" "C8" "N7" "N9" ;
 
 # Combine groups into new temporary groups
 middle = base and backbone;
-lower = phosphate_down and base_down;
-upper = phosphate_up and base_up;
+lower = phosphate_up and base_down;
+upper = phosphate_down and base_up;
 rings = six_rings or five_rings;
 
 base_backbone = lower or middle or upper;
