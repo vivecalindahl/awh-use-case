@@ -27,5 +27,5 @@ base_down=resid $base_down;
 partner_up=resid $partner_up;
 partner_down=resid $partner_down;";
 out=selection_bp${base}-${partner}.txt;
-echo $def #> $out ;
-cat $template  #>> selections-dihedral-template.txt  >> $out
+echo $def
+cat $template
