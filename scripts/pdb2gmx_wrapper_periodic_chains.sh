@@ -1,20 +1,37 @@
 #!/bin/bash
 
-# Given a pdb with sequence XYZ, add an extra residue X' yielding XYZX' such that pdb2gmx
-# gives us the topology terms needed for later periodically connecting Z to X  (...-XYZ-XYZ-...).
+# Given a pdb for dna call create a topology (topol.top) that connects the first to the last
+# residue of each chain.
+# Currently only for dna but is likely easy to make more general.
+# Force fields "charmm27" or "amber99bsc1" are supported.
+# gmx command is assumed to be available.
+
+nargsmin=2
+if [ $# -lt $nargsmin ] || [ "$1" == "-h" ]; then
+    echo "Usage: $0  <pdb> <forcefield>"
+    echo "Example:"
+    echo "$0 dna.pdb charmm27"
+    exit 0
+fi
 
 # The given sequence should have all atoms needed for periodic connection,
 # i.e. an end residue should have the same atoms as if it were a central residue.
 pdb_in=$1;
 [ -z "$pdb_in" ] && echo "No pdb given" && exit
-
 [ ! -e "$pdb_in" ] && echo "$pdb_in does not exist" && exit 1
 
-# gmx binary to use
-gmx="gmx"
-forcefield="charmm27"
-water="tips3p"
+forcefield=$2
 
+gmx="gmx"
+[ -z "$(which $gmx)" ]  && { $gmx; exit 1; }
+
+case "${forcefield}" in
+    "charmm27") water="tips3p";;
+    "amber99bsc1") water="spce";;
+    *) echo "Forcefield ${forcefield} not supported."; exit 1;;
+esac
+
+# A pdb to work with
 pdb_work="work.pdb"
 
 # Contents of columns in pdb file format
@@ -23,6 +40,7 @@ resid_col=6;
 
 # Copy the first residue of each chain to the end of each n-residue long chain,
 # making a temporary new n+1 long chain.
+# This way we can "trick" gmx pd2gmx to generate all the interaction terms we need.
 awk -v chain_col=$chain_col -v resid_col=6 \
 '{chain=$chain_col;  resid=$resid_col;
 if (chain != prev_chain){if (str != ""){print str; str=""}; first_res=resid;};
@@ -32,45 +50,62 @@ $pdb_in  > $pdb_work
 
 #---------- Generate topology and config gro-file for the n+1 chain.
 
+# Find the forcefield and make a local copy, which we can modify.
+# Check first locally for forcefield.
+ffdirname="${forcefield}.ff"
+forcefield_dir=./${ffdirname}
+if [ ! -d "./${forcefield_dir}" ]; then
+    # then look in the  gromacs library
+    gmx_loc=`echo \`which $gmx\` | awk -F 'bin' '{print $1}'`
+    forcefield_dir=`find $gmx_loc -name "${ffdirname}"`
+fi
+[ ! -d "$forcefield_dir" ] && { echo "Force field ${forcefield} not found"; exit 1; }
+
+ff_work="${forcefield}_work"
+ff_work_dir="./${ff_work}.ff"
+cp -r $forcefield_dir $ff_work_dir
+
+
+# Remove special treatment of the end termini in the .r2b file if there is one.
+r2b="${ff_work_dir}/dna.r2b"
+if [ -e "$r2b" ]; then
+    mv $r2b ${r2b}"_tmp"
+    awk '/;/{print; next}; {if (NF==5){print $1, $2, $2, $2, $2} else{print}}' ${r2b}"_tmp" > $r2b
+    rm ${r2b}"_tmp"
+fi
+
 # Need to add a hack to the terminal data base file for pdb2gmx to accept the ends
-# without modification.
-gmx_loc=`echo \`which $gmx\` | awk -F 'bin' '{print $1}'`
-forcefield_dir=`find $gmx_loc -name "${forcefield}.ff"`
-[ ! -d "$forcefield_dir" ] && { echo "Force field ${forcefield} not found in gmx installation directory $gmx_loc"; exit 1; }
-local_ff="./${forcefield}.ff"
-rm -rf "./${forcefield}.ff"
-cp -r $forcefield_dir .
+# without modification. To avoid having to parse the interactive session of pdb2gmx,
+# remove all .tdb entries other than those we define, so there is only one choice
+# for each end.
+# So we assume there is nothing but the dna molecule in the pdb.
 
-# tdb-file for the 5' end
-tdb="./${forcefield}.ff/dna.n.tdb" 
-# Overwrite with a hack
-echo -e "[ hack ]\n[ replace ]\nC5' C5' CN8B 12.011 -0.08" > $tdb
+# Make a custom tdb-file for the 5' end to force gmx pdb2gmx to allow end residue
+# that have (temporarily) missing bonds.
+# This hack (loophole?) will avoid ax gmx pdb2gmx fatal error. 
+rm -f ${ff_work_dir}/*.n.tdb  # 5' end
+rm -f ${ff_work_dir}/*.c.tdb  # 3' end
 
-# Dummy-run pdb2gmx (choosing termini indexed by 0 and 0) to figure out what the real indices of the termini we want to select are.
-# Use the local hacked force field.
+tdb5="${ff_work_dir}/dna.n.tdb" 
+if [ "${forcefield}" == 'amber99bsc1' ]; then
+    echo -e "[ hack ]\n[ replace ]\nC5' C5' CI 12.01 -0.0069" > $tdb5
+elif [ "${forcefield}" == 'charmm27' ]; then
+    echo -e "[ hack ]\n[ replace ]\nC5' C5' CN8B 12.011 -0.08" > $tdb5
+else
+    echo "Forcefield $forcefield not supported"; exit 1
+fi
+
+# Put a dummy entry "none" on the 3' side.
+tdb3="${ff_work_dir}/dna.c.tdb" 
+echo -e "[ none ]" > $tdb3
+
 tmp_log="tmp.log"
 
-nchains=`awk -v chaincol=$chain_col '/^ATOM/{chain=$chaincol; print chain}' $pdb_in  | sort -u  | wc -l`
-nter=$((nchains*2))
-sel_str=""; for ((i=0; i < ${nter}; i++)); do sel_str=$sel_str"0\\n"; done; 
-echo -e "$sel_str" | $gmx pdb2gmx -v -f $pdb_work -ff ${forcefield} -water ${water} -ter -o "tmp" -p "tmp" &> $tmp_log
-
-ter_selection=`awk '/Select start/{sel="hack"; getline; while(sel != $2){getline}; print $1};
-/Select end/{sel="None"; getline; while(sel != $2){getline}; print $1}' ${tmp_log} \
- | awk -F ":" '{print $1}'`
-
-ter_selection=($ter_selection)
-[ ${#ter_selection[@]} -ne 2 ] && { echo "Should have got 2 ter indices. Have indices: ${ter_selection[@]}"; exit 1; }
-
-sel_str="";
-for ((i=0; i < ${nter}; i++)); do
-    sel=${ter_selection[$((i%2))]}
-    sel_str=$sel_str"${sel}\\n";
-done;
-
-# Top and gro from unmodified config
+# Generate top and gro from unmodified config
 nonperiodic="non-periodic"
-echo -e "$sel_str" | $gmx pdb2gmx -v -f $pdb_in -ff ${forcefield} -water ${water} -ter -o "${nonperiodic}.gro" -p "${nonperiodic}.top"  &> $tmp_log
+
+$gmx pdb2gmx -v -f $pdb_in -ff ${ff_work} -water ${water} -ter -o "${nonperiodic}.gro" -p "${nonperiodic}.top"  &> $tmp_log || exit 1
+
 
 chain_itps=(`grep  "chain.*itp" ${nonperiodic}.top | awk '{print $NF}' | awk -F  \" '{print $2}'`)
 
@@ -83,7 +118,7 @@ for itp in ${chain_itps[@]}; do
 done
 
 # Top and gro from "capped" config
-echo -e "$sel_str" | $gmx pdb2gmx -v -f $pdb_work -ff ${forcefield} -water ${water} -ter -o "extra.gro" -p "extra.top"  &> $tmp_log
+$gmx pdb2gmx -v -f $pdb_work -ff ${ff_work} -water ${water} -ter -o "extra.gro" -p "extra.top"  &> $tmp_log || exit 1
 extra_itps=(`grep  "chain.*itp" "extra.top" | awk '{print $NF}' | awk -F  \" '{print $2}'`)
 
 #-------------  Modify the topology
@@ -123,6 +158,7 @@ else{print} }' $top_work > $top_out
 	cp $top_out $top_work
     done; 
 done
+
 
 # Tweak entries of final topology, rename to the default topol.top
 top_out="topol.top"
