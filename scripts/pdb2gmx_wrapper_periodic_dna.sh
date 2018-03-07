@@ -188,6 +188,14 @@ if $nonlocal_ff; then
     sed -i "s/.\/${forcefield}/${forcefield}/" ${top_out}
 fi
 
+# Add comment about how this file at the top of the topology file.
+script=$(basename $0)
+args="$@"
+
+# Here 1s refers to the first position in the file and '~' is used as the sed delimiter
+# since the variables may contain '/'.
+sed -i "1s~^~; This file was automatically generated using \"$0 $args\"~" topol.top
+
 gro_out="conf.gro"
 mv ${nonperiodic}.gro $gro_out
 
