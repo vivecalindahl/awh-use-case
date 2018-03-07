@@ -192,7 +192,7 @@ if __name__ == "__main__":
         os.chdir(setup)
 
         print "Setting up system " + name + " in " + setup
-        stdout=run_in_shell(scriptsdir + '/pdb-to-solvated-gmx-system.sh ' + pdb)
+        stdout=run_in_shell(scriptsdir + '/pdb-to-solvated-periodic-dna-for-gmx.sh ' + pdb)
         #print stdout
 
         topology = setup + '/topol.top'
