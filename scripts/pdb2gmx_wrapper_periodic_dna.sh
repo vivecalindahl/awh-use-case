@@ -187,5 +187,11 @@ gro_out="conf.gro"
 mv ${nonperiodic}.gro $gro_out
 
 # Clean up
-ls  | grep -v "$gro_out" | grep -v "$top_out" | xargs -n 1 rm -rf
-#rm -rf \#* $tmp_log $top_work posre*itp tmp.* $pdb_work ./${forcefield}.ff extra*.* ${nonperiodic}*.* periodic*chain*.itp
+#ls  | grep -v "$gro_out" | grep -v "$top_out" | xargs -n 1 rm -rf
+rm -rf *extra_DNA*.itp* *extra*.gro* \
+    *periodic_DNA*.itp* \
+    *non-periodic_DNA*.itp*  *non-periodic*.top* \
+    *posre_DNA*.itp* \
+    $pdb_work $top_work $tmp_log \
+    $ff_work_dir
+
