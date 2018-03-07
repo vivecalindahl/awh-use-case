@@ -102,7 +102,7 @@ if __name__ == "__main__":
     parser.add_argument('-o', '--out', dest='outdir', type=str, default='build',
                         help='name of output directory to create')
     parser.add_argument('-ff', '--forcefield', dest='forcefield', type=str, choices=['amber99bsc1', 'charmm27'])
-
+    parser.add_argument('--ffdir', dest='ffdir', type=str)
     ##parser.add_argument("--gmx", dest='gmx', type=str, help="gmx binary to use") # TODO
 
     # Defines a keyvalue argument type for the parser
@@ -146,6 +146,7 @@ if __name__ == "__main__":
     outdir = parsed_args.outdir
     forceful = parsed_args.force
     forcefield=parsed_args.forcefield
+    ffdir=parsed_args.ffdir
 
     runs = parsed_args.runs
 
@@ -171,6 +172,9 @@ if __name__ == "__main__":
 
     pdbs=[ absolute_path(pdb) for pdb in pdbs]
 
+    if ffdir:
+        ffdir = absolute_path(ffdir)
+
     for run in runs:                        
         if 'params' in run:
             run['params'] = absolute_path(run['params'])
@@ -188,19 +192,22 @@ if __name__ == "__main__":
     for pdb in pdbs:
         name  = pdb.split('/')[-1].split('.pdb')[-2]
         if len(name) == 0:
-            sys.exit('Give ' + pdb + ' an non-empty descriptive name')
+            sys.exit('Give ' + pdb + ' a non-empty descriptive name')
 
         setup='/'.join([outdir, name, 'setup'])    
         run_in_shell('mkdir -p ' + setup)
+
+        if ffdir:
+            run_in_shell('cp -r ' + ffdir + ' ' + setup)
+
         os.chdir(setup)
 
         print "Setting up system " + name + " in " + setup
+
         stdout=run_in_shell(scriptsdir + '/pdb-to-solvated-periodic-dna-for-gmx.sh ' + pdb + ' ' + forcefield)
-        #print stdout
 
         topology = setup + '/topol.top'
         config = setup + '/conf.gro'
-        #groups = setup + '/index.ndx'
 
         for run in runs:
             if 'name' in run:
@@ -219,6 +226,8 @@ if __name__ == "__main__":
             params=run['params']
             for runfile, defaultname in zip([config, topology, params], ['conf.gro', 'topol.top', 'grompp.mdp']):
                 shutil.copy(runfile, template + '/' + defaultname)
+            if ffdir:
+                run_in_shell('cp -r ' + ffdir + ' ' + template)
 
                 # Generate an index file from the selections
             if 'selections' in run:
