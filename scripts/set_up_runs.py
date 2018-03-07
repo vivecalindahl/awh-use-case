@@ -101,7 +101,9 @@ if __name__ == "__main__":
     parser.add_argument('-f', dest='force', action='store_true', help="force overwriting of old output")
     parser.add_argument('-o', '--out', dest='outdir', type=str, default='build',
                         help='name of output directory to create')
-    parser.add_argument("--gmx", dest='gmx', type=str, help="gmx binary to use")
+    parser.add_argument('-ff', '--forcefield', dest='forcefield', type=str, choices=['amber99bsc1', 'charmm27'])
+
+    ##parser.add_argument("--gmx", dest='gmx', type=str, help="gmx binary to use") # TODO
 
     # Defines a keyvalue argument type for the parser
     allowed_types={'name':'str', 'params':'.mdp', 'selections':'.txt'}
@@ -143,6 +145,7 @@ if __name__ == "__main__":
     pdbs = parsed_args.pdbfiles
     outdir = parsed_args.outdir
     forceful = parsed_args.force
+    forcefield=parsed_args.forcefield
 
     runs = parsed_args.runs
 
@@ -192,7 +195,7 @@ if __name__ == "__main__":
         os.chdir(setup)
 
         print "Setting up system " + name + " in " + setup
-        stdout=run_in_shell(scriptsdir + '/pdb-to-solvated-periodic-dna-for-gmx.sh ' + pdb)
+        stdout=run_in_shell(scriptsdir + '/pdb-to-solvated-periodic-dna-for-gmx.sh ' + pdb + ' ' + forcefield)
         #print stdout
 
         topology = setup + '/topol.top'

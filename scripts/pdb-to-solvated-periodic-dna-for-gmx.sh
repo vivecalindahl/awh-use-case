@@ -1,9 +1,18 @@
 #!/bin/bash
 
 # input
-gmx=gmx
+gmx=gmx # asumme available for now
+
+nargsmin=2
+if [ $# -lt $nargsmin ] || [ "$1" == "-h" ]; then
+    echo "Usage: $0  <pdb> <forcefield>"
+    echo "Example:"
+    echo "$0 dna.pdb charmm27"
+    exit 0
+fi
 
 pdb=$1
+forcefield=$2
 
 # pdb2gmx
 echo "Generating DNA topology"
@@ -19,7 +28,7 @@ export PATH=${SETUP_MD_SCRIPTS}/:$PATH
 pdb2gmx=pdb2gmx_wrapper_periodic_dna.sh
 command -v $pdb2gmx >/dev/null 2>&1 || { echo >&2 "$pdb2gmx not found.  Aborting."; exit 1; }
 
-${pdb2gmx} $pdb || { echo "There was a problem." && exit 1; }
+${pdb2gmx} $pdb $forcefield || { echo "There was a problem." && exit 1; }
 
 gro_in="./conf.gro"
 top_in="./topol.top"
