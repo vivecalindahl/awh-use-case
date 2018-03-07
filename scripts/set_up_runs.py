@@ -253,3 +253,5 @@ if __name__ == "__main__":
 
             run_in_shell('rm -r ' + tmp)
                 
+# TODOs:
+# add INFO file with command line for generating the build
