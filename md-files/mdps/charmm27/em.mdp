@@ -3,7 +3,7 @@ emtol			 = 1000.0
 emstep 			 = 0.01
 nsteps			 = 50000
 
-coulombtype              = PME
+coulombtype              = pme
 rcoulomb                 = 1.2
 fourierspacing           = 0.14
 
