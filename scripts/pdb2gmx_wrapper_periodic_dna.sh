@@ -54,7 +54,9 @@ $pdb_in  > $pdb_work
 # Check first locally for forcefield.
 ffdirname="${forcefield}.ff"
 forcefield_dir=./${ffdirname}
+nonlocal_ff=false
 if [ ! -d "./${forcefield_dir}" ]; then
+    nonlocal_ff=true
     # then look in the  gromacs library
     gmx_loc=`echo \`which $gmx\` | awk -F 'bin' '{print $1}'`
     forcefield_dir=`find $gmx_loc -name "${ffdirname}"`
@@ -180,8 +182,11 @@ for itp in ${chain_itps[@]}; do
     sed  -i "s/^ *\#include *\"$itp.*//g"  ${top_out};
 done
 
-# Modify the forcefield entry to not expect a force field in the current directory
-sed -i "s/.\/${forcefield}/${forcefield}/" ${top_out}
+# Remap the forcefield entry to the unmodified one.
+sed -i "s/${ff_work}/${forcefield}/" ${top_out}
+if $nonlocal_ff; then
+    sed -i "s/.\/${forcefield}/${forcefield}/" ${top_out}
+fi
 
 gro_out="conf.gro"
 mv ${nonperiodic}.gro $gro_out
