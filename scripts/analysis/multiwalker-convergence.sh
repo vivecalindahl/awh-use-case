@@ -31,7 +31,7 @@ mkdir -p $outdir
 
 
 common_ref=${outdir}/ref_any-walkers.dat
-${scriptsdir}/calc_error_t.py  --out ${outdir}/convergence_any-walkers.dat  0  1000 2000  --runs  ${pmfdir}/*-walkers/replica-*/ \
+${scriptsdir}/calc_error_t.py  --out ${outdir}/convergence_any-walkers.dat $tstart $dt $tend --runs  ${pmfdir}/*-walkers/replica-*/ \
     --refout $common_ref --col 2 ; 
 
 [ ! -e "$common_ref" ] && { echo "$common_ref not generated"; exit 1; }
@@ -40,10 +40,10 @@ ${scriptsdir}/calc_error_t.py  --out ${outdir}/convergence_any-walkers.dat  0  1
 for n in ${nwalkers[@]}; do
     # col 2 has coord bias (for now use that)
 
-    ${scriptsdir}/calc_error_t.py  --out ${outdir}/convergence_self-ref_${n}-walkers.dat  0  1000 2000  --runs  ${pmfdir}/${n}-walkers/replica-*/ \
+    ${scriptsdir}/calc_error_t.py  --out ${outdir}/convergence_self-ref_${n}-walkers.dat $tstart $dt $tend --runs  ${pmfdir}/${n}-walkers/replica-*/ \
 	--refout ${outdir}/ref_${n}-walkers.dat --col 2 ; 
 
-    ${scriptsdir}/calc_error_t.py  --out ${outdir}/convergence_common-ref_${n}-walkers.dat  0  1000 2000  --runs  ${pmfdir}/${n}-walkers/replica-*/ \
+    ${scriptsdir}/calc_error_t.py  --out ${outdir}/convergence_common-ref_${n}-walkers.dat $tstart $dt $tend --runs  ${pmfdir}/${n}-walkers/replica-*/ \
 	--refout ref.tmp --reffile $common_ref --col 2 ; 
     rm ref.tmp
 done
