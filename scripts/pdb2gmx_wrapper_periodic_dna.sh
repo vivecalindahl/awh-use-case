@@ -25,6 +25,7 @@ forcefield=$2
 gmx="gmx"
 [ -z "$(which $gmx)" ]  && { $gmx; exit 1; }
 
+# TODO: should be outside of the wrapper
 case "${forcefield}" in
     "charmm27") water="tips3p";;
     "amber99bsc1") water="spce";;
