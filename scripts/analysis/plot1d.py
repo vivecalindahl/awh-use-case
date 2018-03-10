@@ -81,7 +81,7 @@ if __name__ == "__main__":
     parser.add_argument("--xlabel", type=str, help='x-axis label')
     parser.add_argument("--ylabel", type=str, help='y-axis label')
     parser.add_argument("--title", type=str, help='y-axis label')
-
+    parser.add_argument("--legends", type=str, nargs='+', help='y-axis label')
 
     args = parser.parse_args()
 
@@ -100,11 +100,12 @@ if __name__ == "__main__":
     plt.axes(ax)
 
     xcol, ycol = 0, 1
+    plottedlines=[]
     for datafile in args.datafiles:
         data, metadata = read_xvg(datafile)
 
         x, y  = data[:, xcol], data[:, ycol]
-        addedlines = plt.plot(x, y, lw=linewidth)
+        plottedlines += plt.plot(x, y, '-x', lw=linewidth)
 
     if args.xlabel:
         ax.set_xlabel(args.xlabel)
@@ -113,6 +114,19 @@ if __name__ == "__main__":
     if args.title:
         ax.set_title(args.title)
 
+    if args.legends:
+        for legstr in args.legends:
+            print legstr
+
+        leg = plt.legend(plottedlines, args.legends,
+                         'lower right',
+                         fontsize = fontsize-2,
+                         framealpha=1, frameon=True,
+                         bbox_to_anchor=(0.95,0.05))
+                         
+        legframe = leg.get_frame()
+        legframe.set_edgecolor('grey')
+        legframe.set_linewidth(1)
 
     print "Saving to file " + args.out
     plt.savefig(args.out)
