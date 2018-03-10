@@ -28,7 +28,7 @@ gmx=gmx # for now assume is there
 start=`pwd -P`
 
 reloutdir="./analysis/pmfs"
-echo "Write into directory $reloutdir"
+echo "Writing into directory $reloutdir"
 outdir=${start}/$reloutdir
 
 for n in ${nwalkers[@]}; do	
