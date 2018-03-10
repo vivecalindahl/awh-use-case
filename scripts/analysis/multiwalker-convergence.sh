@@ -51,7 +51,7 @@ done
 
 # Write out the average time to get below the given cutoff error as a function of the number of walkers
 cutoff=2; ## TODO change
-out=${outdir}/time-to-error-${cutoff}-walker-scaling.dat
+out=${outdir}/time-to-error-${cutoff}kT-walker-scaling.dat
 rm -f $out
 for n in ${nwalkers[@]}; do
     errordata=${outdir}/convergence_common-ref_${n}-walkers.dat;
