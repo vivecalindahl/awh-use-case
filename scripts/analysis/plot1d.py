@@ -81,7 +81,9 @@ if __name__ == "__main__":
     parser.add_argument("--xlabel", type=str, help='x-axis label')
     parser.add_argument("--ylabel", type=str, help='y-axis label')
     parser.add_argument("--title", type=str, help='y-axis label')
-    parser.add_argument("--legends", type=str, nargs='+', help='y-axis label')
+    parser.add_argument("--legends", type=str, nargs='+', help='legend strings')
+    parser.add_argument("--autolegend", action='store_true', help="TODO automatically generate legends")
+    parser.add_argument("--fmt", type=str, nargs='+', help='TODO plot format strings', default='-')
 
     args = parser.parse_args()
 
@@ -105,7 +107,7 @@ if __name__ == "__main__":
         data, metadata = read_xvg(datafile)
 
         x, y  = data[:, xcol], data[:, ycol]
-        plottedlines += plt.plot(x, y, '-x', lw=linewidth)
+        plottedlines += plt.plot(x, y, '-', lw=linewidth)
 
     if args.xlabel:
         ax.set_xlabel(args.xlabel)
@@ -114,11 +116,16 @@ if __name__ == "__main__":
     if args.title:
         ax.set_title(args.title)
 
+    legends=None
     if args.legends:
-        for legstr in args.legends:
-            print legstr
+        legends = args.legends
+    elif args.autolegend:
+        for datafile in args.datafiles:
+            print legends
+            legends = [datafile.split('/')[-1] for datafile in args.datafiles]
 
-        leg = plt.legend(plottedlines, args.legends,
+    if legends:
+        leg = plt.legend(plottedlines, legends,
                          'lower right',
                          fontsize = fontsize-2,
                          framealpha=1, frameon=True,
@@ -127,7 +134,8 @@ if __name__ == "__main__":
         legframe = leg.get_frame()
         legframe.set_edgecolor('grey')
         legframe.set_linewidth(1)
-
+        
     print "Saving to file " + args.out
+    plt.tight_layout()
     plt.savefig(args.out)
 
