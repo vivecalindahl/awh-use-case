@@ -47,3 +47,14 @@ for n in ${nwalkers[@]}; do
 	--refout ref.tmp --reffile $common_ref --col 2 ; 
     rm ref.tmp
 done
+
+
+# Write out the average time to get below the given cutoff error as a function of the number of walkers
+cutoff=2; ## TODO change
+out=${outdir}/time-to-error-${cutoff}-walker-scaling.dat
+rm -f $out
+for n in ${nwalkers[@]}; do
+    errordata=${outdir}/convergence_common-ref_${n}-walkers.dat;
+    tfirst=$(awk -v cutoff=$cutoff '{t=$1; err=$2; if (err < cutoff){print t; exit};}' $errordata )
+    echo $n  $tfirst >> $out
+done
