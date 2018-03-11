@@ -80,9 +80,14 @@ constraint="[group-0|group-1|group-2|group-3|group-4]"
 # Settings for launching mdrun using sbatch
 
 hours=$(echo "${time}" | awk -F ':' '{print $1 + $2/60 + $3/(60*60)}')
-cont_opts="-cpi -maxh $hours"
+
+# >200 ns/24 h, 0.25 h, 1 ns = 1000 ps, 1 timestep = 2e-3 ps.
+# awk 'BEGIN{print int(0.25*200/24*1000/2e-3)}' ~ 1e6
+cont_opts="-cpi -nsteps 1000000"
+#cont_opts="-cpi -maxh $hours"
 npme=2; nstlist=40; dlb=no; ntomp=2;
 std_opts="-pin on -quiet -v -stepout 10000 -nstlist ${nstlist} -dlb ${dlb} -npme ${npme} -ntomp ${ntomp} -notunepme"
+#std_opts="-pin on -quiet -v -stepout 10000 -nstlist ${nstlist} -dlb ${dlb} -npme ${npme} -ntomp ${ntomp}"
 walker_indices=($(seq  0 $((nw-1))))
 
 walker_dirs=()
