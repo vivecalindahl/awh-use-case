@@ -65,7 +65,7 @@ pull-coord2-k		 = 128000
 awh			 = yes
 
 awh-nbias		 = 1
-awh-nstout 		 = 500000
+awh-nstout 		 = 50000
 
 awh-share-multisim       = yes
 awh1-share-group	 = 1
