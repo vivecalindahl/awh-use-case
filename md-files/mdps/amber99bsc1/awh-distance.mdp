@@ -72,4 +72,5 @@ awh1-dim1-diffusion      = 5e-5
 awh1-dim1-start          = 0.25
 awh1-dim1-end            = 0.60
 awh1-dim1-force-constant = 128000
+
 awh1-equilibrate-histogram = yes
