@@ -1,0 +1,26 @@
+# Definitions added by make-distance-selection.sh
+base=resid 18; partner=resid 21; 
+
+# *** NOTE *** 
+# Before using this file as selection with 'gmx select -sf'
+# BASE_ID and PARTNER_ID below need to be replaced by real numbers
+# by modifying this file or providing the definitions using 
+# 'gmx select -select'.
+
+# base = resid BASE_ID
+# partner = resid PARTNER_ID
+
+# Nitrogens involved in Watson-Crick basepairing
+base_N1orN3 = base and ((resname DA DG and name N1) or (resname DT DC and name N3));
+partner_N1orN3 = partner and ((resname DA DG and name N1) or (resname DT DC and name N3));
+
+# Resulting selections to output
+base_N1orN3;
+partner_N1orN3;
+
+# temporary, modularize better later
+six_rings = atomname "C2" "C4" "C5" "C6" "N1" "N3" ;
+base_6ring = base and six_rings;
+partner_6ring = partner and six_rings;
+base_6ring;
+partner_6ring;
