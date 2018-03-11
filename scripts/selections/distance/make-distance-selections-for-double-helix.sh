@@ -40,7 +40,7 @@ for ((n=1; n<=$N; n++)); do
 
     n1=$n; 
     n2=$((2*N+1-n))
-    out=./${prefix}-${n1}-${n2}.txt
+    out=./${prefix}-length-${N}-resids-${n1}-${n2}.txt
     $make_selection $n1 $n2 $template > $out
     echo $out    
 done
