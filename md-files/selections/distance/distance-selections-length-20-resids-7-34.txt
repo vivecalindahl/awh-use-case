@@ -1,5 +1,5 @@
 # Definitions added by make-distance-selection.sh
-base=resid 14; partner=resid 25; 
+base=resid 7; partner=resid 34; 
 
 # *** NOTE *** 
 # Before using this file as selection with 'gmx select -sf'
