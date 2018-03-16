@@ -26,25 +26,29 @@ scriptsdir=$(dirname $(readlink -f $0))
 #maxn=$(IFS=$'\n';  echo "${nwalkers[*]}" | sort -nr | head -n 1 ; unset IFS)
 #n=$maxn
 outdir="./analysis/convergence"
-echo "Writing into directory $reloutdir"
+echo "Writing into directory $outdir"
 mkdir -p $outdir
 
 
 common_ref=${outdir}/ref_any-walkers.dat
-${scriptsdir}/calc_error_t.py  --out ${outdir}/convergence_any-walkers.dat $tstart $dt $tend --runs  ${pmfdir}/*-walkers/replica-*/ \
-    --refout $common_ref --col 2 ; 
 
+pmfdirs=
+for n in ${nwalkers[@]}; do
+    pmfdirs+=" "$(echo ${pmfdir}/${n}-walkers/replica-*/)
+done
+
+${scriptsdir}/calc_error_t.py  --out ${outdir}/convergence_any-walkers.dat $tstart $dt $tend --runs  $pmfdirs \
+    --refout $common_ref ; 
 [ ! -e "$common_ref" ] && { echo "$common_ref not generated"; exit 1; }
 
 
 for n in ${nwalkers[@]}; do
-    # col 2 has coord bias (for now use that)
 
     ${scriptsdir}/calc_error_t.py  --out ${outdir}/convergence_self-ref_${n}-walkers.dat $tstart $dt $tend --runs  ${pmfdir}/${n}-walkers/replica-*/ \
-	--refout ${outdir}/ref_${n}-walkers.dat --col 2 ; 
+	--refout ${outdir}/ref_${n}-walkers.dat ; 
 
     ${scriptsdir}/calc_error_t.py  --out ${outdir}/convergence_common-ref_${n}-walkers.dat $tstart $dt $tend --runs  ${pmfdir}/${n}-walkers/replica-*/ \
-	--refout ref.tmp --reffile $common_ref --col 2 ; 
+	--refout ref.tmp --reffile $common_ref ; 
     rm ref.tmp
 done
 
