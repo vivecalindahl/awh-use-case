@@ -181,11 +181,6 @@ if __name__ == "__main__":
         if 'selections' in run:
             run['selections'] = absolute_path(run['selections'])
 
-    if os.path.exists(outdir) and not forceful:
-        sys.exit(outdir + ' already exists. Use -f to force overwrite.')
-    else:
-        run_in_shell('rm -rf ' + outdir)
-
     run_in_shell('mkdir -p ' + outdir)
     outdir = absolute_path(outdir)
 
@@ -195,6 +190,12 @@ if __name__ == "__main__":
             sys.exit('Give ' + pdb + ' a non-empty descriptive name')
 
         setup='/'.join([outdir, name, 'setup'])    
+
+        if os.path.exists(setup) and not forceful:
+            sys.exit(outdir + ' already exists. Use -f to force overwrite.')
+        else:
+            run_in_shell('rm -rf ' + setup)        
+
         run_in_shell('mkdir -p ' + setup)
 
         if ffdir:
