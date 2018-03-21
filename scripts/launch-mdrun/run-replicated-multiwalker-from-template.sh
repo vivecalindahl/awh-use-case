@@ -68,26 +68,28 @@ i=$2  # replica index (warning for bad variable name...)
 job_out=$3 # Name of file to write to.
 
 # sbatch arguments
-time="00:15:00"
+time="00:20:00"
 account="2017-11-25"
-jobname="dna-x${nw}-${i}"
-ntasks=$((32*nw))
-nodes=$((1*nw))
+jobname="L-x${nw}-${i}"
+
+nodesperwalker=4
+ntasks=$((32*nodesperwalker*nw))
+nodes=$((nodesperwalker*nw))
 ntaskspernode=32
 cpuspertask=1
-constraint="[group-0|group-1|group-2|group-3|group-4]"
+
+# add constraint for smaller allocations
+#constraint=
+#nodecutoff=32
+#[ $nodes -le $nodecutoff ] && constraint="[group-0|group-1|group-2|group-3|group-4]"
 
 # Settings for launching mdrun using sbatch
-
 hours=$(echo "${time}" | awk -F ':' '{print $1 + $2/60 + $3/(60*60)}')
-
-# >200 ns/24 h, 0.25 h, 1 ns = 1000 ps, 1 timestep = 2e-3 ps.
-# awk 'BEGIN{print int(0.25*200/24*1000/2e-3)}' ~ 1e6
-cont_opts="-cpi -nsteps 1000000"
-#cont_opts="-cpi -maxh $hours"
-npme=2; nstlist=40; dlb=no; ntomp=2;
-std_opts="-pin on -quiet -v -stepout 10000 -nstlist ${nstlist} -dlb ${dlb} -npme ${npme} -ntomp ${ntomp} -notunepme"
-#std_opts="-pin on -quiet -v -stepout 10000 -nstlist ${nstlist} -dlb ${dlb} -npme ${npme} -ntomp ${ntomp}"
+maxterminationhours=0.017 # assum mdrun doesn't need more than 1 min to terminate the run
+maxh=$(awk -v h=$hours -v dh=$maxterminationhours 'BEGIN{print h - dh}')
+cont_opts="-cpi -maxh $maxh"
+npme=32; nstlist=40; dlb=auto ntomp=2;
+std_opts="-pin on -quiet -v -stepout 10000 -nstlist ${nstlist} -dlb ${dlb} -npme ${npme} -ntomp ${ntomp} -cpt 5"
 walker_indices=($(seq  0 $((nw-1))))
 
 walker_dirs=()
@@ -135,6 +137,7 @@ njobs=$(awk -v hours=$hours -v totalhours=$totalhours 'BEGIN{print int(totalhour
 for ((j=0; j<${njobs}; j++)); do 
     sbatch --dependency=singleton $job
 done
+
 }
 
 for nw in ${nwalkers[@]}; do
