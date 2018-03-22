@@ -1,47 +1,62 @@
 #!/bin/bash
 
-# Given a pdb for dna call create a topology (topol.top) that connects the first to the last
-# residue of each chain.
-# Currently only for dna but is likely easy to make more general.
-# Force fields "charmm27" or "amber99bsc1" are supported.
-# gmx command is assumed to be available.
+# ==========================================================================
+# Read input
+# ==========================================================================
 
-nargsmin=2
-if [ $# -lt $nargsmin ] || [ "$1" == "-h" ]; then
-    echo "Usage: $0  <pdb> <forcefield>"
-    echo "Example:"
-    echo "$0 dna.pdb charmm27"
-    exit 0
-fi
+function print_usage
+{
+  echo "Usage: $0 -f <.pdb> -water <enum> -ff <string> [-h]"
+}
 
-# The given sequence should have all atoms needed for periodic connection,
-# i.e. an end residue should have the same atoms as if it were a central residue.
-pdb_in=$1;
-[ -z "$pdb_in" ] && echo "No pdb given" && exit
-[ ! -e "$pdb_in" ] && echo "$pdb_in does not exist" && exit 1
+while [ $# -gt 0 ]; do 
+  case "$1" in    
+    -h)       print_usage; exit 0;;
+    -f)       pdb_in="$2"; shift;;
+    -ff)      forcefield="$2"; shift;;
+    -water)   water="$2"; shift;;
+    *)    echo "invalid option: $1" && exit 1;;
+  esac 
+  shift 
+done
 
-forcefield=$2
+# Sanity and existence checks
+[ -z "$pdb_in" ] && print_usage && exit
+[ ! "${pdb_in##*.}" == "pdb" ] && echo "$pdb_in is not a pdb-file" && print_usage && exit 1 
+[ ! -e "$pdb_in" ] && echo "$pdb_in does not exist" && exit 1 
 
+[ -z "$forcefield" ] && print_usage && exit 
+[ -z "$water" ] && print_usage && exit 
+
+
+# 'gmx' command is assume to be available but can be changed to any binary here.
 gmx="gmx"
 [ -z "$(which $gmx)" ]  && { $gmx; exit 1; }
 
-# TODO: should be outside of the wrapper
-case "${forcefield}" in
-    "charmm27") water="tips3p";;
-    "amber99bsc1") water="spce";;
-    *) echo "Forcefield ${forcefield} not supported."; exit 1;;
-esac
+# ==========================================================================
+# The actual work:
+# create a periodically connected molecule topology for DNA
+# ==========================================================================
+# Notes:
+# 1) Likely it's easy to generalize to e.g. RNA.
+# 2) Tested for charmm27 and parmbsc1 (amber99bsc1.ff)
+# 3) It's assumed there is nothing but the DNA molecule in the pdb.
+
+# Copy the first residue of each chain to the end of each n-residue long chain,
+# making a temporary new n+1 long chain. This way we can "trick" gmx pd2gmx to
+# generate all the interaction terms we need, and then we delete what is not needed.
 
 # A pdb to work with
-pdb_work="work.pdb"
+pdb_work="./work.pdb"
+
+# and a file for temporary output
+tmp_log="./tmp.log"
 
 # Contents of columns in pdb file format
 chain_col=5;
 resid_col=6;
 
-# Copy the first residue of each chain to the end of each n-residue long chain,
-# making a temporary new n+1 long chain.
-# This way we can "trick" gmx pd2gmx to generate all the interaction terms we need.
+# Add the residue into the work pdb
 awk -v chain_col=$chain_col -v resid_col=6 \
 '{chain=$chain_col;  resid=$resid_col;
 if (chain != prev_chain){if (str != ""){print str; str=""}; first_res=resid;};
@@ -49,25 +64,17 @@ if ($1 ~ /^ATOM/ && resid==first_res){if(str != ""){str=str"\n"$0}else{str=$0};}
 prev_chain=chain; print}' \
 $pdb_in  > $pdb_work
 
-#---------- Generate topology and config gro-file for the n+1 chain.
+# Generate topology and config gro-file for the n+1 chain.
 
-# Find the forcefield and make a local copy, which we can modify.
-# Check first locally for forcefield.
-ffdirname="${forcefield}.ff"
-forcefield_dir=./${ffdirname}
-nonlocal_ff=false
-if [ ! -d "./${forcefield_dir}" ]; then
-    nonlocal_ff=true
-    # then look in the  gromacs library
-    gmx_loc=`echo \`which $gmx\` | awk -F 'bin' '{print $1}'`
-    forcefield_dir=`find $gmx_loc -name "${ffdirname}"`
-fi
-[ ! -d "$forcefield_dir" ] && { echo "Force field ${forcefield} not found"; exit 1; }
+# We need a local copy of the forcefield that we can modify.
+$gmx pdb2gmx -f ${pdb_in} -ff ${forcefield} -water ${water} &> ${tmp_log}
+forcefield_dir=$(awk '/Opening force field file/{gsub(/.ff.*/,".ff", $5);print $5; exit}' ${tmp_log})
+[ -z "$forcefield_dir" ] && echo "Could not extract force field location from pdb2gmx. See ${tmp_log}." && exit 1
+
 
 ff_work="${forcefield}_work"
 ff_work_dir="./${ff_work}.ff"
 cp -r $forcefield_dir $ff_work_dir
-
 
 # Remove special treatment of the end termini in the .r2b file if there is one.
 r2b="${ff_work_dir}/dna.r2b"
@@ -80,8 +87,7 @@ fi
 # Need to add a hack to the terminal data base file for pdb2gmx to accept the ends
 # without modification. To avoid having to parse the interactive session of pdb2gmx,
 # remove all .tdb entries other than those we define, so there is only one choice
-# for each end.
-# So we assume there is nothing but the dna molecule in the pdb.
+# for each end (here we assume there is only the periodic molecule in the pdb)
 
 # Make a custom tdb-file for the 5' end to force gmx pdb2gmx to allow end residue
 # that have (temporarily) missing bonds.
@@ -89,7 +95,9 @@ fi
 rm -f ${ff_work_dir}/*.n.tdb  # 5' end
 rm -f ${ff_work_dir}/*.c.tdb  # 3' end
 
+# for gmx version < 2018.1
 tdb5="${ff_work_dir}/dna.n.tdb" 
+if false; then ##
 if [ "${forcefield}" == 'amber99bsc1' ]; then
     echo -e "[ hack ]\n[ replace ]\nC5' C5' CI 12.01 -0.0069" > $tdb5
 elif [ "${forcefield}" == 'charmm27' ]; then
@@ -97,22 +105,23 @@ elif [ "${forcefield}" == 'charmm27' ]; then
 else
     echo "Forcefield $forcefield not supported"; exit 1
 fi
+else
+    echo -e "[ none ]" > $tdb5
+fi ##
 
 # Put a dummy entry "none" on the 3' side.
 tdb3="${ff_work_dir}/dna.c.tdb" 
 echo -e "[ none ]" > $tdb3
 
-tmp_log="tmp.log"
-
 # Generate top and gro from unmodified config
 nonperiodic="non-periodic"
 
-$gmx pdb2gmx -v -f $pdb_in -ff ${ff_work} -water ${water} -ter -o "${nonperiodic}.gro" -p "${nonperiodic}.top"  &> $tmp_log || exit 1
-
+$gmx pdb2gmx -v -missing -f $pdb_in -ff ${ff_work} -water ${water} -ter -o "${nonperiodic}.gro" -p "${nonperiodic}.top"  &> $tmp_log || \
+    { echo "gmx pdb2gmx exited with an error. See ${tmp_log}."; exit 1; }
 
 chain_itps=(`grep  "chain.*itp" ${nonperiodic}.top | awk '{print $NF}' | awk -F  \" '{print $2}'`)
 
-# Extract the last atom index of the uncapped topology, for each chain
+# Extract the last atom index of the topology, for each chain
 imaxs=()
 for itp in ${chain_itps[@]}; do
     name='atoms'
@@ -120,8 +129,9 @@ for itp in ${chain_itps[@]}; do
     imaxs+=($imax)
 done
 
-# Top and gro from "capped" config
-$gmx pdb2gmx -v -f $pdb_work -ff ${ff_work} -water ${water} -ter -o "extra.gro" -p "extra.top"  &> $tmp_log || exit 1
+# Top and gro from n+1 config
+$gmx pdb2gmx -v -missing -f $pdb_work -ff ${ff_work} -water ${water} -ter -o "extra.gro" -p "extra.top"  &> $tmp_log || \
+    { echo "gmx pdb2gmx exited with an error. See ${tmp_log}."; exit 1; }
 extra_itps=(`grep  "chain.*itp" "extra.top" | awk '{print $NF}' | awk -F  \" '{print $2}'`)
 
 #-------------  Modify the topology
@@ -185,6 +195,10 @@ done
 
 # Remap the forcefield entry to the unmodified one.
 sed -i "s/${ff_work}/${forcefield}/" ${top_out}
+
+# Did we find the force field locally, in this directory?
+nonlocal_ff=true
+[[  "$forcefield_dir" =~ ^\..* ]] && nonlocal_ff=false
 if $nonlocal_ff; then
     sed -i "s/.\/${forcefield}/${forcefield}/" ${top_out}
 fi
@@ -208,4 +222,3 @@ rm -rf *extra_DNA*.itp* *extra*.gro* \
     *posre_DNA*.itp* \
     $pdb_work $top_work $tmp_log \
     $ff_work_dir
-
