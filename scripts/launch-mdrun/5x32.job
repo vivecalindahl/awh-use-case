@@ -1,0 +1,66 @@
+#!/bin/bash -l
+
+## 1x32
+##SBATCH --account=2017-11-25
+##SBATCH --time=01:00:00
+##SBATCH --job-name=dna20-x32-0
+##SBATCH --ntasks=2048
+##SBATCH --nodes=64
+##SBATCH --ntasks-per-node=32
+##SBATCH --cpus-per-task=1
+##SBATCH --constraint=
+
+## 5x32
+#SBATCH --account=2017-11-25
+#SBATCH --time=01:00:00
+#SBATCH --job-name=dna5x32
+#SBATCH --ntasks=10240
+#SBATCH --nodes=320
+#SBATCH --ntasks-per-node=32
+#SBATCH --cpus-per-task=1
+#SBATCH --constraint=
+
+export MPICH_GNI_MAX_EAGER_MSG_SIZE=131072 # maybe useful anymore
+
+module load gromacs/2018.1
+
+# get the nodelist
+##nodelist=( $(for noderange in $(echo $SLURM_NODELIST  | sed 's/nid0\[\(.*\)\]/\1/' | awk -F ',' '{for (f=1; f<=NF; f++){print $f}}'); do echo $noderange  | awk -F '-' '{if (NF==1){print $1; break}; if(NF==2){for(i=$1; i<=$2; i++){print i}}}'; done) )
+#nodelist=( $(for noderange in $(echo $SLURM_NODELIST  | sed 's/nid0\[\(.*\)\]/\1/' | awk -F ',' '{for (f=1; f<=NF; f++){print $f}}'); do echo $noderange  | awk -F '-' '{if (NF==1){print $1; next}; if(NF==2){for(i=$1; i<=$2; i++){print i}}}'; done) )
+nodelist=( $(for noderange in $(echo $SLURM_NODELIST  | sed 's/nid0\[\(.*\)\]/\1/' | awk -F ',' '{for (f=1; f<=NF; f++){print $f}}'); do echo $noderange  | awk -F '-' '{if (NF==1){print $1; next}; if(NF==2){for(i=$1; i<=$2; i++){print i}}}'; done | sed 's/^0*//'))
+
+nnodes=${#nodelist[@]}
+nreplicas=5
+nodesperreplica=64
+echo "--------> Got nodes: $SLURM_NODELIST"
+echo "--------> Manually extracted $nnodes nodes. Splitting between $nreplicas replicas."
+
+aprun_cmd="aprun -cc none -n 2048 -N 32"
+
+mdrun_cmd="/cfs/klemming/nobackup/v/vivecal/programs/gromacs/2018.1/bin/gmx mdrun -pin on -quiet -v -stepout 10000 -nstlist 40 -dlb auto -npme 32 -ntomp 2 -cpt 5 -cpi -maxh 1 -multidir  walker-0 walker-1 walker-2 walker-3 walker-4 walker-5 walker-6 walker-7 walker-8 walker-9 walker-10 walker-11 walker-12 walker-13 walker-14 walker-15 walker-16 walker-17 walker-18 walker-19 walker-20 walker-21 walker-22 walker-23 walker-24 walker-25 walker-26 walker-27 walker-28 walker-29 walker-30 walker-31"
+
+startdir=$(pwd -P)
+
+# function to make a space separated list into, here, a comma separated one.
+function join_by { local IFS="$1"; shift; echo "$*"; }
+
+for ((i=0; i<$nreplicas; i++)); do
+    #  Get a list with nodes for this replica
+    startnode=$(( i*nodesperreplica ))
+    nodes=("${nodelist[@]:startnode:nodesperreplica}")
+    nodes_str=$(join_by ', ' ${nodes[@]})
+
+    # launch mdrun on these nodes and put in background
+    rundir=${startdir}/replica-${i}
+    cd $rundir
+    run_cmd="$aprun_cmd -L ${nodes_str} $mdrun_cmd &"
+    echo '--------> Running: ' "$run_cmd"
+
+    $run_cmd
+done
+
+# Wait for all replicas
+wait
+
+echo '-------->  Reached end of run script.'
+
