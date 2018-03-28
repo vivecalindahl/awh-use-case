@@ -3,18 +3,19 @@
 # ==========================================================================
 # Read input
 # ==========================================================================
-
 function print_usage
 {
   echo "Usage: $0 -f <.pdb> -water <enum> -ff <string> [-h]"
 }
 
+old_gmx_is_ok=false;
 while [ $# -gt 0 ]; do 
   case "$1" in    
     -h)       print_usage; exit 0;;
     -f)       pdb_in="$2"; shift;;
     -ff)      forcefield="$2"; shift;;
     -water)   water="$2"; shift;;
+    -try)   old_gmx_is_ok=true; shift;;
     *)    echo "invalid option: $1" && exit 1;;
   esac 
   shift 
@@ -29,20 +30,46 @@ done
 [ -z "$water" ] && print_usage && exit 
 
 
-# 'gmx' command is assume to be available but can be changed to any binary here.
+# 'gmx' command is assumed to be available but can be changed to any binary here.
 gmx="gmx"
 [ -z "$(which $gmx)" ]  && { $gmx; exit 1; }
+
+# This script is intended for gmx version >= 2018.1  but it's not always strictly necessary.
+gmx_major=$($gmx --version | sed  -n 's/GROMACS version: *\([0-9]*\)\.*\([0-9]*\).*/\1/p')
+gmx_minor=$($gmx --version | sed  -n 's/GROMACS version: *\([0-9]*\)\.*\([0-9]*\).*/\2/p')
+
+[ -z ${gmx_major} ] && { "Failed to read gmx version"; exit 1; }
+min_major=2018
+min_minor=1
+
+old_gmx=false
+if  [ ${gmx_major} -eq ${min_major} ]; then
+    if   [ -z ${gmx_minor} ] || [ ${gmx_minor} -lt ${min_minor} ]; then
+	old_gmx=true
+    fi
+elif [ ${gmx_major} -lt ${min_major} ]; then
+    old_gmx=true
+fi
+
+if $old_gmx && ! $old_gmx_is_ok; then
+    echo "gmx version ${gmx_major}.${gmx_minor} is less than the minimum recommended gmx version ${min_major}.${min_minor}."
+    echo "Use '-try' flag to try anyway."
+    exit 1
+elif $old_gmx; then
+    echo "Warning: gmx version ${gmx_major}.${gmx_minor} is less than the minimum recommended gmx version ${min_major}.${min_minor}."\
+         "Proceeding anyway."
+fi
 
 # ==========================================================================
 # The actual work:
 # create a periodically connected molecule topology for DNA
 # ==========================================================================
 # Notes:
-# 1) Likely it's easy to generalize to e.g. RNA.
+# 1) Likely this is easy to generalize to e.g. RNA.
 # 2) Tested for charmm27 and parmbsc1 (amber99bsc1.ff)
 # 3) It's assumed there is nothing but the DNA molecule in the pdb.
 
-# Copy the first residue of each chain to the end of each n-residue long chain,
+# The strategy: copy the first residue of each chain to the end of each n-residue long chain,
 # making a temporary new n+1 long chain. This way we can "trick" gmx pd2gmx to
 # generate all the interaction terms we need, and then we delete what is not needed.
 
@@ -56,7 +83,7 @@ tmp_log="./tmp.log"
 chain_col=5;
 resid_col=6;
 
-# Add the residue into the work pdb
+# Add residue to the work pdb, for each chain.
 awk -v chain_col=$chain_col -v resid_col=6 \
 '{chain=$chain_col;  resid=$resid_col;
 if (chain != prev_chain){if (str != ""){print str; str=""}; first_res=resid;};
@@ -70,7 +97,6 @@ $pdb_in  > $pdb_work
 $gmx pdb2gmx -f ${pdb_in} -ff ${forcefield} -water ${water} &> ${tmp_log}
 forcefield_dir=$(awk '/Opening force field file/{gsub(/.ff.*/,".ff", $5);print $5; exit}' ${tmp_log})
 [ -z "$forcefield_dir" ] && echo "Could not extract force field location from pdb2gmx. See ${tmp_log}." && exit 1
-
 
 ff_work="${forcefield}_work"
 ff_work_dir="./${ff_work}.ff"
@@ -95,50 +121,54 @@ fi
 rm -f ${ff_work_dir}/*.n.tdb  # 5' end
 rm -f ${ff_work_dir}/*.c.tdb  # 3' end
 
-# for gmx version < 2018.1
+# For a gmx version < 2018.1 the pdb2gmx '-missing' flag was more strict requiring
+# this hack to avoid a fatal error.
 tdb5="${ff_work_dir}/dna.n.tdb" 
-if false; then ##
-if [ "${forcefield}" == 'amber99bsc1' ]; then
-    echo -e "[ hack ]\n[ replace ]\nC5' C5' CI 12.01 -0.0069" > $tdb5
-elif [ "${forcefield}" == 'charmm27' ]; then
-    echo -e "[ hack ]\n[ replace ]\nC5' C5' CN8B 12.011 -0.08" > $tdb5
-else
-    echo "Forcefield $forcefield not supported"; exit 1
-fi
+if $old_gmx; then 
+    if [ "${forcefield}" == 'amber99bsc1' ]; then
+	echo -e "[ hack ]\n[ replace ]\nC5' C5' CI 12.01 -0.0069" > $tdb5
+    elif [ "${forcefield}" == 'charmm27' ]; then
+	echo -e "[ hack ]\n[ replace ]\nC5' C5' CN8B 12.011 -0.08" > $tdb5
+    else
+	echo "Forcefield $forcefield not supported."; exit 1
+    fi
 else
     echo -e "[ none ]" > $tdb5
-fi ##
+fi
 
 # Put a dummy entry "none" on the 3' side.
 tdb3="${ff_work_dir}/dna.c.tdb" 
 echo -e "[ none ]" > $tdb3
 
-# Generate top and gro from unmodified config
+# Generate .top and .gro files rom the unmodified configuration.
+# The .gro file will be compatible with the periodic .top file.
+# The .top file will be used a reference when modifying the n+1 
+# topology to keep track of the start and end (atoms) of each
+# molecule chain.
 nonperiodic="non-periodic"
-
 $gmx pdb2gmx -v -missing -f $pdb_in -ff ${ff_work} -water ${water} -ter -o "${nonperiodic}.gro" -p "${nonperiodic}.top"  &> $tmp_log || \
     { echo "gmx pdb2gmx exited with an error. See ${tmp_log}."; exit 1; }
 
-chain_itps=(`grep  "chain.*itp" ${nonperiodic}.top | awk '{print $NF}' | awk -F  \" '{print $2}'`)
+# List with the non-periodic topology (.itp) files of each chain
+itp_list=(`grep  "chain.*itp" ${nonperiodic}.top | awk '{print $NF}' | awk -F  \" '{print $2}'`)
 
-# Extract the last atom index of the topology, for each chain
-imaxs=()
-for itp in ${chain_itps[@]}; do
+# Extract the last atom index of the unmodified topology, for each chain.
+max_atom_index_list=()
+for itp in ${itp_list[@]}; do
     name='atoms'
-    imax=`awk -v  name=$name 'BEGIN{found=0;};/^ *\[ /{ if ($2 == name){found=1; getline;} else { found=0 }};{if (found && $1 != ";"  && $1 !~ /^ *#/ && NF>0){imax=$1};}END{print imax}' $itp`
-    imaxs+=($imax)
+    max_atom_index=`awk -v  name=$name 'BEGIN{found=0;};/^ *\[ /{ if ($2 == name){found=1; getline;} else { found=0 }};{if (found && $1 != ";"  && $1 !~ /^ *#/ && NF>0){max_atom_index=$1};}END{print max_atom_index}' $itp`
+    max_atom_index_list+=($max_atom_index)
 done
 
-# Top and gro from n+1 config
+# Generate .top and .gro files of n+1 config
 $gmx pdb2gmx -v -missing -f $pdb_work -ff ${ff_work} -water ${water} -ter -o "extra.gro" -p "extra.top"  &> $tmp_log || \
     { echo "gmx pdb2gmx exited with an error. See ${tmp_log}."; exit 1; }
 extra_itps=(`grep  "chain.*itp" "extra.top" | awk '{print $NF}' | awk -F  \" '{print $2}'`)
 
-#-------------  Modify the topology
-
+# Modify the n+1 topology into the periodic topology.
 for chain in ${!extra_itps[@]}; do
     top_in=${extra_itps[chain]}
-    imax=${imaxs[chain]}
+    max_atom_index=${max_atom_index_list[chain]}
     top_out=`echo ${top_in} | awk -F "extra_" '{print "periodic_"$2}'`
     
     # array with the number of atoms listed for each type of interaction
@@ -154,7 +184,7 @@ for chain in ${!extra_itps[@]}; do
     # 1) remove entries with atom indices only containing the added residue n+1
     # 2) in "mixed" entries containing the connections between residues n and n+1,
     #    remap atom indices of residue n+1 to the first residue, i.e:
-    #    i --> i + imax, if i > imax,  where imax = max index of the chain.
+    #    i --> i + max_atom_index, if i > max_atom_index,  where max_atom_index = max index of the chain.
     top_work="tmp.top"
 
     cp $top_in $top_work
@@ -163,15 +193,14 @@ for chain in ${!extra_itps[@]}; do
 	# 1) Don't print interactions where the all involved atoms are in residue  n+1.
 	# 2) Modify (remap) interactions where some involved atoms are in residue  n+1.
 	# 3) Otherwise, print as is.
-	awk -v imax=$imax -v name=$name -v natoms=$natoms 'BEGIN{found=0};
+	awk -v max_atom_index=$max_atom_index -v name=$name -v natoms=$natoms 'BEGIN{found=0};
 /^ *\[ /{ if ($2 == name){found=1; print; getline;} else { found=0 }};
-{ if (found && $1 != ";"  && $1 !~ /^ *#/ && NF>0){ count=0; for (j=1; j<=natoms; j++){if ($j >imax){$j=($j-imax); count++}}; if (count<natoms){print}}
+{ if (found && $1 != ";"  && $1 !~ /^ *#/ && NF>0){ count=0; for (j=1; j<=natoms; j++){if ($j >max_atom_index){$j=($j-max_atom_index); count++}}; if (count<natoms){print}}
 else{print} }' $top_work > $top_out
 
 	cp $top_out $top_work
     done; 
 done
-
 
 # Tweak entries of final topology, rename to the default topol.top
 top_out="topol.top"
@@ -184,8 +213,8 @@ mv extra.top $top_out
 # (would like to use something like
 #  sed  '/^ *\#include \"\(.*\)\"/r  \1' topol.top 
 # but did not work.)
-chain_itps=(`grep  "chain.*itp" $top_out | awk '{print $NF}' | awk -F  \" '{print $2}'`)
-for itp in ${chain_itps[@]}; do
+itp_list=(`grep  "chain.*itp" $top_out | awk '{print $NF}' | awk -F  \" '{print $2}'`)
+for itp in ${itp_list[@]}; do
     # sed r command appends the itp file after the matching include statement
     sed -i "/^ *\#include *\"$itp/r  $itp" ${top_out};
 
