@@ -99,7 +99,7 @@ $pdb_in  > $pdb_work
 # Generate topology and config gro-file for the n+1 chain.
 
 # We need a local copy of the forcefield that we can modify.
-$gmx pdb2gmx -f ${pdb_in} -ff ${forcefield} -water ${water} &> ${tmp_log}
+$gmx pdb2gmx -f $pdb_in -ff $forcefield -water $water &> $tmp_log
 forcefield_dir=$(awk '/Opening force field file/{gsub(/.ff.*/,".ff", $5);print $5; exit}' ${tmp_log})
 [ -z "$forcefield_dir" ] && echo "Could not extract force field location from pdb2gmx. See ${tmp_log}." && exit 1
 
@@ -152,7 +152,7 @@ echo -e "[ none ]" > $tdb3
 # molecule chain.
 gro_nonperiodic="${gro_out}"
 top_nonperiodic="nonperiodic.top"
-$gmx pdb2gmx -v -missing -f $pdb_in -ff ${ff_work} -water ${water} -ter -o  $gro_nonperiodic -p $top_nonperiodic  &> $tmp_log || \
+$gmx pdb2gmx -v -missing -f $pdb_in -ff $ff_work -water $water -ter -o  $gro_nonperiodic -p $top_nonperiodic  &> $tmp_log || \
     { echo "gmx pdb2gmx exited with an error. See ${tmp_log}."; exit 1; }
 
 # List with the non-periodic topology (.itp) files of each chain
@@ -166,21 +166,26 @@ for itp in ${itp_nonperiodic_list[@]}; do
     max_atom_index_list+=($max_atom_index)
 done
 
-# Generate .top and .gro files of n+1 config
-$gmx pdb2gmx -v -missing -f $pdb_work -ff ${ff_work} -water ${water} -ter -o "extra.gro" -p "extra.top"  &> $tmp_log || \
+# Generate topology (.top, .itp) of n+1 config. The toplogy files will be modified below.
+# The configuration file is not needed.
+top_periodic="periodic.top"
+gro_dummy="dummy.gro"
+$gmx pdb2gmx -v -missing -f $pdb_work -ff $ff_work -water $water -ter -o $gro_dummy -p $top_periodic  &> $tmp_log || \
     { echo "gmx pdb2gmx exited with an error. See ${tmp_log}."; exit 1; }
 
 # The .itp files included in the to-be periodic .top file,  one per chain.
-extra_itps=(`grep  "chain.*itp" "extra.top" | awk '{print $NF}' | awk -F  \" '{print $2}'`)
+itp_periodic_list=(`grep  "chain.*itp" "${top_periodic}" | awk '{print $NF}' | awk -F  \" '{print $2}'`)
 
 # Transform the n+1 topology into the periodic topology by
 # modifying the .itp file corresponding to each molecule chain.
-for chain in ${!extra_itps[@]}; do
-    itp_in=${extra_itps[chain]}
+for chain in ${!itp_periodic_list[@]}; do
+    itp_in=${itp_periodic_list[chain]}
     max_atom_index=${max_atom_index_list[chain]}
-    itp_out=`echo ${itp_in} | awk -F "extra_" '{print "periodic_"$2}'`
+
+    # Overwrite the input
+    itp_out=$itp_in
     
-    # array with the number of atoms listed for each type of interaction
+    # Array with the number of atoms listed for each type of interaction
     declare -A natoms
     natoms['bonds']=2
     natoms['angles']=3
@@ -211,15 +216,12 @@ else{print} }' $itp_work > $itp_out
     done; 
 done
 
-# Tweak entries of final topology, rename to the output name.
-sed -i 's/extra/periodic/' extra.top;
-mv extra.top $top_out
+# Rename .top file to the output name.
+mv $top_periodic $top_out
 
-# Merge top and itps into a single topology file.
-
-# Replace include of chain itp with the contents
-itp_list=(`grep  "chain.*itp" $top_out | awk '{print $NF}' | awk -F  \" '{print $2}'`)
-for itp in ${itp_list[@]}; do
+# Merge top and itps into a single topology fil by replacing the 
+# include statements .itp files with their contents.
+for itp in ${itp_periodic_list[@]}; do
     # sed r command appends the itp file after the matching include statement
     sed -i "/^ *\#include *\"$itp/r  $itp" ${top_out};
 
@@ -227,29 +229,30 @@ for itp in ${itp_list[@]}; do
     sed  -i "s/^ *\#include *\"$itp.*//g"  ${top_out};
 done
 
+# Final tweaks.
+
 # Fix the force field entry so it doesn't map to the modified work version.
 sed -i "s/${ff_work}/${forcefield}/" ${top_out}
 
-# Did we find the force field locally, in this directory?
+# If we found the forcefield directory somewhere else,
+# the include statement should not contain a relative path.
 nonlocal_ff=true
 [[  "$forcefield_dir" =~ ^\..* ]] && nonlocal_ff=false
 if $nonlocal_ff; then
     sed -i "s/.\/${forcefield}/${forcefield}/" ${top_out}
 fi
 
-# Add comment about how this file at the top of the topology file.
-script=$(basename $0)
+# Add comment about how the topology file was generated at the top.
 args="$@"
-
-# Here 1s refers to the first position in the file and '~' is used as the sed delimiter
+# Here '1s' refers to the first position in the file and '~' is used as the sed delimiter
 # since the variables may contain '/'.
 sed -i "1s~^~; >>>>>>>>>> NOTE: This file was automatically generated using \"$0 $args\"~" ${top_out}
 
-# Clean up. Remove all the work files that were generated
-# except the output files topol.top and conf.gro.
-rm -rf *extra_DNA*.itp* *extra*.gro* \
-    *periodic_DNA*.itp* \
+# Clean up.
+# Remove all the work files that were generated except the output files (top_out, gro_out).
+rm -rf ${gro_dummy} \
+    ${itp_periodic_list[@]} \
     ${itp_nonperiodic_list[@]} ${top_nonperiodic} \
     *posre_DNA*.itp* \
-    $pdb_work $itp_work $tmp_log \
-    $ff_work_dir
+    ${pdb_work} ${itp_work} ${tmp_log} \
+    ${ff_work_dir}
