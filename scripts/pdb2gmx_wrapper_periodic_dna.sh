@@ -63,6 +63,7 @@ fi
 # ==========================================================================
 # The actual work:
 # create a periodically connected molecule topology for DNA
+# Output: topol.top and conf.gro files.
 # ==========================================================================
 # Notes:
 # 1) Likely this is easy to generalize to e.g. RNA.
@@ -72,6 +73,10 @@ fi
 # The strategy: copy the first residue of each chain to the end of each n-residue long chain,
 # making a temporary new n+1 long chain. This way we can "trick" gmx pd2gmx to
 # generate all the interaction terms we need, and then we delete what is not needed.
+
+# The output
+gro_out="conf.gro"
+top_out="topol.top"
 
 # A pdb to work with
 pdb_work="./work.pdb"
@@ -100,7 +105,7 @@ forcefield_dir=$(awk '/Opening force field file/{gsub(/.ff.*/,".ff", $5);print $
 
 ff_work="${forcefield}_work"
 ff_work_dir="./${ff_work}.ff"
-cp -r $forcefield_dir $ff_work_dir
+cp -rL $forcefield_dir $ff_work_dir
 
 # Remove special treatment of the end termini in the .r2b file if there is one.
 r2b="${ff_work_dir}/dna.r2b"
@@ -140,21 +145,22 @@ fi
 tdb3="${ff_work_dir}/dna.c.tdb" 
 echo -e "[ none ]" > $tdb3
 
-# Generate .top and .gro files rom the unmodified configuration.
+# Generate .top and .gro files from the unmodified pdb.
 # The .gro file will be compatible with the periodic .top file.
 # The .top file will be used a reference when modifying the n+1 
 # topology to keep track of the start and end (atoms) of each
 # molecule chain.
-nonperiodic="non-periodic"
-$gmx pdb2gmx -v -missing -f $pdb_in -ff ${ff_work} -water ${water} -ter -o "${nonperiodic}.gro" -p "${nonperiodic}.top"  &> $tmp_log || \
+gro_nonperiodic="${gro_out}"
+top_nonperiodic="nonperiodic.top"
+$gmx pdb2gmx -v -missing -f $pdb_in -ff ${ff_work} -water ${water} -ter -o  $gro_nonperiodic -p $top_nonperiodic  &> $tmp_log || \
     { echo "gmx pdb2gmx exited with an error. See ${tmp_log}."; exit 1; }
 
 # List with the non-periodic topology (.itp) files of each chain
-itp_list=(`grep  "chain.*itp" ${nonperiodic}.top | awk '{print $NF}' | awk -F  \" '{print $2}'`)
+itp_nonperiodic_list=(`grep  "chain.*itp" ${top_nonperiodic} | awk '{print $NF}' | awk -F  \" '{print $2}'`)
 
 # Extract the last atom index of the unmodified topology, for each chain.
 max_atom_index_list=()
-for itp in ${itp_list[@]}; do
+for itp in ${itp_nonperiodic_list[@]}; do
     name='atoms'
     max_atom_index=`awk -v  name=$name 'BEGIN{found=0;};/^ *\[ /{ if ($2 == name){found=1; getline;} else { found=0 }};{if (found && $1 != ";"  && $1 !~ /^ *#/ && NF>0){max_atom_index=$1};}END{print max_atom_index}' $itp`
     max_atom_index_list+=($max_atom_index)
@@ -163,13 +169,16 @@ done
 # Generate .top and .gro files of n+1 config
 $gmx pdb2gmx -v -missing -f $pdb_work -ff ${ff_work} -water ${water} -ter -o "extra.gro" -p "extra.top"  &> $tmp_log || \
     { echo "gmx pdb2gmx exited with an error. See ${tmp_log}."; exit 1; }
+
+# The .itp files included in the to-be periodic .top file,  one per chain.
 extra_itps=(`grep  "chain.*itp" "extra.top" | awk '{print $NF}' | awk -F  \" '{print $2}'`)
 
-# Modify the n+1 topology into the periodic topology.
+# Transform the n+1 topology into the periodic topology by
+# modifying the .itp file corresponding to each molecule chain.
 for chain in ${!extra_itps[@]}; do
-    top_in=${extra_itps[chain]}
+    itp_in=${extra_itps[chain]}
     max_atom_index=${max_atom_index_list[chain]}
-    top_out=`echo ${top_in} | awk -F "extra_" '{print "periodic_"$2}'`
+    itp_out=`echo ${itp_in} | awk -F "extra_" '{print "periodic_"$2}'`
     
     # array with the number of atoms listed for each type of interaction
     declare -A natoms
@@ -185,9 +194,9 @@ for chain in ${!extra_itps[@]}; do
     # 2) in "mixed" entries containing the connections between residues n and n+1,
     #    remap atom indices of residue n+1 to the first residue, i.e:
     #    i --> i + max_atom_index, if i > max_atom_index,  where max_atom_index = max index of the chain.
-    top_work="tmp.top"
+    itp_work="./work.itp"
 
-    cp $top_in $top_work
+    cp $itp_in $itp_work
     for name in ${!natoms[@]}; do
 	natoms=${natoms[$name]}
 	# 1) Don't print interactions where the all involved atoms are in residue  n+1.
@@ -196,23 +205,19 @@ for chain in ${!extra_itps[@]}; do
 	awk -v max_atom_index=$max_atom_index -v name=$name -v natoms=$natoms 'BEGIN{found=0};
 /^ *\[ /{ if ($2 == name){found=1; print; getline;} else { found=0 }};
 { if (found && $1 != ";"  && $1 !~ /^ *#/ && NF>0){ count=0; for (j=1; j<=natoms; j++){if ($j >max_atom_index){$j=($j-max_atom_index); count++}}; if (count<natoms){print}}
-else{print} }' $top_work > $top_out
+else{print} }' $itp_work > $itp_out
 
-	cp $top_out $top_work
+	cp $itp_out $itp_work
     done; 
 done
 
-# Tweak entries of final topology, rename to the default topol.top
-top_out="topol.top"
+# Tweak entries of final topology, rename to the output name.
 sed -i 's/extra/periodic/' extra.top;
 mv extra.top $top_out
 
-# Merge top and itps, just to get a single topology file.
+# Merge top and itps into a single topology file.
 
 # Replace include of chain itp with the contents
-# (would like to use something like
-#  sed  '/^ *\#include \"\(.*\)\"/r  \1' topol.top 
-# but did not work.)
 itp_list=(`grep  "chain.*itp" $top_out | awk '{print $NF}' | awk -F  \" '{print $2}'`)
 for itp in ${itp_list[@]}; do
     # sed r command appends the itp file after the matching include statement
@@ -222,7 +227,7 @@ for itp in ${itp_list[@]}; do
     sed  -i "s/^ *\#include *\"$itp.*//g"  ${top_out};
 done
 
-# Remap the forcefield entry to the unmodified one.
+# Fix the force field entry so it doesn't map to the modified work version.
 sed -i "s/${ff_work}/${forcefield}/" ${top_out}
 
 # Did we find the force field locally, in this directory?
@@ -238,16 +243,13 @@ args="$@"
 
 # Here 1s refers to the first position in the file and '~' is used as the sed delimiter
 # since the variables may contain '/'.
-sed -i "1s~^~; This file was automatically generated using \"$0 $args\"~" topol.top
+sed -i "1s~^~; >>>>>>>>>> NOTE: This file was automatically generated using \"$0 $args\"~" ${top_out}
 
-gro_out="conf.gro"
-mv ${nonperiodic}.gro $gro_out
-
-# Clean up
-#ls  | grep -v "$gro_out" | grep -v "$top_out" | xargs -n 1 rm -rf
+# Clean up. Remove all the work files that were generated
+# except the output files topol.top and conf.gro.
 rm -rf *extra_DNA*.itp* *extra*.gro* \
     *periodic_DNA*.itp* \
-    *non-periodic_DNA*.itp*  *non-periodic*.top* \
+    ${itp_nonperiodic_list[@]} ${top_nonperiodic} \
     *posre_DNA*.itp* \
-    $pdb_work $top_work $tmp_log \
+    $pdb_work $itp_work $tmp_log \
     $ff_work_dir
