@@ -3,39 +3,12 @@
 # input
 gmx=gmx # asumme available for now
 
-nargsmin=2
-if [ $# -lt $nargsmin ] || [ "$1" == "-h" ]; then
-    echo "Usage: $0  <pdb> <forcefield>"
-    echo "Example:"
-    echo "$0 dna.pdb charmm27"
-    exit 0
-fi
-
-pdb=$1
-forcefield=$2
-
-# pdb2gmx
-echo "Generating DNA topology"
-
-# Not sure what the best way to do set up path
-# to shell scripts.
-# Alternatively assume that the script is in the same directory as the rest
-#scriptsdir=`dirname $0`
-[ -z "$SETUP_MD_SCRIPTS" ] && { echo "SETUP_MD_SCRIPTS not set"; exit 1; }
-
-export PATH=${SETUP_MD_SCRIPTS}/:$PATH
-
-pdb2gmx="gmx-pdb2gmx-wrapper-periodic-dna.sh"
-command -v $pdb2gmx >/dev/null 2>&1 || { echo >&2 "$pdb2gmx not found.  Aborting."; exit 1; }
-
-${pdb2gmx} $pdb $forcefield || { echo "There was a problem." && exit 1; }
-
 gro_in="./conf.gro"
 top_in="./topol.top"
 gro_in=`readlink -e $gro_in`
 top_in=`readlink -e $top_in`
 
-# Solvate in the more general sense of taking a solute molecul and putting it in a box of solvent (water)
+# Solvate in the more general sense of taking a solute molecule and putting it in a box of solvent (water)
 # with ions of a given concentration.
 
 # Use periodic boundary conditions with 
