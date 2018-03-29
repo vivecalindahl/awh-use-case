@@ -7,7 +7,7 @@ function print_usage
 {
   echo "Usage: $0 -f <.pdb> -water <enum> -ff <string> [-h]"
 }
-
+args="$@"
 old_gmx_is_ok=false;
 while [ $# -gt 0 ]; do 
   case "$1" in    
@@ -243,8 +243,7 @@ if $nonlocal_ff; then
 fi
 
 # Add comment about how the topology file was generated at the top.
-args="$@"
-# Here '1s' refers to the first position in the file and '~' is used as the sed delimiter
+# Below, '1s' refers to the first position in the file and '~' is used as the sed delimiter
 # since the variables may contain '/'.
 sed -i "1s~^~; >>>>>>>>>> NOTE: This file was automatically generated using \"$0 $args\"~" ${top_out}
 
