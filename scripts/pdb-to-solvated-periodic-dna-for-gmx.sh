@@ -25,7 +25,7 @@ echo "Generating DNA topology"
 
 export PATH=${SETUP_MD_SCRIPTS}/:$PATH
 
-pdb2gmx=pdb2gmx_wrapper_periodic_dna.sh
+pdb2gmx="gmx-pdb2gmx-wrapper-periodic-dna.sh"
 command -v $pdb2gmx >/dev/null 2>&1 || { echo >&2 "$pdb2gmx not found.  Aborting."; exit 1; }
 
 ${pdb2gmx} $pdb $forcefield || { echo "There was a problem." && exit 1; }
