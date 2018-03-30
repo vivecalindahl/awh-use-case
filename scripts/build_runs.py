@@ -81,7 +81,6 @@ def run_in_shell_allow_error(command):
 
     return stdout, stderr, error
 
-# TODO: put into a separate script
 def absolute_path(path):
     stdout = run_in_shell('readlink -f ' + path)
     return stdout
@@ -92,20 +91,23 @@ def absolute_path(path):
 
 if __name__ == "__main__":
     # Parse arguments
-    parser = argparse.ArgumentParser(description="Sets up the MD simulations of periodically connected DNA chains. \
-    Generates run directories for equilibration.")
+    parser = argparse.ArgumentParser(description="Build run directories for GROMACS MD simulations of periodically connected DNA chains \
+    given list of DNA pdb structure files and run input parameters. Several different run types can be built at once \
+    (e.g. energy minimization, equilibration,...). All provided run types will be built for each pdb structure.")
 
     parser.add_argument(dest='pdbfiles', nargs = '+', type=str, help="list of pdb-files (.pdb) (the system name will be inferred from the filename)")
 
     # Optional args
-    parser.add_argument('-f', dest='force', action='store_true', help="force overwriting of old output")
+    parser.add_argument('-f', dest='force', action='store_true', help="force overwriting of old output if needed")
     parser.add_argument('-o', '--out', dest='outdir', type=str, default='build',
-                        help='name of output directory to create')
+                        help='name of output build directory')
     parser.add_argument('-ff', '--forcefield', dest='forcefield', type=str, choices=['amber99bsc1', 'charmm27'])
+    parser.add_argument('--water', choices=['none', 'spc', 'spce', 'tip3p', 'tip4p', 'tip5', 'tips3p'])
     parser.add_argument('--ffdir', dest='ffdir', type=str)
     ##parser.add_argument("--gmx", dest='gmx', type=str, help="gmx binary to use") # TODO
 
     # Defines a keyvalue argument type for the parser
+    # This should probably be an input file instead.
     allowed_types={'name':'str', 'params':'.mdp', 'selections':'.txt'}
     def keyvalue(keyvalue):
         try:
@@ -140,27 +142,26 @@ if __name__ == "__main__":
                         "Allowed keys: " +  ', '.join([k + '=<' + str(v) + '>' for k,v in allowed_types.items()]),
                         type=keyvalue, nargs='+')
 
+    # Parse and fetch arguments.
     parsed_args = parser.parse_args()
 
     pdbs = parsed_args.pdbfiles
     outdir = parsed_args.outdir
     forceful = parsed_args.force
-    forcefield=parsed_args.forcefield
+    forcefield = parsed_args.forcefield
+    water = parsed_args.water
     ffdir=parsed_args.ffdir
-
     runs = parsed_args.runs
 
+    # Turn the run key-value arguments into a dictionary.
     if runs:
         runs=[{k:v for k, v in run} for run in runs]
     else:
         runs=[]
 
     # This script has dependencies on shell scripts.
-    # For now, assume all scripts are in the same directory as this script
-    # and make use an environment variable. Not sure how this should be done most
-    # elegantly...
+    # For now, assume all scripts are in the same directory as this script.
     scriptsdir=absolute_path(run_in_shell('dirname ' + os.path.realpath(__file__)))
-    os.putenv('SETUP_MD_SCRIPTS', scriptsdir)
 
     # Check existence of input files and types
     for pdb in pdbs:
@@ -184,7 +185,10 @@ if __name__ == "__main__":
     run_in_shell('mkdir -p ' + outdir)
     outdir = absolute_path(outdir)
 
+    # Now build the runs for each pdb file.
     for pdb in pdbs:
+
+        # Prepare the output directory
         name  = pdb.split('/')[-1].split('.pdb')[-2]
         if len(name) == 0:
             sys.exit('Give ' + pdb + ' a non-empty descriptive name')
@@ -203,13 +207,21 @@ if __name__ == "__main__":
 
         os.chdir(setup)
 
-        print "Setting up system " + name + " in " + setup
+        print "Building system " + name + " in directory " + setup
 
-        stdout=run_in_shell(scriptsdir + '/pdb-to-solvated-periodic-dna-for-gmx.sh ' + pdb + ' ' + forcefield)
+        # Call shell scripts that build the system, essentially defined by a topology (.top) and a structure (.gro) file:
+        # 1) generate the .top and .gro file for the molecule
+        pdb2gmx_args = ' '.join(['-f', pdb, '-ff', forcefield, '-water', water])
+        stdout = run_in_shell(scriptsdir + '/gmx-pdb2gmx-wrapper-periodic-dna.sh ' + pdb2gmx_args)
 
+        # 2) Prepare the simulation box (modify .gro and .top), typically by placing the molecule in suitably sized box of water and ions.
+        stdout=run_in_shell(scriptsdir + '/build-box.sh')
+
+        # System is now ready.
         topology = setup + '/topol.top'
         config = setup + '/conf.gro'
 
+        # Prepare template run directories with the files needed for later running a simulation.
         for run in runs:
             if 'name' in run:
                 runid=run['name']
@@ -223,24 +235,25 @@ if __name__ == "__main__":
             template='/'.join([runpath, 'template'])
             run_in_shell('mkdir -p ' + template)
 
-            # copy the files needed
+            # Copy the files needed.
             params=run['params']
             for runfile, defaultname in zip([config, topology, params], ['conf.gro', 'topol.top', 'grompp.mdp']):
                 shutil.copy(runfile, template + '/' + defaultname)
             if ffdir:
                 run_in_shell('cp -r ' + ffdir + ' ' + template)
 
-                # Generate an index file from the selections
+            # Generate an index file from the selections, if given. 
             if 'selections' in run:
                 selections = run['selections']
                 tmp='/'.join([runpath, 'tmp'])
                 run_in_shell('cp -r ' + template + ' ' + tmp)
                 os.chdir(tmp)                                    
-                stdout = run_in_shell(scriptsdir + '/selections-to-index-file.sh ' + selections)                                      
+                stdout = run_in_shell(scriptsdir + '/gmx-make-index-from-selections.sh ' + selections)                                      
                 run_in_shell("cp ./index.ndx " + template)
                 run_in_shell('rm -r ' + tmp)
 
-            # Test if we are now able to generate a run file with errors.
+            # The final test: are we are now able to generate a run file (run grompp) without errors?
+            # Note if there were warnings, may be fine.
             tmp='/'.join([runpath, 'tmp'])
             run_in_shell('cp -r ' + template + ' ' + tmp)
             os.chdir(tmp)

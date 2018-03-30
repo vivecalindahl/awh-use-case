@@ -16,8 +16,10 @@ gmx grompp -c $gro -f empty.mdp -maxwarn 10 -o $tpr
 # Evaluate the selections. Output is an index file with the selected groups.
 # gmx select requires tpr-file as input.
 
-# If grompp gets a custom index file it will forget about the default groups, 
-# so need to generate a default to add first.
+# If grompp gets a custom index file it will be unaware about the 
+# otherwise generated default groups, e.g. "system", which are
+# generally needed e.g. to specify the  temperature coupling groups.
+# So, generate a default index file first, then add the actual selections.
 ndx="index.ndx"
 echo -e "q" | gmx make_ndx -f $gro  -o $ndx
 
