@@ -15,6 +15,7 @@ if startup and os.path.isfile(startup):
 
 import argparse
 import subprocess
+from random import randint
 
 # ======================================================
 #
@@ -28,7 +29,7 @@ import subprocess
 #
 
 def run_in_shell(command):
-    if command.count('|') > 1:
+    if command.count('|') >= 1:
         return run_in_shell_piped(command)
 
     proc = subprocess.Popen((command).split(), preexec_fn=os.setsid, close_fds = True,
@@ -64,6 +65,7 @@ def run_in_shell_piped(command):
 
     stdout, stderr = proc_piped[-1].communicate()
     stdout = stdout.strip()
+    ##print stderr.strip()
 
     error = proc.returncode != 0
     if error:
@@ -85,26 +87,108 @@ def absolute_path(path):
     stdout = run_in_shell('readlink -f ' + path)
     return stdout
 
+def clone_directory(srcdir, outdir):
+    contents=' '.join(['/'.join([srcdir,item]) for item in os.listdir(srcdir)])
+    run_in_shell('mkdir -p ' + outdir)
+    run_in_shell(' '.join(['cp -r', contents, outdir]))
+
+
+def make_tpr(templatedir, nomdp=False, indexfile=False, out='topol.tpr'):
+
+    # Work in a temporary directory.
+    startdir=absolute_path(os.getcwd())
+    templatedir=absolute_path(templatedir)
+    workdir='./_tmpdir' + str(randint(1,1e4))
+    clone_directory(templatedir, workdir)
+    os.chdir(workdir)
+
+    if nomdp:
+        run_in_shell('touch grompp.mdp')
+
+    extra_args=''   
+    if indexfile:
+        extra_args += ' -n'
+
+    # Allow warnings but print if there were some.
+    grompp = ' '.join(['gmx grompp', extra_args])
+    stdout, stderr, error = run_in_shell_allow_error(grompp)
+    if error:
+        extra_args += ' -maxwarn 10'
+        grompp = ' '.join(['gmx grompp', extra_args])
+        stdout = run_in_shell(grompp)
+        print("'gmx grompp' generated warnings for " + templatedir)
+
+    # Only keep the tpr-file
+    run_in_shell('mv topol.tpr ' + startdir + '/' + out)
+    os.chdir(startdir)
+    run_in_shell('rm -r ' + workdir)
+    
+def concatenate_files(filenames, outfilename):
+    with open(outfilename, 'w') as outfile:
+        for fname in filenames:
+            with open(fname) as infile:
+                for line in infile:
+                    outfile.write(line)
+
+def make_index_file_from_selections(tpr, selections):
+    # If grompp gets a custom index file it will be unaware about the 
+    # otherwise generated default groups, e.g. "system", which are
+    # generally needed e.g. to specify the  temperature coupling groups.
+    # So, generate a default index file first, then add the actual selections.
+
+    defaults='defaults.ndx'
+    run_in_shell_piped('echo -e "q" | gmx make_ndx -n ' + defaults + ' -f ' +  tpr)
+
+    selected='selected.ndx'
+    run_in_shell(' '.join(['gmx select','-s', tpr, '-sf', selections, '-on', selected]))
+
+    concatenate_files([defaults, selected], 'index.ndx')
+
+    run_in_shell(' '.join(['rm', defaults, selected]))
+
+def make_run_template(setup, runspecs, template):
+    clone_directory(setup, template)
+    run_in_shell(' '.join(['cp', runspecs['params'], template + '/grompp.mdp']))
+    tpr = template + '/topol.tpr'
+
+    # Generate an index file from the selections, if given. 
+    if 'selections' in runspecs:
+        selections = runspecs['selections']
+        make_index_file_from_selections(setup + '/' + tpr, selections)
+
+    # The ultimate test: is it possible to make a tpr from this?
+    make_tpr(template, indexfile = ('selections' in runspecs))
+
+def build_system_shell(cmd_list):
+    for cmd in cmd_list:
+        run_in_shell(cmd)
+
+    # System should now be ready. Bundle into a tpr-file
+    make_tpr(setup, nomdp=True) 
+
+def check_path_is_clean(path, forceful=False):
+    if os.path.exists(path) and not forceful:
+        sys.exit(path + ' already exists. Use -f to force overwrite.')
+    else:
+        run_in_shell('rm -rf ' + path)        
+
 #--------------------------------------------
 # Main function
 #--------------------------------------------
 
 if __name__ == "__main__":
-    # Parse arguments
-    parser = argparse.ArgumentParser(description="Build run directories for GROMACS MD simulations of periodically connected DNA chains \
-    given list of DNA pdb structure files and run input parameters. Several different run types can be built at once \
-    (e.g. energy minimization, equilibration,...). All provided run types will be built for each pdb structure.")
 
-    parser.add_argument(dest='pdbfiles', nargs = '+', type=str, help="list of pdb-files (.pdb) (the system name will be inferred from the filename)")
+    # -----------------------------------------------------------------------------------------------------------------------------
+    # Define input arguments and parse them
 
-    # Optional args
+    parser = argparse.ArgumentParser(description="")
+
+    parser.add_argument('--build', dest='build_cmds', type=str, nargs='+', help='List of shell commands that should output a .gro and .tpr file.')
+    parser.add_argument('--setup', type=str, default='./setup', help="Template directory containing system setup (conf.gro, topol.top).\
+    Either exists or generate with '--build'.")
+
+    parser.add_argument('--ffdir', dest='ffdir', type=str, help='external force field directory if needed')
     parser.add_argument('-f', dest='force', action='store_true', help="force overwriting of old output if needed")
-    parser.add_argument('-o', '--out', dest='outdir', type=str, default='build',
-                        help='name of output build directory')
-    parser.add_argument('-ff', '--forcefield', dest='forcefield', type=str, choices=['amber99bsc1', 'charmm27'])
-    parser.add_argument('--water', choices=['none', 'spc', 'spce', 'tip3p', 'tip4p', 'tip5', 'tips3p'])
-    parser.add_argument('--ffdir', dest='ffdir', type=str)
-    ##parser.add_argument("--gmx", dest='gmx', type=str, help="gmx binary to use") # TODO
 
     # Defines a keyvalue argument type for the parser
     # This should probably be an input file instead.
@@ -145,127 +229,65 @@ if __name__ == "__main__":
     # Parse and fetch arguments.
     parsed_args = parser.parse_args()
 
-    pdbs = parsed_args.pdbfiles
-    outdir = parsed_args.outdir
     forceful = parsed_args.force
-    forcefield = parsed_args.forcefield
-    water = parsed_args.water
     ffdir=parsed_args.ffdir
-    runs = parsed_args.runs
+    runspecs_list = parsed_args.runs
+    build_cmds = parsed_args.build_cmds
+    setup = parsed_args.setup
 
     # Turn the run key-value arguments into a dictionary.
-    if runs:
-        runs=[{k:v for k, v in run} for run in runs]
+    if runspecs_list:
+        runspecs_list=[{k:v for k, v in runspecs} for runspecs in runspecs_list]
     else:
-        runs=[]
+        runspecs_list=[]
 
-    # This script has dependencies on shell scripts.
-    # For now, assume all scripts are in the same directory as this script.
-    scriptsdir=absolute_path(run_in_shell('dirname ' + os.path.realpath(__file__)))
-
+    # -----------------------------------------------------------------------------------------------------------------------------
     # Check existence of input files and types
-    for pdb in pdbs:
-        filetype=pdb.split('/')[-1].split('.')[-1]
-        if not os.path.exists(pdb):
-            sys.exit(pdb + ": pdb does not exist")
-        if filetype != 'pdb':
-            sys.exit(pdb + ' does not look like a .pdb file')
-
-    pdbs=[ absolute_path(pdb) for pdb in pdbs]
+    # Turn any relative paths into absolute ones.
 
     if ffdir:
         ffdir = absolute_path(ffdir)
 
-    for run in runs:                        
-        if 'params' in run:
-            run['params'] = absolute_path(run['params'])
-        if 'selections' in run:
-            run['selections'] = absolute_path(run['selections'])
+    # Check the given run parameters
+    for runspecs in runspecs_list:                        
+        if 'params' not in runspecs:
+            sys.exit("give all runs a parameter (.mdp) file")
+        runspecs['params'] = absolute_path(runspecs['params'])
 
-    run_in_shell('mkdir -p ' + outdir)
-    outdir = absolute_path(outdir)
+        if 'selections' in runspecs:
+            runspecs['selections'] = absolute_path(runspecs['selections'])
+        if 'name' not in runspecs:
+            sys.exit("give all runs names")
 
-    # Now build the runs for each pdb file.
-    for pdb in pdbs:
+    build_system = build_cmds and len(build_cmds) > 0
+    if build_system and not os.path.exists(setup):
+        sys.exit("Instructions for building the system (see '--build') not given and the system setup path (see '--setup') does not exist." )
+    setup = absolute_path('./setup')
 
-        # Prepare the output directory
-        name  = pdb.split('/')[-1].split('.pdb')[-2]
-        if len(name) == 0:
-            sys.exit('Give ' + pdb + ' a non-empty descriptive name')
+    # -----------------------------------------------------------------------------------------------------------------------------
+    # Here actually do something
 
-        setup='/'.join([outdir, name, 'setup'])    
-
-        if os.path.exists(setup) and not forceful:
-            sys.exit(outdir + ' already exists. Use -f to force overwrite.')
-        else:
-            run_in_shell('rm -rf ' + setup)        
-
+    if build_system:
+        check_path_is_clean(setup, forceful=forceful)
         run_in_shell('mkdir -p ' + setup)
 
         if ffdir:
             run_in_shell('cp -r ' + ffdir + ' ' + setup)
 
+        startdir=os.getcwd()
         os.chdir(setup)
+        print "Building system in directory " + setup
+        build_system_shell(build_cmds)
+        os.chdir(startdir)
 
-        print "Building system " + name + " in directory " + setup
-
-        # Call shell scripts that build the system, essentially defined by a topology (.top) and a structure (.gro) file:
-        # 1) generate the .top and .gro file for the molecule
-        pdb2gmx_args = ' '.join(['-f', pdb, '-ff', forcefield, '-water', water])
-        stdout = run_in_shell(scriptsdir + '/gmx-pdb2gmx-wrapper-periodic-dna.sh ' + pdb2gmx_args)
-
-        # 2) Prepare the simulation box (modify .gro and .top), typically by placing the molecule in suitably sized box of water and ions.
-        stdout=run_in_shell(scriptsdir + '/build-box.sh')
-
-        # System is now ready.
-        topology = setup + '/topol.top'
-        config = setup + '/conf.gro'
-
-        # Prepare template run directories with the files needed for later running a simulation.
-        for run in runs:
-            if 'name' in run:
-                runid=run['name']
-            else:
-                sys.exit("give all runs names")
-
-            print 'Adding ' + runid
-
-            runpath='/'.join([outdir, name, runid])
-
-            template='/'.join([runpath, 'template'])
-            run_in_shell('mkdir -p ' + template)
-
-            # Copy the files needed.
-            params=run['params']
-            for runfile, defaultname in zip([config, topology, params], ['conf.gro', 'topol.top', 'grompp.mdp']):
-                shutil.copy(runfile, template + '/' + defaultname)
-            if ffdir:
-                run_in_shell('cp -r ' + ffdir + ' ' + template)
-
-            # Generate an index file from the selections, if given. 
-            if 'selections' in run:
-                selections = run['selections']
-                tmp='/'.join([runpath, 'tmp'])
-                run_in_shell('cp -r ' + template + ' ' + tmp)
-                os.chdir(tmp)                                    
-                stdout = run_in_shell(scriptsdir + '/gmx-make-index-from-selections.sh ' + selections)                                      
-                run_in_shell("cp ./index.ndx " + template)
-                run_in_shell('rm -r ' + tmp)
-
-            # The final test: are we are now able to generate a run file (run grompp) without errors?
-            # Note if there were warnings, may be fine.
-            tmp='/'.join([runpath, 'tmp'])
-            run_in_shell('cp -r ' + template + ' ' + tmp)
-            os.chdir(tmp)
-            grompp = 'gmx grompp'
-            if 'selections' in run:
-                grompp += ' -n'
-            stdout, stderr, error = run_in_shell_allow_error(grompp)
-            if error:
-                stdout = run_in_shell(grompp + ' -maxwarn 10')
-                print("'" + grompp + "'" + " generated warnings")
-
-            run_in_shell('rm -r ' + tmp)
+    # Generate the run directories
+    for runspecs in runspecs_list:                    
+        runpath=runspecs['name']
+        check_path_is_clean(runpath, forceful=forceful)
+        
+        # Prepare a template run directory with the files needed for making a .tpr file.
+        template='/'.join([runpath, 'template'])
+        make_run_template(setup, runspecs, template)
                 
 # TODOs:
-# add INFO file with command line for generating the build
+# dump info/log files with command line for generating the build
