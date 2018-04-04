@@ -1,8 +1,7 @@
 #! /usr/bin/env python2.7
 
 # ======================================================
-#
-# IMPORTS
+# Imports
 # ======================================================
 
 
@@ -18,15 +17,8 @@ import subprocess
 from random import randint
 
 # ======================================================
-#
-# FUNCTIONS
+# Executing in the shell
 # ======================================================
-
-# XXXXXXX
-#---------------------------------------------------------
-# Description:
-# YYYYYYYYY
-#
 
 def run_in_shell(command):
     if command.count('|') >= 1:
@@ -82,6 +74,10 @@ def run_in_shell_allow_error(command):
 
     return stdout, stderr, error
 
+# ======================================================
+# Files and paths
+# ======================================================
+
 def absolute_path(path):
     stdout = run_in_shell('readlink -f ' + path)
     return stdout
@@ -91,6 +87,32 @@ def clone_directory(srcdir, outdir):
     run_in_shell('mkdir -p ' + outdir)
     run_in_shell(' '.join(['cp -r', contents, outdir]))
 
+def remove_temporary_files():
+    files = ' '.join([ f for f in os.listdir(os.getcwd())  if f.startswith('#') or f.endswith('~') ])
+    run_in_shell('rm ' + files)
+
+def concatenate_files(filenames, outfilename):
+    with open(outfilename, 'w') as outfile:
+        for fname in filenames:
+            with open(fname) as infile:
+                for line in infile:
+                    outfile.write(line)
+
+def read_lines(inputfile):
+    with open(inputfile) as f:
+        lines=f.read().splitlines()
+
+    return lines
+
+def check_path_is_clean(path, forceful=False):
+    if os.path.exists(path) and not forceful:
+        sys.exit(path + ' already exists. Use -f to force overwrite.')
+    else:
+        run_in_shell('rm -rf ' + path)        
+
+# ======================================================
+# gmx functions
+# ======================================================
 
 def make_tpr(templatedir, nomdp=False, indexfile=False, out='topol.tpr'):
 
@@ -120,14 +142,7 @@ def make_tpr(templatedir, nomdp=False, indexfile=False, out='topol.tpr'):
     # Only keep the tpr-file
     run_in_shell('mv topol.tpr ' + startdir + '/' + out)
     os.chdir(startdir)
-    run_in_shell('rm -r ' + workdir)
-    
-def concatenate_files(filenames, outfilename):
-    with open(outfilename, 'w') as outfile:
-        for fname in filenames:
-            with open(fname) as infile:
-                for line in infile:
-                    outfile.write(line)
+    run_in_shell('rm -r ' + workdir)    
 
 def make_index_file_from_selections(tpr, selections):
     # If grompp gets a custom index file it will be unaware about the 
@@ -164,12 +179,6 @@ def build_system_shell(cmd_list):
 
     # System should now be ready. Bundle into a tpr-file
     make_tpr(setup, nomdp=True) 
-
-def check_path_is_clean(path, forceful=False):
-    if os.path.exists(path) and not forceful:
-        sys.exit(path + ' already exists. Use -f to force overwrite.')
-    else:
-        run_in_shell('rm -rf ' + path)        
 
 #--------------------------------------------
 # Main function
