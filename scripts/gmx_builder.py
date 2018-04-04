@@ -185,38 +185,41 @@ def make_index_file_from_selections(tpr, selections):
 def make_run_template(setup, runspecs, template):
     clone_directory(setup, template)
     run_in_shell(' '.join(['cp', runspecs['params'], template + '/grompp.mdp']))
-    tpr = template + '/topol.tpr'
+    #tpr = template + '/topol.tpr'
 
     # Generate an index file from the selections, if given. 
     if 'selections' in runspecs:
         selections = runspecs['selections']
-        make_index_file_from_selections(setup + '/' + tpr, selections)
+        make_index_file_from_selections(setup + '/topol.tpr', selections)
 
     # The ultimate test: is it possible to make a tpr from this?
     make_tpr(template, indexfile = ('selections' in runspecs))
 
-##
-'''
-def make_run_template(setup, mdp_settings, selections=None, template):
-    clone_directory(setup, template)
 
-    mdp = template + '/grompp.mdp'
-    write_mdpfile(mdp_settings, template ) ## TODO
+def make_run_template(setup, mdp_settings, outdir,  selections=[]):
+    clone_directory(setup, outdir)
 
-    tpr = template + '/topol.tpr'
+    mdp_out = outdir + '/grompp.mdp'
+    write_mdp(mdp_settings, mdp_out)
+
+    # Assume a tpr is available in the setup directory
+    tpr = outdir + '/topol.tpr'
 
     # Generate an index file from the selections, if given. 
-    have_selections = False
-    if selections:
-        have_selections = True
-        sel_file = '_tmp-selections.txt'
-        write_selection_file(selections, sel_file) ## TODO
-        make_index_file_from_selections(setup + '/' + tpr, sel_file)
+    have_selections = len(selections) > 0
+    if have_selections:
+        sel_file = '_tmp-sel.txt'
+
+        #write_selection_file(selections, sel_file)  ## TODO
+
+        # a tpr-file is assumed to be in the setup directory
+        make_index_file_from_selections(tpr, sel_file)
         ## remove selection file
 
     # The ultimate test: is it possible to make a tpr from this?
-    make_tpr(template, indexfile = have_selections)
-'''
+    make_tpr(outdir, indexfile = have_selections)
+
+
 def build_system_shell(cmd_list):
     for cmd in cmd_list:
         run_in_shell(cmd)
