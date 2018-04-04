@@ -101,8 +101,13 @@ def concatenate_files(filenames, outfilename):
 def read_lines(inputfile):
     with open(inputfile) as f:
         lines=f.read().splitlines()
-
     return lines
+
+def write_lines(lines, outputfile):
+    # will overwrite existing file
+    with open(outputfile, 'w') as f:
+        for line in lines:
+            f.write(line + '\n')
 
 def check_path_is_clean(path, forceful=False):
     if os.path.exists(path) and not forceful:
@@ -113,6 +118,23 @@ def check_path_is_clean(path, forceful=False):
 # ======================================================
 # gmx functions
 # ======================================================
+
+
+def merge_dicts(dlist):
+    merged={}
+    for d in dlist:
+        # An dictionary further back in the list has precedence over earlier ones
+        for k, v in d.iteritems():
+            merged[k] = v
+
+    return merged
+
+def merge_mdps(mdplist):
+    return merge_dicts(mdplist)
+
+def write_mdp(mdp, outputfile):
+    lines =  [ ' = '.join([k,v]) for k, v in  mdp.iteritems() ]
+    write_lines(lines, outputfile)
 
 def make_tpr(templatedir, nomdp=False, indexfile=False, out='topol.tpr'):
 
@@ -173,6 +195,28 @@ def make_run_template(setup, runspecs, template):
     # The ultimate test: is it possible to make a tpr from this?
     make_tpr(template, indexfile = ('selections' in runspecs))
 
+##
+'''
+def make_run_template(setup, mdp_settings, selections=None, template):
+    clone_directory(setup, template)
+
+    mdp = template + '/grompp.mdp'
+    write_mdpfile(mdp_settings, template ) ## TODO
+
+    tpr = template + '/topol.tpr'
+
+    # Generate an index file from the selections, if given. 
+    have_selections = False
+    if selections:
+        have_selections = True
+        sel_file = '_tmp-selections.txt'
+        write_selection_file(selections, sel_file) ## TODO
+        make_index_file_from_selections(setup + '/' + tpr, sel_file)
+        ## remove selection file
+
+    # The ultimate test: is it possible to make a tpr from this?
+    make_tpr(template, indexfile = have_selections)
+'''
 def build_system_shell(cmd_list):
     for cmd in cmd_list:
         run_in_shell(cmd)

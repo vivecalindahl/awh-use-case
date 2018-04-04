@@ -3,11 +3,11 @@
 import os, sys
 import numpy as np
 
-#import build_runs as build_runs
-from build_runs import run_in_shell as xsh
-from build_runs import make_tpr
-from build_runs import remove_temporary_files
-from build_runs import read_lines
+import gmx_builder as gmxb
+from gmx_builder import run_in_shell as xsh
+from gmx_builder import make_tpr
+from gmx_builder import remove_temporary_files
+from gmx_builder import read_lines
 
 # Global variables
 gmx='/data/viveca/gromacs/build-release-2018-debug-mpi/bin/gmx_mpi_debug'
@@ -118,26 +118,112 @@ def build_periodic_dna(pdb_path, watermodel='tip3p', forcefield='charmm27', make
     if make_clean:
         remove_temporary_files()
 
-# An example of how how one could set up a simulation experiment for the DNA system.
-def build_dna_example(make_clean=False):
+# Parameter file (mdp) settings
+em_mdp = {
+    'integrator': 'steep',
+    'emtol': '1000.0',
+    'emstep': '0.01',
+    'nsteps': '50000',
+    'coulombtype': 'pme',
+    'vdwtype': 'cut-off',
+    'cut-off-scheme': 'verlet',
+}
+        
+npt_mdp = {
+    'integrator': 'md',
+    'dt': '0.002',
+    'nsteps': '25000000',
+    'nstlog': '5000000',
+    'nstenergy': '50000',
+    'nstxtcout': '500000',
+    # pressure
+    'pcoupl': 'parrinello-rahman',
+    'tau_p': '5.0',
+    'pcoupl-type': 'isotropic',
+    'ref-p': '1.0',
+    'compressibility': '4.5e-5',
+    # temperature
+    'tcoupl': 'v-rescale',
+    'tau-t': '0.5',
+    'ref-t': '300',
+    'tc-groups': 'system',
+    # electrostatics and vdw
+    'coulombtype': 'pme',
+    'vdwtype':'cut-off',
+    'cut-off-scheme': 'verlet',
+}
+
+def electrostatics_vdw_mdp(ff_name):
+    # These are just examples, but should at least be reasonable.
+    if ff_name == 'charmm':
+        mdp = {
+            'rcoulomb':'1.2',
+            'fourierspacing': '0.14',
+            'vdw-modifier': 'force-switch',
+            'rvdw-switch': '0.8',
+            'rvdw': '1.2'
+        }
+    elif ff_name == 'amber':
+         mdp = {
+       'rcoulomb':'1.0',
+        'fourierspacing': '0.121',
+        'vdw-modifier': 'potential-shift',
+        'rvdw': '1.0',
+        'dispcorr': 'ener-pres'
+         }
+    else:
+        valid = {'charmm', 'amber'}
+        raise ValueError("results: status must be one of %r." % valid)
+
+    return mdp
+
+def mdp_periodic_dna(ff_name, run_type):
+
+    if run_type == 'npt':
+        base = npt_mdp
+    elif run_type == 'em':
+        base = em_mdp
+    else:    
+        valid = {'npt', 'em'}
+        raise ValueError("results: status must be one of %r." % valid)
+
+    # Force field specific settings
+    electrostatics_vdw = electrostatics_vdw_mdp(ff_name)
+
+    # Extra definitions to add because of the molecule being periodi
+    periodic_mol = {
+        'periodic-molecules': 'yes',
+        'pcoupl-type': 'semiisotropic',
+        'ref-p': '1.0 1.0',
+        'compressibility': '4.5e-5 4.5e-5',
+    }
+
+    # The merge order matters. Later mdps have precedence.
+    mdp =  gmxb.merge_mdps([base, electrostatics_vdw, periodic_mol])
+
+    return mdp
+
+# An example of how how one could build a simulation experiment for the periodic DNA system.
+def example_build(make_clean=False):
     pdb_dir = '/data/viveca/awh-use-case/md-files/pdbs'
     pdbs = ['/'.join([pdb_dir,f]) for f in os.listdir(pdb_dir) if f.endswith('.pdb') ]
 
     # Build specifications (model parameters)
-    build_list=[
+    build_list = [
         {'name':'charmm', 'ff': 'charmm27', 'water':'tip3p', 'ffdir':None},
         {'name':'amber', 'ff': 'amber99bsc1', 'water':'spce', 'ffdir':'/data/viveca/awh-use-case/md-files/forcefields/amber99bsc1.ff'}
     ]
 
+    def sysname(pdb):
+        return pdb.split('.pdb')[0].split('/')[-1]
+
     startdir=os.getcwd()
-    # Here, each pdb is built with each model
+
+    # Here, each pdb is built with each model.
     for pdb, specs in zip(len(build_list)*pdbs, len(pdbs)*build_list,):
 
-        # Infer system name from pdb file
-        sysname = pdb.split('.pdb')[0].split('/')[-1]
-
-        # Define the directory hierarchy
-        build_dir = '/'.join([startdir, specs['name'], sysname, 'build'])
+        # Define the directory hierarchy. Infer system name from pdb file.
+        build_dir = '/'.join([startdir, specs['name'], sysname(pdb), 'build'])
         print '>>>>>>> Building pdb and specs ', pdb,  specs, 'into', build_dir
         if make_clean:
             xsh('rm -rf ' + build_dir)
@@ -152,5 +238,28 @@ def build_dna_example(make_clean=False):
         build_periodic_dna(pdb, forcefield=specs['ff'], watermodel=specs['water'])
         os.chdir(startdir)
 
-    # Add runs
+        # Add runs.  Here, each run is added to each build.
+        run_list = [
+            {'name':'em', 'mdp': mdp_periodic_dna(specs['name'], 'em')},          
+            {'name':'npt', 'mdp': mdp_periodic_dna(specs['name'], 'npt')},
+            #{'name':'npt', 'mdp': mdp_periodic_dna(specs['name'], 'awh')},
+        ]
+
+        # Put the run directory on the same level as the build directory
+        for run in run_list:
+            run_dir = '/'.join([startdir, specs['name'], sysname(pdb), run['name']])
+
+            print '>>>>>>> Adding run template for ' + run['name'] + ' in ' + run_dir
+            if make_clean:
+                xsh('rm -rf ' + run_dir)
+            xsh('mkdir -p ' + run_dir)
+            template_dir = run_dir + '/template'
+
+            #            #mdp = mdp_periodic_dna(specs['name'], run['name'])
+            gmxb.make_run_template(build_dir, mdp, template)
+
+#            print run['mdp']
+            sys.exit()
+
+
 
