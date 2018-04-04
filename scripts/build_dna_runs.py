@@ -12,36 +12,6 @@ from gmx_builder import read_lines
 # Global variables
 gmx='/data/viveca/gromacs/build-release-2018-debug-mpi/bin/gmx_mpi_debug'
 
-def read_gro_coordinates(gro):
-    # gro-file format info
-    gro_columns = {'residue':0, 'name':1, 'index':2,
-                   'x':3, 'y':4, 'z':5,
-                   'vx':6, 'vy':7, 'vz':8}
-    gro_header_size = 2
-    gro_footer_size = 1
-
-    # Read gro-file as a list of strings
-    lines = read_lines(gro);
-
-    # Remove data headers
-    lines = lines[gro_header_size:-gro_footer_size]
-
-    # Split strings with white space delimiter
-    lines = [line.split() for line in lines]
-
-    # Extract coordinates as numpy array
-    cols = [gro_columns[coord] for coord  in ['x', 'y', 'z']]
-    coords=[]
-    for row in lines:
-        xyz = []
-        for col in cols:
-            xyz.append(float(row[col]))
-        coords.append(xyz)
-
-    coords = np.array(coords)
-
-    return coords
-
 def make_box_for_periodic_dna(gro='conf.gro'):
     # Make a box for a DNA molecule that is periodically connected in the z-direction.
 
@@ -51,7 +21,7 @@ def make_box_for_periodic_dna(gro='conf.gro'):
     bc, ac, ab = 90, 90, 60
 
     # Very simple measure of the diameter along each dimension:
-    coords = read_gro_coordinates(gro)
+    coords = gmxb.read_gro_coordinates(gro)
     diameter = coords.max(0) - coords.min(0)
 
     # Dna is roughly circular in x and y. Use the x diameter and add 2 nm
@@ -203,6 +173,47 @@ def mdp_periodic_dna(ff_name, run_type):
 
     return mdp
 
+
+# Generate all the distance selections for a base pair in a DNA double helix, 
+# i.e. two paired DNA chains of equal lengths N.
+# Assumes that the residues of the two chains are indexed and paired as:
+#
+# 1    --   2N
+# 2    --   2N-1
+#     [..]  
+# n    --   2N+1-n     
+#     [..]       
+# N-1  --   N+2
+# N    --   N+1
+def basepair_distance_selection(gro, basepair):
+    # Figure out the length of the DNA chain (could alternatively give the sequence/length as input).
+    # Maybe functionalities from e.g. MDAnalysis should be applied here instead...
+    table = gmxb.read_gro_table(gro)
+    col_resname = gmxb.gro_table_column('residue_name')
+    col_atomname = gmxb.gro_table_column('atom_name')
+    col_resid = gmxb.gro_table_column('resid')
+
+    #sublist = filter(lambda row: row[col_resname] in {'DC', 'DT', 'DA', 'DG'} and row[col_atomname]=="C4'", table)
+    dna_table = filter(lambda row: row[col_resname] in {'DC', 'DT', 'DA', 'DG'}, table)
+
+    # The number of base pairs equals the number of DNA residues/2
+    N = len(set([row[col_resid] for row in dna_table]))/2
+
+    for n in range(nbasepairs):
+        resid1 = n
+        resid2 = 2*N + 1 - n
+        sel
+
+    return nbasepairs
+
+
+# Generate all  pairs
+#for ((n=1; n<=$N; n++)); do
+#    prefix="distance-selections"
+
+#    n1=$n; 
+#    n2=$((2*N+1-n))
+
 # An example of how how one could build a simulation experiment for the periodic DNA system.
 def example_build(make_clean=False):
     pdb_dir = '/data/viveca/awh-use-case/md-files/pdbs'
@@ -243,8 +254,13 @@ def example_build(make_clean=False):
         run_list = [
             {'name':'em', 'mdp': mdp_periodic_dna(specs['name'], 'em')},          
             {'name':'npt', 'mdp': mdp_periodic_dna(specs['name'], 'npt')},
-            #{'name':'npt', 'mdp': mdp_periodic_dna(specs['name'], 'awh')},
         ]
+        
+        # Add AWH runs, calculate PMF for some base pairs (bp).  The reaction coordinate requires
+        # bp-specific atom selections. Here, generate all possible selections, then specify which
+        # bp is targeted in the mdp-file (could also generate only the selections needed for the
+        # target bp and use one mdp file).
+
 
         # Put the run directory on the same level as the build director
         print 'Adding runs:'

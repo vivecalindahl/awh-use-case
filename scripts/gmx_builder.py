@@ -116,9 +116,68 @@ def check_path_is_clean(path, forceful=False):
         run_in_shell('rm -rf ' + path)        
 
 # ======================================================
-# gmx functions
+# gmx related functions
 # ======================================================
 
+# gro-file format info
+gro_header_size = 2
+gro_footer_size = 1
+
+# The keys and their order
+gro_keys = ['resid', 'residue_name', 'atom_name', 'atomid', 
+            'x', 'y', 'z',
+            'vx', 'vy', 'vz']
+
+# The number of positions for the value of each key 
+gro_npositions = {'resid':5, 'residue_name':5, 'atom_name':5, 'atomid':5,
+                  'x':8, 'y':8, 'z':8,
+                  'vx':8, 'vy':8, 'vz':8}
+gro_table_columns = {k:v  for k, v in  zip(gro_keys, range(len(gro_keys)))}
+
+def gro_table_column(key):
+
+    if key not in set(gro_keys):
+        raise ValueError("results: status must be one of %r." % gro_keys)
+
+    return gro_table_columns[key]
+
+# Return string table with the gro file data, headers excluded
+def read_gro_table(gro):
+    # Read gro-file as a list of strings
+    lines = read_lines(gro);
+
+    # Remove data headers
+    lines = lines[gro_header_size:-gro_footer_size]
+
+    table=[]
+    for line in lines:
+        row = []
+        position = 0
+        for k in gro_keys:
+            npos = gro_npositions[k]
+            value = line[position:position+npos].strip()
+            position += npos
+            row.append(value)
+            
+        table.append(row)
+
+    return table
+
+def read_gro_coordinates(gro):
+    table = read_gro_table(gro)
+
+    # Extract coordinates as numpy array
+    cols = [gro_table_columns[coord] for coord  in ['x', 'y', 'z']]
+    coords=[]
+    for row in table:
+        xyz = []
+        for col in cols:
+            xyz.append(float(row[col]))
+        coords.append(xyz)
+
+    coords = np.array(coords)
+
+    return coords
 
 def merge_dicts(dlist):
     merged={}
@@ -343,6 +402,3 @@ if __name__ == "__main__":
         # Prepare a template run directory with the files needed for making a .tpr file.
         template='/'.join([runpath, 'template'])
         make_run_template(setup, runspecs, template)
-                
-# TODOs:
-# dump info/log files with command line for generating the build
