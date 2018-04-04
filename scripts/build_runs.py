@@ -65,7 +65,6 @@ def run_in_shell_piped(command):
 
     stdout, stderr = proc_piped[-1].communicate()
     stdout = stdout.strip()
-    ##print stderr.strip()
 
     error = proc.returncode != 0
     if error:
