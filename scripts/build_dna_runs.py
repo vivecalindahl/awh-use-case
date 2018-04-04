@@ -138,7 +138,7 @@ npt_mdp = {
     'nstxtcout': '500000',
     # pressure
     'pcoupl': 'parrinello-rahman',
-    'tau_p': '5.0',
+    'tau-p': '5.0',
     'pcoupl-type': 'isotropic',
     'ref-p': '1.0',
     'compressibility': '4.5e-5',
@@ -146,7 +146,7 @@ npt_mdp = {
     'tcoupl': 'v-rescale',
     'tau-t': '0.5',
     'ref-t': '300',
-    'tc-groups': 'system',
+    'tc-grps': 'system',
     # electrostatics and vdw
     'coulombtype': 'pme',
     'vdwtype':'cut-off',
@@ -221,10 +221,11 @@ def example_build(make_clean=False):
 
     # Here, each pdb is built with each model.
     for pdb, specs in zip(len(build_list)*pdbs, len(pdbs)*build_list,):
+        print 'Building:', sysname(pdb),  specs['name']
 
         # Define the directory hierarchy. Infer system name from pdb file.
         build_dir = '/'.join([startdir, specs['name'], sysname(pdb), 'build'])
-        print '>>>>>>> Building pdb and specs ', pdb,  specs, 'into', build_dir
+
         if make_clean:
             xsh('rm -rf ' + build_dir)
         xsh('mkdir -p ' + build_dir)
@@ -245,21 +246,14 @@ def example_build(make_clean=False):
             #{'name':'npt', 'mdp': mdp_periodic_dna(specs['name'], 'awh')},
         ]
 
-        # Put the run directory on the same level as the build directory
+        # Put the run directory on the same level as the build director
+        print 'Adding runs:'
         for run in run_list:
+            print run['name']
             run_dir = '/'.join([startdir, specs['name'], sysname(pdb), run['name']])
-
-            print '>>>>>>> Adding run template for ' + run['name'] + ' in ' + run_dir
             if make_clean:
                 xsh('rm -rf ' + run_dir)
             xsh('mkdir -p ' + run_dir)
             template_dir = run_dir + '/template'
 
-            #            #mdp = mdp_periodic_dna(specs['name'], run['name'])
-            gmxb.make_run_template(build_dir, mdp, template)
-
-#            print run['mdp']
-            sys.exit()
-
-
-
+            gmxb.make_run_template(build_dir, run['mdp'], template_dir)
