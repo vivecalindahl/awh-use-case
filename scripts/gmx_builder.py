@@ -206,7 +206,6 @@ def write_selections(sel, outputfile):
     write_lines(lines, outputfile)
 
 def make_tpr(templatedir, nomdp=False, indexfile=False, out='topol.tpr'):
-
     # Work in a temporary directory.
     startdir=absolute_path(os.getcwd())
     templatedir=absolute_path(templatedir)
@@ -254,20 +253,6 @@ def make_index_file_from_selections(sel_file, tpr='topol.tpr'):
 
     run_in_shell(' '.join(['rm', defaults, selected]))
 
-def make_run_template(setup, runspecs, template):
-    clone_directory(setup, template)
-    run_in_shell(' '.join(['cp', runspecs['params'], template + '/grompp.mdp']))
-    #tpr = template + '/topol.tpr'
-
-    # Generate an index file from the selections, if given. 
-    if 'selections' in runspecs:
-        selections = runspecs['selections']
-        make_index_file_from_selections(setup + '/topol.tpr', selections)
-
-    # The ultimate test: is it possible to make a tpr from this?
-    make_tpr(template, indexfile = ('selections' in runspecs))
-
-
 def make_run_template(setup, mdp_settings, outdir,  selections=[]):
     clone_directory(setup, outdir)
 
@@ -291,127 +276,3 @@ def make_run_template(setup, mdp_settings, outdir,  selections=[]):
 
     # The ultimate test: is it possible to make a tpr from this?
     make_tpr(outdir, indexfile = have_selections)
-
-def build_system_shell(cmd_list):
-    for cmd in cmd_list:
-        run_in_shell(cmd)
-
-    # System should now be ready. Bundle into a tpr-file
-    make_tpr(setup, nomdp=True) 
-
-#--------------------------------------------
-# Main function
-#--------------------------------------------
-
-if __name__ == "__main__":
-
-    # -----------------------------------------------------------------------------------------------------------------------------
-    # Define input arguments and parse them
-
-    parser = argparse.ArgumentParser(description="")
-
-    parser.add_argument('--build', dest='build_cmds', type=str, nargs='+', help='List of shell commands that should output a .gro and .tpr file.')
-    parser.add_argument('--setup', type=str, default='./setup', help="Template directory containing system setup (conf.gro, topol.top).\
-    Either exists or generate with '--build'.")
-
-    parser.add_argument('--ffdir', dest='ffdir', type=str, help='external force field directory if needed')
-    parser.add_argument('-f', dest='force', action='store_true', help="force overwriting of old output if needed")
-
-    # Defines a keyvalue argument type for the parser
-    # This should probably be an input file instead.
-    allowed_types={'name':'str', 'params':'.mdp', 'selections':'.txt'}
-    def keyvalue(keyvalue):
-        try:
-            # value is a string
-            key, value = keyvalue.split('=')
-        except:
-            raise argparse.ArgumentTypeError('use "key=value" format')
-    
-        if not key in allowed_types:
-            raise argparse.ArgumentTypeError(key + " is not a recognized key")        
-
-        # Check that value strings are consistent with their key and convert to
-        # the right non-string type if needed.
-        valuetype = allowed_types[key]
-        if valuetype.startswith('.'):
-            #  value is a file
-            #  should should have the right filename extension
-            if not value.endswith(valuetype):
-                raise argparse.ArgumentTypeError("Value for " + key + " needs to be file of type '" + valuetype + "'")
-        else:
-            # value is number or string
-            # try converting to the right type                            
-            try:
-                value=eval(valuetype)(value)
-            except:
-                raise argparse.ArgumentTypeError(value + ' is not of the right type (' + valuetype + ')')
-
-        return [key,value]
-
-    parser.add_argument('--run', '-r', dest='runs', action='append', 
-                        help="defines a run using 'key=value' format. "
-                        "Allowed keys: " +  ', '.join([k + '=<' + str(v) + '>' for k,v in allowed_types.items()]),
-                        type=keyvalue, nargs='+')
-
-    # Parse and fetch arguments.
-    parsed_args = parser.parse_args()
-
-    forceful = parsed_args.force
-    ffdir=parsed_args.ffdir
-    runspecs_list = parsed_args.runs
-    build_cmds = parsed_args.build_cmds
-    setup = parsed_args.setup
-
-    # Turn the run key-value arguments into a dictionary.
-    if runspecs_list:
-        runspecs_list=[{k:v for k, v in runspecs} for runspecs in runspecs_list]
-    else:
-        runspecs_list=[]
-
-    # -----------------------------------------------------------------------------------------------------------------------------
-    # Check existence of input files and types
-    # Turn any relative paths into absolute ones.
-
-    if ffdir:
-        ffdir = absolute_path(ffdir)
-
-    # Check the given run parameters
-    for runspecs in runspecs_list:                        
-        if 'params' not in runspecs:
-            sys.exit("give all runs a parameter (.mdp) file")
-        runspecs['params'] = absolute_path(runspecs['params'])
-
-        if 'selections' in runspecs:
-            runspecs['selections'] = absolute_path(runspecs['selections'])
-        if 'name' not in runspecs:
-            sys.exit("give all runs names")
-
-    build_system = build_cmds and len(build_cmds) > 0
-    if build_system and not os.path.exists(setup):
-        sys.exit("Instructions for building the system (see '--build') not given and the system setup path (see '--setup') does not exist." )
-    setup = absolute_path('./setup')
-
-    # -----------------------------------------------------------------------------------------------------------------------------
-    # Here actually do something
-
-    if build_system:
-        check_path_is_clean(setup, forceful=forceful)
-        run_in_shell('mkdir -p ' + setup)
-
-        if ffdir:
-            run_in_shell('cp -r ' + ffdir + ' ' + setup)
-
-        startdir=os.getcwd()
-        os.chdir(setup)
-        print "Building system in directory " + setup
-        build_system_shell(build_cmds)
-        os.chdir(startdir)
-
-    # Generate the run directories
-    for runspecs in runspecs_list:                    
-        runpath=runspecs['name']
-        check_path_is_clean(runpath, forceful=forceful)
-        
-        # Prepare a template run directory with the files needed for making a .tpr file.
-        template='/'.join([runpath, 'template'])
-        make_run_template(setup, runspecs, template)
