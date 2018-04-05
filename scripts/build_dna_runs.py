@@ -270,7 +270,7 @@ def example_build(make_clean=False):
 
     # External parameters are assumed to be present
     scripts_dir = os.path.dirname(os.path.realpath(__file__))
-    external_params_dir =  scripts_dir + '/../md-files'
+    external_params_dir =  scripts_dir + '/../external-parameters'
 
     # The pdb files could be generated from a sequence from within here calling some modeling tool like x3dna.
     pdb_dir = external_params_dir + '/pdbs'
