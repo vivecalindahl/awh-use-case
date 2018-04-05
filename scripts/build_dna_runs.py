@@ -6,7 +6,10 @@ import numpy as np
 import gmx_builder as gmxb
 from gmx_builder import run_in_shell as xsh
 
+
 # Global variables
+
+# gmx binary could be something more specific or taken from an environment variable.
 gmx='/data/viveca/gromacs/build-release-2018-debug-mpi/bin/gmx_mpi_debug'
 
 def make_box_for_periodic_dna(gro='conf.gro'):
@@ -263,7 +266,6 @@ def get_target_basepair_resids(gro):
     ntarget = 3
     nbp = len(basepair_resids)
     return basepair_resids[nbp/2:nbp/2 + ntarget]
-
 
 # An example of how how one could build a simulation experiment for the periodic DNA system.
 def example_build(make_clean=False):
