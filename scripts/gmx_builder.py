@@ -27,7 +27,7 @@ def run_in_shell(command):
     proc = subprocess.Popen((command).split(), preexec_fn=os.setsid, close_fds = True,
                             stdout = subprocess.PIPE, stderr = subprocess.PIPE)
     stdout, stderr = proc.communicate()
-    stdout = stdout.strip()
+    stdout, stderr  = stdout.strip(), stderr.strip()
 
     error = proc.returncode != 0
     if error:
@@ -54,12 +54,12 @@ def run_in_shell_piped(command):
                                            stdin = prev_stdout)
         proc_piped.append(proc)
         prev_proc = proc
-
     stdout, stderr = proc_piped[-1].communicate()
-    stdout = stdout.strip()
+    stdout, stderr = stdout.strip(), stderr.strip()
 
     error = proc.returncode != 0
     if error:
+        print stdout, stderr
         sys.exit("Failed to execute command: " + command)
 
     return stdout
@@ -231,17 +231,20 @@ def make_tpr(templatedir, nomdp=False, indexfile=False, out='topol.tpr'):
     os.chdir(startdir)
     run_in_shell('rm -r ' + workdir)    
 
-def make_index_file_from_selections(selections, tpr='topol.tpr'):
+def make_index_file_from_selections(sel_file, tpr='topol.tpr'):
     # If grompp gets a custom index file it will be unaware about the 
     # otherwise generated default groups, e.g. "system", which are
     # generally needed e.g. to specify the  temperature coupling groups.
     # So, generate a default index file first, then add the actual selections.
 
     defaults='defaults.ndx'
-    run_in_shell_piped('echo -e "q" | gmx make_ndx -n ' + defaults + ' -f ' +  tpr)
+
+    run_in_shell_piped('echo q | gmx make_ndx -o ' + defaults + ' -f ' +  tpr)
+    # Note: the shell commands can be a bit sensitive. If q --> "q" above, it fails.
+    # It corresponds to writing 'echo \"q\" | [...]' directly in the terminal.
 
     selected='selected.ndx'
-    run_in_shell(' '.join(['gmx select','-s', tpr, '-sf', selections, '-on', selected]))
+    run_in_shell(' '.join(['gmx select','-s', tpr, '-sf', sel_file, '-on', selected]))
 
     concatenate_files([defaults, selected], 'index.ndx')
 
