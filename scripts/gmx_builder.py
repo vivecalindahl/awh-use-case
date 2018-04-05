@@ -259,20 +259,20 @@ def make_run_template(setup, mdp_settings, outdir,  selections=[]):
     mdp_out = outdir + '/grompp.mdp'
     write_mdp(mdp_settings, mdp_out)
 
+    startdir = os.getcwd()
+    os.chdir(outdir)
+
     # Generate an index file from the selections, if given. 
     have_selections = len(selections) > 0
     if have_selections:
-        startdir = os.getcwd()        
-        os.chdir(outdir)
 
         sel_out = '_tmp-sel-' + str(randint(1,1e4)) + '.txt'
         write_selections(selections, sel_out)
 
         # a tpr-file is assumed to be already available in the setup directory
         make_index_file_from_selections(sel_out)
-
         remove_temporary_files()
-        os.chdir(startdir)
 
     # The ultimate test: is it possible to make a tpr from this?
     make_tpr(outdir, indexfile = have_selections)
+    os.chdir(startdir)

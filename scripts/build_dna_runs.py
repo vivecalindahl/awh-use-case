@@ -6,11 +6,9 @@ import numpy as np
 import gmx_builder as gmxb
 from gmx_builder import run_in_shell as xsh
 
-
-# Global variables
-
-# gmx binary could be something more specific or taken from an environment variable.
-gmx='/data/viveca/gromacs/build-release-2018-debug-mpi/bin/gmx_mpi_debug'
+# We should be able to set the gmx binary, e.g. from an environment variable.
+# It should be set somewhere else than here though. Now we just assume gmx is in the path.
+gmx='gmx'
 
 def make_box_for_periodic_dna(gro='conf.gro'):
     # Make a box for a DNA molecule that is periodically connected in the z-direction.
