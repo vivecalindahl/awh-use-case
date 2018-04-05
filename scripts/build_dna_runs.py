@@ -5,9 +5,6 @@ import numpy as np
 
 import gmx_builder as gmxb
 from gmx_builder import run_in_shell as xsh
-from gmx_builder import make_tpr
-from gmx_builder import remove_temporary_files
-from gmx_builder import read_lines
 
 # Global variables
 gmx='/data/viveca/gromacs/build-release-2018-debug-mpi/bin/gmx_mpi_debug'
@@ -53,7 +50,6 @@ def solvate_box(gro='conf.gro', top='topol.top', tpr='topol.tpr'):
     args = ' '.join(['-cp', gro, '-p', top, '-cs','-o', 'conf.gro'])
     stdout = xsh(' '.join([gmx, 'solvate', args]))
 
-
 def neutralize_box(gro='conf.gro', top='topol.top', tpr='topol.tpr'):
     args = ' '.join(['-neutral', '-pname', 'NA', '-p', 'topol.top', '-o', 'conf.gro'])
     interactive_args = 'SOL'
@@ -66,27 +62,27 @@ def build_periodic_dna(pdb_path, watermodel='tip3p', forcefield='charmm27', make
     # Generate gmx topology and config file.
     pdb2gmx_periodic(pdb_path, watermodel, forcefield)
 
-    # Test if a gmx run (tpr-) file can be generated.
+    # Test if a gmx run/tpr file can be generated.
     # Also, the gmx tools often require a tpr as input.
-    make_tpr('.', nomdp=True)
+    gmxb.make_tpr('.', nomdp=True)
 
     # Set the box size and shape.
     make_box_for_periodic_dna()
 
     # Add water to the box.
-    make_tpr('.', nomdp=True)
+    gmxb.make_tpr('.', nomdp=True)
     solvate_box()
 
     # Neutralize system by adding ions.
-    make_tpr('.', nomdp=True)
+    gmxb.make_tpr('.', nomdp=True)
     neutralize_box()
 
     # Make a final tpr.
-    make_tpr('.', nomdp=True)
+    gmxb.make_tpr('.', nomdp=True)
 
     # Clean up
     if make_clean:
-        remove_temporary_files()
+        gmxb.remove_temporary_files()
 
 # Parameter file (mdp) settings
 em_mdp = {
@@ -166,7 +162,6 @@ def awh_basepair_dist_mdp(name1, name2):
     
     return gmxb.merge_mdps([pull_mdp, awh_mdp])
 
-
 def electrostatics_vdw_mdp(ff_name):
     # These are just examples, but should at least be reasonable.
     if ff_name == 'charmm':
@@ -190,10 +185,7 @@ def electrostatics_vdw_mdp(ff_name):
         raise ValueError("results: status must be one of %r." % valid)
 
     return mdp
-
-    
-
-
+            
 def mdp_periodic_dna(ff_name, run_type):
 
     if run_type == 'npt':
@@ -219,7 +211,6 @@ def mdp_periodic_dna(ff_name, run_type):
     mdp =  gmxb.merge_mdps([base, electrostatics_vdw, periodic_mol])
 
     return mdp
-
 
 # Generate all the distance selections for a base pair in a DNA double helix, 
 # i.e. two paired DNA chains of equal lengths N.
@@ -264,7 +255,7 @@ def get_basepair_resids(gro):
 
     return resid_pairs
 
-# Select the base pairs to target (study closer)
+# Select the target base pairs to calculate opening free energy for.
 def get_target_basepair_resids(gro):
     basepair_resids = get_basepair_resids(gro)
 
@@ -325,14 +316,14 @@ def example_build(make_clean=False):
         for resid1, resid2 in target_basepairs: 
            name1, name2 = ['resid' + str(resid) for resid in [resid1, resid2]]
            awh_sel = basepair_distance_selections(resid1, resid2, name1=name1, name2=name2)
-           awh_mdp = gmxb.merge_mdps([mdp_periodic_dna(specs['name'], 'npt'), awh_basepair_dist_mdp(name1, name2)])
-
-
-           # The the run specs, mdp and selections, for this base pair
+           awh_mdp = gmxb.merge_mdps([
+               mdp_periodic_dna(specs['name'], 'npt'),
+               awh_basepair_dist_mdp(name1, name2),
+               {'nsteps':'100000000'}
+           ])
+           
+           # Add the run specs (mdp and selections) for this base pair
            run_list.append({'name':'-'.join(['awh', name1, name2]), 'mdp': awh_mdp, 'selections': awh_sel})
-
-
-
 
         # Put the run directory on the same level as the build director
         print 'Adding runs:'

@@ -116,7 +116,7 @@ def check_path_is_clean(path, forceful=False):
         run_in_shell('rm -rf ' + path)        
 
 # ======================================================
-# gmx related functions
+# gmx related
 # ======================================================
 
 # gro-file format info
@@ -191,9 +191,13 @@ def merge_dicts(dlist):
 def merge_mdps(mdplist):
     return merge_dicts(mdplist)
 
-# TODO: fix order of mdp output somehow. Now it will be determined by the set type iterator.
 def write_mdp(mdp, outputfile):
     lines =  [ ' = '.join([k,v]) for k, v in  mdp.iteritems() ]
+
+    # Here just sort alphabetically, something else is surely optimal...
+    # Could also tweak the output format.
+    lines.sort()
+
     write_lines(lines, outputfile)
 
 def write_selections(sel, outputfile):
