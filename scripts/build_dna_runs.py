@@ -267,13 +267,19 @@ def get_target_basepair_resids(gro):
 
 # An example of how how one could build a simulation experiment for the periodic DNA system.
 def example_build(make_clean=False):
-    pdb_dir = '/data/viveca/awh-use-case/md-files/pdbs'
+
+    # External parameters are assumed to be present
+    scripts_dir = os.path.dirname(os.path.realpath(__file__))
+    external_params_dir =  scripts_dir + '/../md-files'
+
+    # The pdb files could be generated from a sequence from within here calling some modeling tool like x3dna.
+    pdb_dir = external_params_dir + '/pdbs'
     pdbs = ['/'.join([pdb_dir,f]) for f in os.listdir(pdb_dir) if f.endswith('.pdb') ]
 
     # Build specifications (model parameters)
     build_list = [
         {'name':'charmm', 'ff': 'charmm27', 'water':'tip3p', 'ffdir':None},
-        {'name':'amber', 'ff': 'amber99bsc1', 'water':'spce', 'ffdir':'/data/viveca/awh-use-case/md-files/forcefields/amber99bsc1.ff'}
+        {'name':'amber', 'ff': 'amber99bsc1', 'water':'spce', 'ffdir': external_params_dir + '/forcefields/amber99bsc1.ff'}
     ]
 
     def sysname(pdb):
