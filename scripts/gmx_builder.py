@@ -88,8 +88,8 @@ def clone_directory(srcdir, outdir):
     run_in_shell(' '.join(['cp -r', contents, outdir]))
 
 def remove_temporary_files():
-    files = ' '.join([ f for f in os.listdir(os.getcwd())  if f.startswith('#') or f.endswith('~') ])
-    run_in_shell('rm ' + files)
+    tmp = ' '.join([ f for f in os.listdir(os.getcwd())  if f.startswith('#') or f.endswith('~') or f.startswith('_tmp') ])
+    run_in_shell('rm -rf ' + tmp)
 
 def concatenate_files(filenames, outfilename):
     with open(outfilename, 'w') as outfile:
@@ -191,8 +191,14 @@ def merge_dicts(dlist):
 def merge_mdps(mdplist):
     return merge_dicts(mdplist)
 
+# TODO: fix order of mdp output somehow. Now it will be determined by the set type iterator.
 def write_mdp(mdp, outputfile):
     lines =  [ ' = '.join([k,v]) for k, v in  mdp.iteritems() ]
+    write_lines(lines, outputfile)
+
+def write_selections(sel, outputfile):
+    # selections are a list of strings. Statements should be separated by ';'.
+    lines = [s + ';' for s in sel if not s.endswith(';') ]
     write_lines(lines, outputfile)
 
 def make_tpr(templatedir, nomdp=False, indexfile=False, out='topol.tpr'):
@@ -225,7 +231,7 @@ def make_tpr(templatedir, nomdp=False, indexfile=False, out='topol.tpr'):
     os.chdir(startdir)
     run_in_shell('rm -r ' + workdir)    
 
-def make_index_file_from_selections(tpr, selections):
+def make_index_file_from_selections(selections, tpr='topol.tpr'):
     # If grompp gets a custom index file it will be unaware about the 
     # otherwise generated default groups, e.g. "system", which are
     # generally needed e.g. to specify the  temperature coupling groups.
@@ -261,23 +267,23 @@ def make_run_template(setup, mdp_settings, outdir,  selections=[]):
     mdp_out = outdir + '/grompp.mdp'
     write_mdp(mdp_settings, mdp_out)
 
-    # Assume a tpr is available in the setup directory
-    tpr = outdir + '/topol.tpr'
-
     # Generate an index file from the selections, if given. 
     have_selections = len(selections) > 0
     if have_selections:
-        sel_file = '_tmp-sel.txt'
+        startdir = os.getcwd()        
+        os.chdir(outdir)
 
-        #write_selection_file(selections, sel_file)  ## TODO
+        sel_out = '_tmp-sel-' + str(randint(1,1e4)) + '.txt'
+        write_selections(selections, sel_out)
 
-        # a tpr-file is assumed to be in the setup directory
-        make_index_file_from_selections(tpr, sel_file)
-        ## remove selection file
+        # a tpr-file is assumed to be already available in the setup directory
+        make_index_file_from_selections(sel_out)
+
+        remove_temporary_files()
+        os.chdir(startdir)
 
     # The ultimate test: is it possible to make a tpr from this?
     make_tpr(outdir, indexfile = have_selections)
-
 
 def build_system_shell(cmd_list):
     for cmd in cmd_list:

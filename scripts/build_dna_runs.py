@@ -117,11 +117,55 @@ npt_mdp = {
     'tau-t': '0.5',
     'ref-t': '300',
     'tc-grps': 'system',
+    'gen-vel': 'yes',
+    'gen-temp': '300',
     # electrostatics and vdw
     'coulombtype': 'pme',
     'vdwtype':'cut-off',
     'cut-off-scheme': 'verlet',
+    # other
+    'constraints': 'h-bonds'
 }
+
+def pull_basepair_distance_mdp(base_name1, base_name2):
+    mdp = {
+        'pull                     ': 'yes',
+        'pull-print-ref-value     ': 'yes',
+        'pull-nstxout             ': '5000',
+        'pull-nstfout             ': '0',
+        'pull-ngroups             ': '2',
+        'pull-ncoords             ': '1',
+        'pull-group1-name         ': base_name1,
+        'pull-group2-name         ': base_name2,
+        'pull-coord1-groups       ': '1 2',
+        'pull-coord1-geometry    ' : 'distance'
+    }
+    return mdp
+
+def awh_basepair_dist_mdp(name1, name2):
+
+    pull_mdp = pull_basepair_distance_mdp(name1, name2)
+
+    awh_mdp ={
+        'pull-coord1-potential-provider':'awh',
+        'pull-coord1-type        ': 'external-potential',
+        'awh                      ': 'yes',
+        'awh-nbias                ': '1',
+        'awh-nstout               ': '50000',
+        'awh-share-multisim       ': 'yes',
+        'awh1-share-group         ': '1',
+        'awh1-ndim                ': '1',
+        'awh1-error-init          ': '5',
+        'awh1-dim1-coord-index    ': '1',
+        'awh1-dim1-diffusion      ': '5e-5',
+        'awh1-dim1-start          ': '0.25',
+        'awh1-dim1-end            ': '0.60',
+        'awh1-dim1-force-constant ': '128000',
+        'awh1-equilibrate-histogram' : 'yes'
+    }
+    
+    return gmxb.merge_mdps([pull_mdp, awh_mdp])
+
 
 def electrostatics_vdw_mdp(ff_name):
     # These are just examples, but should at least be reasonable.
@@ -146,6 +190,9 @@ def electrostatics_vdw_mdp(ff_name):
         raise ValueError("results: status must be one of %r." % valid)
 
     return mdp
+
+    
+
 
 def mdp_periodic_dna(ff_name, run_type):
 
@@ -176,16 +223,18 @@ def mdp_periodic_dna(ff_name, run_type):
 
 # Generate all the distance selections for a base pair in a DNA double helix, 
 # i.e. two paired DNA chains of equal lengths N.
-# Assumes that the residues of the two chains are indexed and paired as:
-#
-# 1    --   2N
-# 2    --   2N-1
-#     [..]  
-# n    --   2N+1-n     
-#     [..]       
-# N-1  --   N+2
-# N    --   N+1
-def basepair_distance_selection(gro, basepair):
+def basepair_distance_selections(resid1, resid2, name1='base_N1orN3', name2='partner_N1orN3'):
+
+    # Select the two Watson-Crick hydrogen bonding N1 and N3 atom in the base pair.
+    sel = ['base = resid '+ str(resid1),
+           'partner = resid ' + str(resid2),
+           name1 + ' = base and ((resname DA DG and name N1) or (resname DT DC and name N3))',
+           name2 + ' = partner and ((resname DA DG and name N1) or (resname DT DC and name N3))',
+           name1, name2]
+           
+    return sel
+
+def get_basepair_resids(gro):
     # Figure out the length of the DNA chain (could alternatively give the sequence/length as input).
     # Maybe functionalities from e.g. MDAnalysis should be applied here instead...
     table = gmxb.read_gro_table(gro)
@@ -193,26 +242,37 @@ def basepair_distance_selection(gro, basepair):
     col_atomname = gmxb.gro_table_column('atom_name')
     col_resid = gmxb.gro_table_column('resid')
 
-    #sublist = filter(lambda row: row[col_resname] in {'DC', 'DT', 'DA', 'DG'} and row[col_atomname]=="C4'", table)
     dna_table = filter(lambda row: row[col_resname] in {'DC', 'DT', 'DA', 'DG'}, table)
 
     # The number of base pairs equals the number of DNA residues/2
-    N = len(set([row[col_resid] for row in dna_table]))/2
+    nbp = len(set([row[col_resid] for row in dna_table]))/2
 
-    for n in range(nbasepairs):
-        resid1 = n
-        resid2 = 2*N + 1 - n
-        sel
+    # Assume that the bases are indexed and paired as:
+    # 1    --   2N
+    # 2    --   2N-1
+    #     [..]  
+    # n    --   2N+1-n     
+    #     [..]       
+    # N-1  --   N+2
+    # N    --   N+1
+    assert dna_table[0][col_resid] == '1' and dna_table[-1][col_resid] == str(nbp*2)
 
-    return nbasepairs
+    # Resid indexing starts at 1
+    resid_pairs = []
+    for n in range(1,nbp+1):
+        resid_pairs.append((n, 2*nbp + 1 - n))
 
+    return resid_pairs
 
-# Generate all  pairs
-#for ((n=1; n<=$N; n++)); do
-#    prefix="distance-selections"
+# Select the base pairs to target (study closer)
+def get_target_basepair_resids(gro):
+    basepair_resids = get_basepair_resids(gro)
 
-#    n1=$n; 
-#    n2=$((2*N+1-n))
+    # Take 3 in the middle, e.g.
+    ntarget = 3
+    nbp = len(basepair_resids)
+    return basepair_resids[nbp/2:nbp/2 + ntarget]
+
 
 # An example of how how one could build a simulation experiment for the periodic DNA system.
 def example_build(make_clean=False):
@@ -252,14 +312,26 @@ def example_build(make_clean=False):
 
         # Add runs.  Here, each run is added to each build.
         run_list = [
-            {'name':'em', 'mdp': mdp_periodic_dna(specs['name'], 'em')},          
-            {'name':'npt', 'mdp': mdp_periodic_dna(specs['name'], 'npt')},
+            {'name':'em', 'mdp': mdp_periodic_dna(specs['name'], 'em'), 'selections':[]},          
+            {'name':'npt', 'mdp': mdp_periodic_dna(specs['name'], 'npt'), 'selections':[]},
         ]
         
         # Add AWH runs, calculate PMF for some base pairs (bp).  The reaction coordinate requires
         # bp-specific atom selections. Here, generate all possible selections, then specify which
         # bp is targeted in the mdp-file (could also generate only the selections needed for the
         # target bp and use one mdp file).
+        target_basepairs = get_target_basepair_resids(build_dir + '/conf.gro')
+
+        for resid1, resid2 in target_basepairs: 
+           name1, name2 = ['resid' + str(resid) for resid in [resid1, resid2]]
+           awh_sel = basepair_distance_selections(resid1, resid2, name1=name1, name2=name2)
+           awh_mdp = gmxb.merge_mdps([mdp_periodic_dna(specs['name'], 'npt'), awh_basepair_dist_mdp(name1, name2)])
+
+
+           # The the run specs, mdp and selections, for this base pair
+           run_list.append({'name':'-'.join(['awh', name1, name2]), 'mdp': awh_mdp, 'selections': awh_sel})
+
+
 
 
         # Put the run directory on the same level as the build director
@@ -272,4 +344,4 @@ def example_build(make_clean=False):
             xsh('mkdir -p ' + run_dir)
             template_dir = run_dir + '/template'
 
-            gmxb.make_run_template(build_dir, run['mdp'], template_dir)
+            gmxb.make_run_template(build_dir, run['mdp'], template_dir, selections=run['selections'])
