@@ -3,3 +3,10 @@ tmp
 *~
 old
 *.pyc
+summary.pdf
+*.out
+*.blg
+*.log
+*.aux
+*.bbl
+*.toc
