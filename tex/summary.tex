@@ -61,14 +61,25 @@
 \usepackage{authblk}
 
 % Leave date blank
-\date{}
+%\date{}
+\author{Viveca Lindahl}
 
 \begin{document}
 \maketitle
 \tableofcontents
 
 \section{Background}
-Calculating free energy differences between different conformational states is central to molecular dynamics simulation studies of biological systems. The GROMACS simulation software package is capable of carrying out efficient and highly parallel computations. However, for a large-scale study there are many technical steps on the way posing significant barriers for the non-expert user. 
+Calculating free energy (FE) differences between different conformational states is central to molecular dynamics (MD) simulation studies of biological systems. The GROMACS simulation software package is capable of carrying out efficient and highly parallel computations. However, for a large-scale study there are many technical steps on the way posing significant barriers for the non-expert user. Figure~\ref{fig:mdworkflow} shows a typical MD workflow -- using experimental data combined with modeling as input, the goal is to  make novel predictions or observations inaccessible to real-life experiments. The simulation component of the workflow has significant complexity that is currently not automated and requires time-consuming planning and management from the user. The scientific question typically involves comparing different simulation conditions, e.g. different compounds in drug discovery,different mutations in DNA and protein studies and different force field models to gauge the universality of the results,  multiplying the number of simulations (by a number $n_1$, in Fig~\ref{fig:mdworkflow}).Furthermore, the full simulation setup should be replicated in order to obtain reliable estimate of the statistical uncertainty, further multiplying the number of simulations ($n_2$).  Also, in particular for FE calculations, efficient sampling is key. For finite simulation times complex system get trapped in metastable states, yielding unreliable statitsics. However, sampling can be enhanced by advanced sampling techniques that typically exploit non-equilibrium sampling in combination with bias potentials to promote transitions between metastable states. The efficiency of such methods can further be improved by simultaneously launching multiple ($n_3$) communicating trajectories, also known as ``walkers'', that share the sampled data on-the-fly enabling more efficient extraction of information than in the case of launching the same number of independent simulations.     
+
+
+\begin{figure*}[thbp!]
+%\includegraphics[width=1\textwidth]{figs/config.pdf}                                                                                                           
+\includegraphics[width=1\textwidth]{figs/md-workflow.pdf}
+\caption{\label{fig:mdworkflow}
+\textbf{An MD workflow.} 
+MD Simulations take experimental data and modeling (green, top-left) of complex, biomolecular sytems as input to generate trajectories that can subsequently be analyzed to extract biological insight and predictions (green, top-right). Carrying out the MD simulations can be complex in a realistc scientific application (bottom) since multiple ensembles of trajectories need to be generated (bottom). 
+}
+\end{figure*}
 %\subsection{Challenges}
 
 \section{Aims}
