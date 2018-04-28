@@ -69,7 +69,7 @@
 \tableofcontents
 
 \section{Background}
-Calculating free energy (FE) differences between different conformational states is central to molecular dynamics (MD) simulation studies of biological systems. The GROMACS simulation software package is capable of carrying out efficient and highly parallel computations. However, for a large-scale study there are many technical steps on the way posing significant barriers for the non-expert user. Figure~\ref{fig:mdworkflow} shows a typical MD workflow -- using experimental data combined with modeling as input, the goal is to  make novel predictions or observations inaccessible to real-life experiments. The simulation component of the workflow has significant complexity that is currently not automated and requires time-consuming planning and management from the user. The scientific question typically involves comparing different molecular systems, e.g. different compounds in drug discovery, different sequences and mutations in DNA and protein studies, multiplying the number of simulations (by a number $n_0$, in Fig~\ref{fig:mdworkflow} -- TODO). In addition, one would apply  different simulation conditions, e.g. varying the force field model to gauge the universality of the results ($n_1$). Furthermore, the full simulation setup should be replicated in order to obtain reliable estimate of the statistical uncertainty, further multiplying the number of simulations ($n_2$).  Also, in particular for FE calculations, efficient sampling is key. For finite simulation times complex system get trapped in metastable states, yielding unreliable statitsics. However, sampling can be enhanced by advanced sampling techniques that typically exploit non-equilibrium sampling in combination with bias potentials to promote transitions between metastable states. The efficiency of such methods can further be improved by simultaneously launching multiple ($n_3$) communicating trajectories, also known as ``walkers'', that share the sampled data on-the-fly enabling more efficient extraction of information than in the case of launching the same number of independent simulations.     
+Calculating free energy (FE) differences between different conformational states is central to molecular dynamics (MD) simulation studies of biological systems. The GROMACS simulation software package is capable of carrying out efficient and highly parallel computations. However, for a large-scale study there are many technical steps on the way posing significant barriers for the non-expert user. Figure~\ref{fig:mdworkflow} shows a typical MD workflow -- using experimental data combined with modeling as input, the goal is to  make novel predictions or observations inaccessible to real-life experiments. The simulation component of the workflow has significant complexity that is currently not automated and requires time-consuming planning and management from the user. The scientific question typically involves comparing different molecular systems, e.g. different compounds in drug discovery, different sequences and mutations in DNA and protein studies, multiplying the number of simulations (by a number $n_0$, in Fig~\ref{fig:mdworkflow} -- TODO). In addition, one would apply  different simulation conditions, e.g. varying the force field model to gauge the universality of the results ($n_1$). Furthermore, the full simulation setup should be replicated in order to obtain reliable estimate of the statistical uncertainty, further multiplying the number of simulations ($n_2$).  Also, in particular for FE calculations, efficient sampling is key. For finite simulation times complex system get trapped in metastable states, yielding unreliable statitsics. However, sampling can be enhanced by advanced sampling techniques that typically exploit non-equilibrium sampling in combination with bias potentials to promote transitions between metastable states. The efficiency of such methods can further be improved by simultaneously launching multiple ($n_3$) communicating trajectories, also known as ``walkers'', that share the sampled data on-the-fly enabling more efficient extraction of information than in the case of launching the same number of independent simulations. Because of the complexity of this workflow, it is non-trivial to both design and carry out MD simulations. 
 
 \begin{figure*}[thbp!]
 %\includegraphics[width=1\textwidth]{figs/config.pdf}                                                                                                           
@@ -79,10 +79,40 @@ Calculating free energy (FE) differences between different conformational states
 MD Simulations take experimental data and modeling (green, top-left) of complex, biomolecular sytems as input to generate trajectories that can subsequently be analyzed to extract biological insight and predictions (green, top-right). Carrying out the MD simulations can be complex in a realistc scientific application (bottom) since multiple ensembles of trajectories need to be generated (bottom). 
 }
 \end{figure*}
-%\subsection{Challenges}
+
+A critical question, that we approach here, is how to distribute compute resources efficiently in the simulation design. 
+When increasing the machines size, one can choose to either add more independent trajectories (increase $n_2$), more communicating trajectories (increase $n_3$) or make simulations longer by increasing the number of compute nodes per MD trajectory,  $N$. Currently generally these parameters are chosen \textit{ad hoc}, or by iterating  post-simulation analysis.
+The optimal choice of these parameters, depends on the scaling properties along these different parameter axes. The use cases presented in this report thus aim to  elucidate these properties.
+Furthermore, some of these parameter choices have potential to be automated, in FE calculations e.g. by extending or adding trajectories until a given error measure is below a given tolerance. This would greatly improve usability and the efficency of MD simulations. 
+
+
+\subsection{Parallelism in MD simulations and FE calculations}
+
 
 \section{Aims}
- The aim of this BioExcel project is to study and demonstrate a realistic large-scale use described below, of free energy calculations using the molecular simulation software package GROMACS. Besides serving as a tutorial or a template for the novice, this work will identify the critical components of this type of calculation, which will be helpful for designing a maximally automated procedure.case, 
+\subsection{Use cases}
+
+\begin{itemize}
+\item Implement use cases for free energy calculations 
+\item Pinpoint bottlenecks in automation of building MD systems
+\item Benchmark strong scaling for GROMACS for large-scale (10k cores) simulations.
+\item Benchmark ``walker'' scaling for GROMACS for large-scale (10k cores) simulations.
+\item Make (material for) tutorials on efficient, best-practice usage of GROMACs, especially for FE calculations.
+
+
+\item 
+
+\end{itemize}
+
+\subsection{Usability}
+\begin{itemize}
+\item 
+\end{itemize}
+
+
+\subsection{Scalability}
+
+The aim of this BioExcel project  is to  demonstrate a realistic large-scale use described below. Besides serving as a tutorial or a template for the novice, this work will identify the critical components of this type of calculation, which will be helpful for designing a maximally automated procedure.case, 
 %\subsection{Applicability}
 \section{Methods}
 Several aquaporins are in addition selectively permeable to certain solutes 
@@ -92,7 +122,11 @@ Several aquaporins are in addition selectively permeable to certain solutes
 \subsection{Use case I: sequence dependency of DNA base pair opening}
 \subsubsection{Biological relevance and scientific aims}
 
+\subsubsection{General applicability}
+
 \subsubsection{Methods and system setup}
+
+\subsubsection{Results}
 
 \subsection{Use case II: permeability and selectivity of aquaporin membrane channel}
 \subsubsection{Biological relevance and scientific aims}
