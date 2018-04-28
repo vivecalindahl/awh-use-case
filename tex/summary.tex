@@ -85,53 +85,42 @@ When increasing the machines size, one can choose to either add more independent
 The optimal choice of these parameters, depends on the scaling properties along these different parameter axes. The use cases presented in this report thus aim to  elucidate these properties.
 Furthermore, some of these parameter choices have potential to be automated, in FE calculations e.g. by extending or adding trajectories until a given error measure is below a given tolerance. This would greatly improve usability and the efficency of MD simulations. 
 
-
-\subsection{Parallelism in MD simulations and FE calculations}
-
-
 \section{Aims}
-\subsection{Use cases}
+The main aim is to implement one or more realistic large-scale use case to benchmark scalability of GROMACS for FE calculations. The use cases will also be used as tutorial material and as templates for the novice user. 
 
-\begin{itemize}
-\item Implement use cases for free energy calculations 
-\item Pinpoint bottlenecks in automation of building MD systems
-\item Benchmark strong scaling for GROMACS for large-scale (10k cores) simulations.
-\item Benchmark ``walker'' scaling for GROMACS for large-scale (10k cores) simulations.
-\item Make (material for) tutorials on efficient, best-practice usage of GROMACs, especially for FE calculations.
+%\section{Results}
+\section{Use case I: DNA base pair opening}
+
+\subsection{Biological relevance and scientific aims}
+The DNA molecule encodes biological information that has to be protected from chemical exposure while being accessible to read, modify and repair. It typically exists in a double-helical form in which two complementary strands intertwine and bind through Watson-Crick (WC) hydrogen-bonding between the bases, providing a stabilizing environment for the base pairs. However, the base pairs can open up, spontaneously or in the presence of an enzyme, allowing for a base to flip out from the helix~\cite{knips2017both}. The closed, base-paired and the open, base-flipped state are illustrated in Fig.~\ref{fig:dnastates}. The propensity for base pair opening  is sequence dependent, but it is not know exactly how and there is only limited amount of experimental data available and only for certain  base pairs and sequences. There is als growing interest in studying base pair opening to elucidate the equilibrium between canonical WC basepair and the less well-known Hoogsteen basepair, and how it links to DNA sequnce, structure and function~\cite{chakraborty2017energy}.
+\begin{figure*}[thbp!]
+%\includegraphics[width=1\textwidth]{figs/config.pdf}                                                                                                           
+\includegraphics[height=8cm]{figs/dna-helix-closed.png}
+\includegraphics[height=8cm]{figs/dna-helix-flip.png}
+\caption{\label{fig:dnastates}
+\textbf{DNA structure and base pair opening} Base pairs in the DNA double-helical structure can spontaneously open up, which is necessary for exposing the bases to the chemical environment, for for the DNA strands to ``unzip''.
+}
+\end{figure*}
+
+\subsection{The need for large-scale simulations}
+The mechanisms for base pair opening and the importance of the local and global DNA sequence have been investigated for MD simulation~\cite{lindahl2017sequence}. However, because of the combinatorics of systematically ssanning multiple sequences and target basepairs in FE calulcations it is only recently that advances in sampling methods and computational power have allowd for MD simulations to properly address  these questions.
+With MD simulations the free energy of flipping can be calculated for any base pair in any DNA sequence, acting as a direct measure of the sequence dependent propensity for opening. Calculating the free energy for all the base pairs in a sequence and for a large database of sequences of interest, makes this an inherently large-scale and parallelizable problem. 
+
+\subsection{Methods and system setup}
+The system is set up the same as in Ref.~\cite{lindahl2017sequence}. The main ingredients are summarized here.
+We use the Accelerated Weight Histogram (AWH)~\cite{lindahl2014accelerated}, available in GROMACS~2018, to calculate the potential of mean force (PMF) along a reaction coordinate (RC) characterizing the opening. The RC is definesd as a simple distance between the two bases in a target base pair. % Multiple communicating AWH walkers can be launched simultaneously (using the \texttt{gmx mdrun  -multi} command. 
+
+\subsection{General applicability}
+\cite{zhang2018accurate}
+
+\subsection{Benchmark: walker scaling}
 
 
-\item 
 
-\end{itemize}
-
-\subsection{Usability}
-\begin{itemize}
-\item 
-\end{itemize}
-
-
-\subsection{Scalability}
-
-The aim of this BioExcel project  is to  demonstrate a realistic large-scale use described below. Besides serving as a tutorial or a template for the novice, this work will identify the critical components of this type of calculation, which will be helpful for designing a maximally automated procedure.case, 
-%\subsection{Applicability}
-\section{Methods}
-Several aquaporins are in addition selectively permeable to certain solutes 
-
-
-\section{Results}
-\subsection{Use case I: sequence dependency of DNA base pair opening}
-\subsubsection{Biological relevance and scientific aims}
-
-\subsubsection{General applicability}
-
-\subsubsection{Methods and system setup}
-
-\subsubsection{Results}
-
-\subsection{Use case II: permeability and selectivity of aquaporin membrane channel}
-\subsubsection{Biological relevance and scientific aims}
+\section{Use case II: permeability and selectivity of aquaporin membrane channel}
+\subsection{Biological relevance and scientific aims}
 \cite{lindahl2018permeability}
-\subsubsection{Methods and system setup}
+\subsection{Methods and system setup}
 
 \section{Summary/Outlook}
 

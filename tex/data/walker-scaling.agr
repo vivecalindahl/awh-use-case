@@ -1,0 +1,6701 @@
+# Grace project file
+#
+@version 50123
+@page size 460, 474
+@page scroll 5%
+@page inout 5%
+@link page off
+@map font 8 to "Courier", "Courier"
+@map font 10 to "Courier-Bold", "Courier-Bold"
+@map font 11 to "Courier-BoldOblique", "Courier-BoldOblique"
+@map font 9 to "Courier-Oblique", "Courier-Oblique"
+@map font 14 to "Courier-Regular", "Courier-Regular"
+@map font 15 to "Dingbats-Regular", "Dingbats-Regular"
+@map font 4 to "Helvetica", "Helvetica"
+@map font 6 to "Helvetica-Bold", "Helvetica-Bold"
+@map font 7 to "Helvetica-BoldOblique", "Helvetica-BoldOblique"
+@map font 5 to "Helvetica-Oblique", "Helvetica-Oblique"
+@map font 20 to "NimbusMonoL-Bold", "NimbusMonoL-Bold"
+@map font 21 to "NimbusMonoL-BoldOblique", "NimbusMonoL-BoldOblique"
+@map font 22 to "NimbusMonoL-Regular", "NimbusMonoL-Regular"
+@map font 23 to "NimbusMonoL-RegularOblique", "NimbusMonoL-RegularOblique"
+@map font 24 to "NimbusRomanNo9L-Medium", "NimbusRomanNo9L-Medium"
+@map font 25 to "NimbusRomanNo9L-MediumItalic", "NimbusRomanNo9L-MediumItalic"
+@map font 26 to "NimbusRomanNo9L-Regular", "NimbusRomanNo9L-Regular"
+@map font 27 to "NimbusRomanNo9L-RegularItalic", "NimbusRomanNo9L-RegularItalic"
+@map font 28 to "NimbusSansL-Bold", "NimbusSansL-Bold"
+@map font 29 to "NimbusSansL-BoldCondensed", "NimbusSansL-BoldCondensed"
+@map font 30 to "NimbusSansL-BoldCondensedItalic", "NimbusSansL-BoldCondensedItalic"
+@map font 31 to "NimbusSansL-BoldItalic", "NimbusSansL-BoldItalic"
+@map font 32 to "NimbusSansL-Regular", "NimbusSansL-Regular"
+@map font 33 to "NimbusSansL-RegularCondensed", "NimbusSansL-RegularCondensed"
+@map font 34 to "NimbusSansL-RegularCondensedItalic", "NimbusSansL-RegularCondensedItalic"
+@map font 35 to "NimbusSansL-RegularItalic", "NimbusSansL-RegularItalic"
+@map font 36 to "StandardSymbolsL-Regular", "StandardSymbolsL-Regular"
+@map font 12 to "Symbol", "Symbol"
+@map font 38 to "Symbol-Regular", "Symbol-Regular"
+@map font 2 to "Times-Bold", "Times-Bold"
+@map font 3 to "Times-BoldItalic", "Times-BoldItalic"
+@map font 1 to "Times-Italic", "Times-Italic"
+@map font 0 to "Times-Roman", "Times-Roman"
+@map font 43 to "URWBookmanL-DemiBold", "URWBookmanL-DemiBold"
+@map font 44 to "URWBookmanL-DemiBoldItalic", "URWBookmanL-DemiBoldItalic"
+@map font 45 to "URWBookmanL-Light", "URWBookmanL-Light"
+@map font 46 to "URWBookmanL-LightItalic", "URWBookmanL-LightItalic"
+@map font 47 to "URWChanceryL-MediumItalic", "URWChanceryL-MediumItalic"
+@map font 48 to "URWGothicL-Book", "URWGothicL-Book"
+@map font 49 to "URWGothicL-BookOblique", "URWGothicL-BookOblique"
+@map font 50 to "URWGothicL-Demi", "URWGothicL-Demi"
+@map font 51 to "URWGothicL-DemiOblique", "URWGothicL-DemiOblique"
+@map font 52 to "URWPalladioL-Bold", "URWPalladioL-Bold"
+@map font 53 to "URWPalladioL-BoldItalic", "URWPalladioL-BoldItalic"
+@map font 54 to "URWPalladioL-Italic", "URWPalladioL-Italic"
+@map font 55 to "URWPalladioL-Roman", "URWPalladioL-Roman"
+@map font 56 to "Utopia-Bold", "Utopia-Bold"
+@map font 57 to "Utopia-BoldItalic", "Utopia-BoldItalic"
+@map font 58 to "Utopia-Italic", "Utopia-Italic"
+@map font 59 to "Utopia-Regular", "Utopia-Regular"
+@map font 13 to "ZapfDingbats", "ZapfDingbats"
+@map color 0 to (255, 255, 255), "white"
+@map color 1 to (0, 0, 0), "black"
+@map color 2 to (255, 0, 0), "red"
+@map color 3 to (0, 255, 0), "green"
+@map color 4 to (0, 0, 255), "blue"
+@map color 5 to (255, 255, 0), "yellow"
+@map color 6 to (188, 143, 143), "brown"
+@map color 7 to (220, 220, 220), "grey"
+@map color 8 to (148, 0, 211), "violet"
+@map color 9 to (0, 255, 255), "cyan"
+@map color 10 to (255, 0, 255), "magenta"
+@map color 11 to (255, 165, 0), "orange"
+@map color 12 to (114, 33, 188), "indigo"
+@map color 13 to (103, 7, 72), "maroon"
+@map color 14 to (64, 224, 208), "turquoise"
+@map color 15 to (0, 139, 0), "green4"
+@reference date 0
+@date wrap off
+@date wrap year 1950
+@default linewidth 1.0
+@default linestyle 1
+@default color 1
+@default pattern 1
+@default font 0
+@default char size 1.000000
+@default symbol size 1.000000
+@default sformat "%.8g"
+@background color 0
+@page background fill on
+@timestamp off
+@timestamp 0.03, 0.03
+@timestamp color 1
+@timestamp rot 0
+@timestamp font 0
+@timestamp char size 1.000000
+@timestamp def "Sat Apr 28 15:37:05 2018"
+@r0 off
+@link r0 to g0
+@r0 type above
+@r0 linestyle 1
+@r0 linewidth 1.0
+@r0 color 1
+@r0 line 0, 0, 0, 0
+@r1 off
+@link r1 to g0
+@r1 type above
+@r1 linestyle 1
+@r1 linewidth 1.0
+@r1 color 1
+@r1 line 0, 0, 0, 0
+@r2 off
+@link r2 to g0
+@r2 type above
+@r2 linestyle 1
+@r2 linewidth 1.0
+@r2 color 1
+@r2 line 0, 0, 0, 0
+@r3 off
+@link r3 to g0
+@r3 type above
+@r3 linestyle 1
+@r3 linewidth 1.0
+@r3 color 1
+@r3 line 0, 0, 0, 0
+@r4 off
+@link r4 to g0
+@r4 type above
+@r4 linestyle 1
+@r4 linewidth 1.0
+@r4 color 1
+@r4 line 0, 0, 0, 0
+@g0 on
+@g0 hidden false
+@g0 type XY
+@g0 stacked false
+@g0 bar hgap 0.000000
+@g0 fixedpoint off
+@g0 fixedpoint type 0
+@g0 fixedpoint xy 0.000000, 0.000000
+@g0 fixedpoint format general general
+@g0 fixedpoint prec 6, 6
+@with g0
+@    world 100, 0.1, 100000, 5.01187234
+@    stack world 0, 0, 0, 0
+@    znorm 1
+@    view 0.115909, 0.154565, 0.888636, 0.875870
+@    title ""
+@    title font 0
+@    title size 1.500000
+@    title color 1
+@    subtitle ""
+@    subtitle font 0
+@    subtitle size 1.000000
+@    subtitle color 1
+@    xaxes scale Logarithmic
+@    yaxes scale Logarithmic
+@    xaxes invert off
+@    yaxes invert off
+@    xaxis  on
+@    xaxis  type zero false
+@    xaxis  offset 0.000000 , 0.000000
+@    xaxis  bar on
+@    xaxis  bar color 1
+@    xaxis  bar linestyle 1
+@    xaxis  bar linewidth 1.0
+@    xaxis  label "simulation time"
+@    xaxis  label layout para
+@    xaxis  label place auto
+@    xaxis  label char size 1.000000
+@    xaxis  label font 0
+@    xaxis  label color 1
+@    xaxis  label place normal
+@    xaxis  tick on
+@    xaxis  tick major 10
+@    xaxis  tick minor ticks 9
+@    xaxis  tick default 6
+@    xaxis  tick place rounded true
+@    xaxis  tick in
+@    xaxis  tick major size 1.000000
+@    xaxis  tick major color 1
+@    xaxis  tick major linewidth 1.0
+@    xaxis  tick major linestyle 1
+@    xaxis  tick major grid off
+@    xaxis  tick minor color 1
+@    xaxis  tick minor linewidth 1.0
+@    xaxis  tick minor linestyle 1
+@    xaxis  tick minor grid off
+@    xaxis  tick minor size 0.500000
+@    xaxis  ticklabel on
+@    xaxis  ticklabel format general
+@    xaxis  ticklabel prec 5
+@    xaxis  ticklabel formula ""
+@    xaxis  ticklabel append ""
+@    xaxis  ticklabel prepend ""
+@    xaxis  ticklabel angle 0
+@    xaxis  ticklabel skip 0
+@    xaxis  ticklabel stagger 0
+@    xaxis  ticklabel place normal
+@    xaxis  ticklabel offset auto
+@    xaxis  ticklabel offset 0.000000 , 0.010000
+@    xaxis  ticklabel start type auto
+@    xaxis  ticklabel start 0.000000
+@    xaxis  ticklabel stop type auto
+@    xaxis  ticklabel stop 0.000000
+@    xaxis  ticklabel char size 1.000000
+@    xaxis  ticklabel font 0
+@    xaxis  ticklabel color 1
+@    xaxis  tick place both
+@    xaxis  tick spec type none
+@    yaxis  on
+@    yaxis  type zero false
+@    yaxis  offset 0.000000 , 0.000000
+@    yaxis  bar on
+@    yaxis  bar color 1
+@    yaxis  bar linestyle 1
+@    yaxis  bar linewidth 1.0
+@    yaxis  label "error (kT)"
+@    yaxis  label layout para
+@    yaxis  label place auto
+@    yaxis  label char size 1.000000
+@    yaxis  label font 0
+@    yaxis  label color 1
+@    yaxis  label place normal
+@    yaxis  tick on
+@    yaxis  tick major 10
+@    yaxis  tick minor ticks 9
+@    yaxis  tick default 6
+@    yaxis  tick place rounded true
+@    yaxis  tick in
+@    yaxis  tick major size 1.000000
+@    yaxis  tick major color 1
+@    yaxis  tick major linewidth 1.0
+@    yaxis  tick major linestyle 1
+@    yaxis  tick major grid off
+@    yaxis  tick minor color 1
+@    yaxis  tick minor linewidth 1.0
+@    yaxis  tick minor linestyle 1
+@    yaxis  tick minor grid off
+@    yaxis  tick minor size 0.500000
+@    yaxis  ticklabel on
+@    yaxis  ticklabel format general
+@    yaxis  ticklabel prec 5
+@    yaxis  ticklabel formula ""
+@    yaxis  ticklabel append ""
+@    yaxis  ticklabel prepend ""
+@    yaxis  ticklabel angle 0
+@    yaxis  ticklabel skip 0
+@    yaxis  ticklabel stagger 0
+@    yaxis  ticklabel place normal
+@    yaxis  ticklabel offset auto
+@    yaxis  ticklabel offset 0.000000 , 0.010000
+@    yaxis  ticklabel start type auto
+@    yaxis  ticklabel start 0.000000
+@    yaxis  ticklabel stop type auto
+@    yaxis  ticklabel stop 0.000000
+@    yaxis  ticklabel char size 1.000000
+@    yaxis  ticklabel font 0
+@    yaxis  ticklabel color 1
+@    yaxis  tick place both
+@    yaxis  tick spec type none
+@    altxaxis  on
+@    altxaxis  type zero false
+@    altxaxis  offset 0.000000 , 0.000000
+@    altxaxis  bar on
+@    altxaxis  bar color 1
+@    altxaxis  bar linestyle 1
+@    altxaxis  bar linewidth 1.0
+@    altxaxis  label ""
+@    altxaxis  label layout para
+@    altxaxis  label place auto
+@    altxaxis  label char size 1.000000
+@    altxaxis  label font 0
+@    altxaxis  label color 1
+@    altxaxis  label place normal
+@    altxaxis  tick on
+@    altxaxis  tick major 10
+@    altxaxis  tick minor ticks 9
+@    altxaxis  tick default 6
+@    altxaxis  tick place rounded true
+@    altxaxis  tick in
+@    altxaxis  tick major size 1.000000
+@    altxaxis  tick major color 1
+@    altxaxis  tick major linewidth 1.0
+@    altxaxis  tick major linestyle 1
+@    altxaxis  tick major grid off
+@    altxaxis  tick minor color 1
+@    altxaxis  tick minor linewidth 1.0
+@    altxaxis  tick minor linestyle 1
+@    altxaxis  tick minor grid off
+@    altxaxis  tick minor size 0.500000
+@    altxaxis  ticklabel on
+@    altxaxis  ticklabel format general
+@    altxaxis  ticklabel prec 5
+@    altxaxis  ticklabel formula ""
+@    altxaxis  ticklabel append ""
+@    altxaxis  ticklabel prepend ""
+@    altxaxis  ticklabel angle 0
+@    altxaxis  ticklabel skip 0
+@    altxaxis  ticklabel stagger 0
+@    altxaxis  ticklabel place normal
+@    altxaxis  ticklabel offset auto
+@    altxaxis  ticklabel offset 0.000000 , 0.010000
+@    altxaxis  ticklabel start type auto
+@    altxaxis  ticklabel start 0.000000
+@    altxaxis  ticklabel stop type auto
+@    altxaxis  ticklabel stop 0.000000
+@    altxaxis  ticklabel char size 1.000000
+@    altxaxis  ticklabel font 0
+@    altxaxis  ticklabel color 1
+@    altxaxis  tick place both
+@    altxaxis  tick spec type none
+@    altyaxis  on
+@    altyaxis  type zero false
+@    altyaxis  offset 0.000000 , 0.000000
+@    altyaxis  bar on
+@    altyaxis  bar color 1
+@    altyaxis  bar linestyle 1
+@    altyaxis  bar linewidth 1.0
+@    altyaxis  label ""
+@    altyaxis  label layout para
+@    altyaxis  label place auto
+@    altyaxis  label char size 1.000000
+@    altyaxis  label font 0
+@    altyaxis  label color 1
+@    altyaxis  label place normal
+@    altyaxis  tick on
+@    altyaxis  tick major 10
+@    altyaxis  tick minor ticks 9
+@    altyaxis  tick default 6
+@    altyaxis  tick place rounded true
+@    altyaxis  tick in
+@    altyaxis  tick major size 1.000000
+@    altyaxis  tick major color 1
+@    altyaxis  tick major linewidth 1.0
+@    altyaxis  tick major linestyle 1
+@    altyaxis  tick major grid off
+@    altyaxis  tick minor color 1
+@    altyaxis  tick minor linewidth 1.0
+@    altyaxis  tick minor linestyle 1
+@    altyaxis  tick minor grid off
+@    altyaxis  tick minor size 0.500000
+@    altyaxis  ticklabel on
+@    altyaxis  ticklabel format general
+@    altyaxis  ticklabel prec 5
+@    altyaxis  ticklabel formula ""
+@    altyaxis  ticklabel append ""
+@    altyaxis  ticklabel prepend ""
+@    altyaxis  ticklabel angle 0
+@    altyaxis  ticklabel skip 0
+@    altyaxis  ticklabel stagger 0
+@    altyaxis  ticklabel place normal
+@    altyaxis  ticklabel offset auto
+@    altyaxis  ticklabel offset 0.000000 , 0.010000
+@    altyaxis  ticklabel start type auto
+@    altyaxis  ticklabel start 0.000000
+@    altyaxis  ticklabel stop type auto
+@    altyaxis  ticklabel stop 0.000000
+@    altyaxis  ticklabel char size 1.000000
+@    altyaxis  ticklabel font 0
+@    altyaxis  ticklabel color 1
+@    altyaxis  tick place both
+@    altyaxis  tick spec type none
+@    legend on
+@    legend loctype view
+@    legend 0.656818181818, 0.824347826087
+@    legend box color 1
+@    legend box pattern 1
+@    legend box linewidth 1.0
+@    legend box linestyle 1
+@    legend box fill color 0
+@    legend box fill pattern 1
+@    legend font 0
+@    legend char size 1.000000
+@    legend color 1
+@    legend length 4
+@    legend vgap 1
+@    legend hgap 1
+@    legend invert false
+@    frame type 0
+@    frame linestyle 1
+@    frame linewidth 1.0
+@    frame color 1
+@    frame pattern 1
+@    frame background color 0
+@    frame background pattern 0
+@    s0 hidden false
+@    s0 type xy
+@    s0 symbol 0
+@    s0 symbol size 1.000000
+@    s0 symbol color 2
+@    s0 symbol pattern 1
+@    s0 symbol fill color 2
+@    s0 symbol fill pattern 0
+@    s0 symbol linewidth 1.0
+@    s0 symbol linestyle 1
+@    s0 symbol char 65
+@    s0 symbol char font 0
+@    s0 symbol skip 0
+@    s0 line type 1
+@    s0 line linestyle 1
+@    s0 line linewidth 1.0
+@    s0 line color 2
+@    s0 line pattern 1
+@    s0 baseline type 0
+@    s0 baseline off
+@    s0 dropline off
+@    s0 fill type 0
+@    s0 fill rule 0
+@    s0 fill color 1
+@    s0 fill pattern 1
+@    s0 avalue off
+@    s0 avalue type 2
+@    s0 avalue char size 1.000000
+@    s0 avalue font 0
+@    s0 avalue color 1
+@    s0 avalue rot 0
+@    s0 avalue format general
+@    s0 avalue prec 3
+@    s0 avalue prepend ""
+@    s0 avalue append ""
+@    s0 avalue offset 0.000000 , 0.000000
+@    s0 errorbar on
+@    s0 errorbar place both
+@    s0 errorbar color 2
+@    s0 errorbar pattern 1
+@    s0 errorbar size 1.000000
+@    s0 errorbar linewidth 1.0
+@    s0 errorbar linestyle 1
+@    s0 errorbar riser linewidth 1.0
+@    s0 errorbar riser linestyle 1
+@    s0 errorbar riser clip off
+@    s0 errorbar riser clip length 0.100000
+@    s0 comment "convergence_input-ref_1-walkers.dat"
+@    s0 legend  "1 (walker)"
+@    s1 hidden false
+@    s1 type xy
+@    s1 symbol 0
+@    s1 symbol size 1.000000
+@    s1 symbol color 1
+@    s1 symbol pattern 1
+@    s1 symbol fill color 1
+@    s1 symbol fill pattern 0
+@    s1 symbol linewidth 1.0
+@    s1 symbol linestyle 1
+@    s1 symbol char 65
+@    s1 symbol char font 0
+@    s1 symbol skip 0
+@    s1 line type 1
+@    s1 line linestyle 1
+@    s1 line linewidth 1.0
+@    s1 line color 1
+@    s1 line pattern 1
+@    s1 baseline type 0
+@    s1 baseline off
+@    s1 dropline off
+@    s1 fill type 0
+@    s1 fill rule 0
+@    s1 fill color 1
+@    s1 fill pattern 1
+@    s1 avalue off
+@    s1 avalue type 2
+@    s1 avalue char size 1.000000
+@    s1 avalue font 0
+@    s1 avalue color 1
+@    s1 avalue rot 0
+@    s1 avalue format general
+@    s1 avalue prec 3
+@    s1 avalue prepend ""
+@    s1 avalue append ""
+@    s1 avalue offset 0.000000 , 0.000000
+@    s1 errorbar on
+@    s1 errorbar place both
+@    s1 errorbar color 1
+@    s1 errorbar pattern 1
+@    s1 errorbar size 1.000000
+@    s1 errorbar linewidth 1.0
+@    s1 errorbar linestyle 1
+@    s1 errorbar riser linewidth 1.0
+@    s1 errorbar riser linestyle 1
+@    s1 errorbar riser clip off
+@    s1 errorbar riser clip length 0.100000
+@    s1 comment "convergence_input-ref_16-walkers.dat"
+@    s1 legend  "16"
+@    s2 hidden false
+@    s2 type xy
+@    s2 symbol 0
+@    s2 symbol size 1.000000
+@    s2 symbol color 3
+@    s2 symbol pattern 1
+@    s2 symbol fill color 3
+@    s2 symbol fill pattern 0
+@    s2 symbol linewidth 1.0
+@    s2 symbol linestyle 1
+@    s2 symbol char 65
+@    s2 symbol char font 0
+@    s2 symbol skip 0
+@    s2 line type 1
+@    s2 line linestyle 1
+@    s2 line linewidth 1.0
+@    s2 line color 3
+@    s2 line pattern 1
+@    s2 baseline type 0
+@    s2 baseline off
+@    s2 dropline off
+@    s2 fill type 0
+@    s2 fill rule 0
+@    s2 fill color 1
+@    s2 fill pattern 1
+@    s2 avalue off
+@    s2 avalue type 2
+@    s2 avalue char size 1.000000
+@    s2 avalue font 0
+@    s2 avalue color 1
+@    s2 avalue rot 0
+@    s2 avalue format general
+@    s2 avalue prec 3
+@    s2 avalue prepend ""
+@    s2 avalue append ""
+@    s2 avalue offset 0.000000 , 0.000000
+@    s2 errorbar on
+@    s2 errorbar place both
+@    s2 errorbar color 3
+@    s2 errorbar pattern 1
+@    s2 errorbar size 1.000000
+@    s2 errorbar linewidth 1.0
+@    s2 errorbar linestyle 1
+@    s2 errorbar riser linewidth 1.0
+@    s2 errorbar riser linestyle 1
+@    s2 errorbar riser clip off
+@    s2 errorbar riser clip length 0.100000
+@    s2 comment "convergence_input-ref_2-walkers.dat"
+@    s2 legend  "2"
+@    s3 hidden false
+@    s3 type xy
+@    s3 symbol 0
+@    s3 symbol size 1.000000
+@    s3 symbol color 4
+@    s3 symbol pattern 1
+@    s3 symbol fill color 4
+@    s3 symbol fill pattern 0
+@    s3 symbol linewidth 1.0
+@    s3 symbol linestyle 1
+@    s3 symbol char 65
+@    s3 symbol char font 0
+@    s3 symbol skip 0
+@    s3 line type 1
+@    s3 line linestyle 1
+@    s3 line linewidth 1.0
+@    s3 line color 4
+@    s3 line pattern 1
+@    s3 baseline type 0
+@    s3 baseline off
+@    s3 dropline off
+@    s3 fill type 0
+@    s3 fill rule 0
+@    s3 fill color 1
+@    s3 fill pattern 1
+@    s3 avalue off
+@    s3 avalue type 2
+@    s3 avalue char size 1.000000
+@    s3 avalue font 0
+@    s3 avalue color 1
+@    s3 avalue rot 0
+@    s3 avalue format general
+@    s3 avalue prec 3
+@    s3 avalue prepend ""
+@    s3 avalue append ""
+@    s3 avalue offset 0.000000 , 0.000000
+@    s3 errorbar on
+@    s3 errorbar place both
+@    s3 errorbar color 4
+@    s3 errorbar pattern 1
+@    s3 errorbar size 1.000000
+@    s3 errorbar linewidth 1.0
+@    s3 errorbar linestyle 1
+@    s3 errorbar riser linewidth 1.0
+@    s3 errorbar riser linestyle 1
+@    s3 errorbar riser clip off
+@    s3 errorbar riser clip length 0.100000
+@    s3 comment "convergence_input-ref_32-walkers.dat"
+@    s3 legend  "32"
+@    s4 hidden false
+@    s4 type xy
+@    s4 symbol 0
+@    s4 symbol size 1.000000
+@    s4 symbol color 5
+@    s4 symbol pattern 1
+@    s4 symbol fill color 5
+@    s4 symbol fill pattern 0
+@    s4 symbol linewidth 1.0
+@    s4 symbol linestyle 1
+@    s4 symbol char 65
+@    s4 symbol char font 0
+@    s4 symbol skip 0
+@    s4 line type 1
+@    s4 line linestyle 1
+@    s4 line linewidth 1.0
+@    s4 line color 5
+@    s4 line pattern 1
+@    s4 baseline type 0
+@    s4 baseline off
+@    s4 dropline off
+@    s4 fill type 0
+@    s4 fill rule 0
+@    s4 fill color 1
+@    s4 fill pattern 1
+@    s4 avalue off
+@    s4 avalue type 2
+@    s4 avalue char size 1.000000
+@    s4 avalue font 0
+@    s4 avalue color 1
+@    s4 avalue rot 0
+@    s4 avalue format general
+@    s4 avalue prec 3
+@    s4 avalue prepend ""
+@    s4 avalue append ""
+@    s4 avalue offset 0.000000 , 0.000000
+@    s4 errorbar on
+@    s4 errorbar place both
+@    s4 errorbar color 5
+@    s4 errorbar pattern 1
+@    s4 errorbar size 1.000000
+@    s4 errorbar linewidth 1.0
+@    s4 errorbar linestyle 1
+@    s4 errorbar riser linewidth 1.0
+@    s4 errorbar riser linestyle 1
+@    s4 errorbar riser clip off
+@    s4 errorbar riser clip length 0.100000
+@    s4 comment "convergence_input-ref_4-walkers.dat"
+@    s4 legend  "4"
+@    s5 hidden false
+@    s5 type xy
+@    s5 symbol 0
+@    s5 symbol size 1.000000
+@    s5 symbol color 1
+@    s5 symbol pattern 1
+@    s5 symbol fill color 1
+@    s5 symbol fill pattern 0
+@    s5 symbol linewidth 1.0
+@    s5 symbol linestyle 1
+@    s5 symbol char 65
+@    s5 symbol char font 0
+@    s5 symbol skip 0
+@    s5 line type 1
+@    s5 line linestyle 2
+@    s5 line linewidth 1.0
+@    s5 line color 1
+@    s5 line pattern 1
+@    s5 baseline type 0
+@    s5 baseline off
+@    s5 dropline off
+@    s5 fill type 0
+@    s5 fill rule 0
+@    s5 fill color 1
+@    s5 fill pattern 1
+@    s5 avalue off
+@    s5 avalue type 2
+@    s5 avalue char size 1.000000
+@    s5 avalue font 0
+@    s5 avalue color 1
+@    s5 avalue rot 0
+@    s5 avalue format general
+@    s5 avalue prec 3
+@    s5 avalue prepend ""
+@    s5 avalue append ""
+@    s5 avalue offset 0.000000 , 0.000000
+@    s5 errorbar on
+@    s5 errorbar place both
+@    s5 errorbar color 1
+@    s5 errorbar pattern 1
+@    s5 errorbar size 1.000000
+@    s5 errorbar linewidth 1.0
+@    s5 errorbar linestyle 1
+@    s5 errorbar riser linewidth 1.0
+@    s5 errorbar riser linestyle 1
+@    s5 errorbar riser clip off
+@    s5 errorbar riser clip length 0.100000
+@    s5 comment "copy of setdata G0.S4"
+@    s5 legend  ""
+@target G0.S0
+@type xy
+0 4.1331
+100 2.40649
+200 1.16813
+300 1.26847
+400 2.2599
+500 3.1073
+600 3.64306
+700 3.59706
+800 3.1955
+900 3.03292
+1000 3.1599
+1100 3.37135
+1200 3.25669
+1300 3.11446
+1400 2.90074
+1500 2.72161
+1600 2.84815
+1700 3.02223
+1800 3.22358
+1900 3.2123
+2000 3.17395
+2100 3.1174
+2200 2.77353
+2300 2.51582
+2400 2.21061
+2500 2.04381
+2600 2.12747
+2700 2.00762
+2800 1.99265
+2900 1.98606
+3000 1.94706
+3100 1.94124
+3200 1.89792
+3300 1.81679
+3400 1.74455
+3500 1.66589
+3600 1.59451
+3700 1.52579
+3800 1.46634
+3900 1.42148
+4000 1.36517
+4100 1.3237
+4200 1.29418
+4300 1.25507
+4400 1.23326
+4500 1.24481
+4600 1.25312
+4700 1.25778
+4800 1.28027
+4900 1.30646
+5000 1.35195
+5100 1.38981
+5200 1.41769
+5300 1.43226
+5400 1.43985
+5500 1.42905
+5600 1.42294
+5700 1.41807
+5800 1.41956
+5900 1.413
+6000 1.40772
+6100 1.41802
+6200 1.43783
+6300 1.45609
+6400 1.46608
+6500 1.46047
+6600 1.45869
+6700 1.46862
+6800 1.49766
+6900 1.51678
+7000 1.516
+7100 1.53386
+7200 1.55305
+7300 1.56083
+7400 1.5706
+7500 1.59046
+7600 1.61407
+7700 1.63691
+7800 1.64655
+7900 1.66824
+8000 1.69967
+8100 1.71497
+8200 1.71796
+8300 1.71988
+8400 1.72003
+8500 1.72481
+8600 1.73325
+8700 1.7426
+8800 1.75291
+8900 1.75512
+9000 1.7475
+9100 1.73816
+9200 1.73387
+9300 1.7281
+9400 1.72263
+9500 1.71683
+9600 1.71226
+9700 1.70995
+9800 1.70225
+9900 1.69312
+10000 1.69253
+10100 1.69009
+10200 1.68865
+10300 1.67685
+10400 1.67018
+10500 1.66443
+10600 1.66104
+10700 1.65741
+10800 1.65371
+10900 1.65087
+11000 1.64982
+11100 1.64388
+11200 1.63724
+11300 1.63448
+11400 1.6303
+11500 1.62317
+11600 1.61274
+11700 1.60559
+11800 1.59817
+11900 1.59264
+12000 1.58723
+12100 1.5852
+12200 1.57976
+12300 1.57537
+12400 1.56966
+12500 1.56617
+12600 1.56265
+12700 1.5575
+12800 1.55635
+12900 1.5554
+13000 1.55535
+13100 1.55643
+13200 1.55843
+13300 1.55756
+13400 1.55195
+13500 1.5497
+13600 1.54986
+13700 1.54875
+13800 1.55223
+13900 1.55448
+14000 1.55186
+14100 1.53972
+14200 1.53162
+14300 1.52505
+14400 1.51911
+14500 1.51107
+14600 1.5024
+14700 1.49519
+14800 1.48858
+14900 1.48286
+15000 1.4779
+15100 1.47052
+15200 1.46396
+15300 1.45808
+15400 1.45357
+15500 1.45012
+15600 1.44473
+15700 1.44084
+15800 1.4391
+15900 1.43673
+16000 1.43276
+16100 1.42991
+16200 1.42709
+16300 1.42394
+16400 1.42501
+16500 1.42409
+16600 1.41932
+16700 1.41725
+16800 1.41457
+16900 1.41218
+17000 1.41178
+17100 1.40981
+17200 1.40661
+17300 1.40467
+17400 1.40339
+17500 1.4006
+17600 1.39764
+17700 1.39691
+17800 1.3961
+17900 1.39532
+18000 1.39475
+18100 1.39464
+18200 1.39492
+18300 1.3937
+18400 1.39338
+18500 1.39305
+18600 1.39181
+18700 1.3826
+18800 1.37321
+18900 1.36834
+19000 1.36427
+19100 1.35888
+19200 1.35353
+19300 1.34934
+19400 1.34466
+19500 1.3406
+19600 1.33687
+19700 1.33255
+19800 1.32979
+19900 1.32545
+20000 1.32142
+20100 1.31702
+20200 1.31186
+20300 1.30727
+20400 1.30297
+20500 1.29968
+20600 1.29616
+20700 1.29265
+20800 1.28881
+20900 1.28476
+21000 1.28071
+21100 1.27538
+21200 1.27094
+21300 1.26617
+21400 1.26132
+21500 1.25581
+21600 1.25067
+21700 1.24553
+21800 1.2419
+21900 1.23765
+22000 1.23297
+22100 1.229
+22200 1.22494
+22300 1.22155
+22400 1.21873
+22500 1.21496
+22600 1.21126
+22700 1.20815
+22800 1.20412
+22900 1.19988
+23000 1.19648
+23100 1.19358
+23200 1.18901
+23300 1.18609
+23400 1.18244
+23500 1.17888
+23600 1.17499
+23700 1.17167
+23800 1.16817
+23900 1.16428
+24000 1.16151
+24100 1.15841
+24200 1.15615
+24300 1.15423
+24400 1.15288
+24500 1.15045
+24600 1.14797
+24700 1.14536
+24800 1.14274
+24900 1.1393
+25000 1.13568
+25100 1.13288
+25200 1.12977
+25300 1.12694
+25400 1.12388
+25500 1.12148
+25600 1.11923
+25700 1.11721
+25800 1.11493
+25900 1.1126
+26000 1.11112
+26100 1.10962
+26200 1.10866
+26300 1.10726
+26400 1.1053
+26500 1.10313
+26600 1.10198
+26700 1.10101
+26800 1.09996
+26900 1.09929
+27000 1.098
+27100 1.09697
+27200 1.09609
+27300 1.09559
+27400 1.09482
+27500 1.09381
+27600 1.09296
+27700 1.09212
+27800 1.09137
+27900 1.09085
+28000 1.08965
+28100 1.08874
+28200 1.08819
+28300 1.08786
+28400 1.08739
+28500 1.08638
+28600 1.08472
+28700 1.08261
+28800 1.08102
+28900 1.08081
+29000 1.08008
+29100 1.07885
+29200 1.07715
+29300 1.07569
+29400 1.07458
+29500 1.07331
+29600 1.07249
+29700 1.07113
+29800 1.07094
+29900 1.07024
+30000 1.06919
+30100 1.06854
+30200 1.06817
+30300 1.06752
+30400 1.06684
+30500 1.06594
+30600 1.06512
+30700 1.06433
+30800 1.06393
+30900 1.06364
+31000 1.06344
+31100 1.06299
+31200 1.06139
+31300 1.0602
+31400 1.05908
+31500 1.0584
+31600 1.05785
+31700 1.05685
+31800 1.05554
+31900 1.05419
+32000 1.05258
+32100 1.05074
+32200 1.04864
+32300 1.04692
+32400 1.04559
+32500 1.04428
+32600 1.0425
+32700 1.04121
+32800 1.03995
+32900 1.03904
+33000 1.03799
+33100 1.03738
+33200 1.03636
+33300 1.03526
+33400 1.03388
+33500 1.03271
+33600 1.03142
+33700 1.03057
+33800 1.03009
+33900 1.02918
+34000 1.02851
+34100 1.02763
+34200 1.02693
+34300 1.02593
+34400 1.02504
+34500 1.02426
+34600 1.02297
+34700 1.02157
+34800 1.02064
+34900 1.02032
+35000 1.0199
+35100 1.01935
+35200 1.01901
+35300 1.01865
+35400 1.01876
+35500 1.01883
+35600 1.0186
+35700 1.01817
+35800 1.0175
+35900 1.01699
+36000 1.01658
+36100 1.0163
+36200 1.01593
+36300 1.01555
+36400 1.01466
+36500 1.01429
+36600 1.01398
+36700 1.01352
+36800 1.01273
+36900 1.01197
+37000 1.01136
+37100 1.01062
+37200 1.00943
+37300 1.00784
+37400 1.00634
+37500 1.00517
+37600 1.00388
+37700 1.00252
+37800 1.00155
+37900 1.00059
+38000 0.999479
+38100 0.998011
+38200 0.996348
+38300 0.99467
+38400 0.99313
+38500 0.991892
+38600 0.990597
+38700 0.989106
+38800 0.987541
+38900 0.986258
+39000 0.985038
+39100 0.984083
+39200 0.982918
+39300 0.981528
+39400 0.980031
+39500 0.979298
+39600 0.97868
+39700 0.977976
+39800 0.977151
+39900 0.976919
+40000 0.976703
+40100 0.975697
+40200 0.974732
+40300 0.973677
+40400 0.972589
+40500 0.971812
+40600 0.97116
+40700 0.970558
+40800 0.969957
+40900 0.969105
+41000 0.968538
+41100 0.968124
+41200 0.967284
+41300 0.966197
+41400 0.965227
+41500 0.964418
+41600 0.963287
+41700 0.962188
+41800 0.961125
+41900 0.960062
+42000 0.959272
+42100 0.958741
+42200 0.957724
+42300 0.956571
+42400 0.955574
+42500 0.954374
+42600 0.953141
+42700 0.952031
+42800 0.95115
+42900 0.950727
+43000 0.950066
+43100 0.949718
+43200 0.948797
+43300 0.94838
+43400 0.948184
+43500 0.947501
+43600 0.947335
+43700 0.946558
+43800 0.945774
+43900 0.944807
+44000 0.944072
+44100 0.9435
+44200 0.942451
+44300 0.941862
+44400 0.941602
+44500 0.941301
+44600 0.940794
+44700 0.940029
+44800 0.939298
+44900 0.938443
+45000 0.937735
+45100 0.936829
+45200 0.935976
+45300 0.93571
+45400 0.935611
+45500 0.935679
+45600 0.935505
+45700 0.93512
+45800 0.93463
+45900 0.934078
+46000 0.933799
+46100 0.933505
+46200 0.933297
+46300 0.933059
+46400 0.932667
+46500 0.932488
+46600 0.932259
+46700 0.932019
+46800 0.931775
+46900 0.931284
+47000 0.93074
+47100 0.930026
+47200 0.92911
+47300 0.928019
+47400 0.926908
+47500 0.925811
+47600 0.924865
+47700 0.923664
+47800 0.922099
+47900 0.920559
+48000 0.919357
+48100 0.91817
+48200 0.917068
+48300 0.916396
+48400 0.915343
+48500 0.914198
+48600 0.913297
+48700 0.91228
+48800 0.911203
+48900 0.910361
+49000 0.90946
+49100 0.90868
+49200 0.907724
+49300 0.906679
+49400 0.905486
+49500 0.904345
+49600 0.903068
+49700 0.902356
+49800 0.901612
+49900 0.900722
+50000 0.900198
+50100 0.899898
+50200 0.899587
+50300 0.899054
+50400 0.898295
+50500 0.897772
+50600 0.897064
+50700 0.896517
+50800 0.89574
+50900 0.894704
+51000 0.893612
+51100 0.892802
+51200 0.892271
+51300 0.891135
+51400 0.890158
+51500 0.889731
+51600 0.88941
+51700 0.888584
+51800 0.887817
+51900 0.887081
+52000 0.886424
+52100 0.884995
+52200 0.883452
+52300 0.882302
+52400 0.881541
+52500 0.880798
+52600 0.880355
+52700 0.879568
+52800 0.879029
+52900 0.878673
+53000 0.87826
+53100 0.877458
+53200 0.877116
+53300 0.876562
+53400 0.876357
+53500 0.876117
+53600 0.875776
+53700 0.875107
+53800 0.87452
+53900 0.873821
+54000 0.87315
+54100 0.872301
+54200 0.871283
+54300 0.870306
+54400 0.869333
+54500 0.868494
+54600 0.867565
+54700 0.866505
+54800 0.865434
+54900 0.864613
+55000 0.863836
+55100 0.863148
+55200 0.862141
+55300 0.861498
+55400 0.860673
+55500 0.859758
+55600 0.858634
+55700 0.8575
+55800 0.856252
+55900 0.854789
+56000 0.853088
+56100 0.851938
+56200 0.850536
+56300 0.849178
+56400 0.847836
+56500 0.846303
+56600 0.844714
+56700 0.843254
+56800 0.841483
+56900 0.839857
+57000 0.838369
+57100 0.836738
+57200 0.835051
+57300 0.833632
+57400 0.832284
+57500 0.830818
+57600 0.829309
+57700 0.82798
+57800 0.826993
+57900 0.825821
+58000 0.824991
+58100 0.824275
+58200 0.822799
+58300 0.821386
+58400 0.820303
+58500 0.81883
+58600 0.817468
+58700 0.816125
+58800 0.81482
+58900 0.813517
+59000 0.812064
+59100 0.810855
+59200 0.809613
+59300 0.808491
+59400 0.807488
+59500 0.806351
+59600 0.805091
+59700 0.804211
+59800 0.803106
+59900 0.801977
+60000 0.800938
+60100 0.799829
+60200 0.798655
+60300 0.797356
+60400 0.795976
+60500 0.795023
+60600 0.793832
+60700 0.792627
+60800 0.791527
+60900 0.790306
+61000 0.788656
+61100 0.78702
+61200 0.78563
+61300 0.78448
+61400 0.783168
+61500 0.781815
+61600 0.78039
+61700 0.778747
+61800 0.777147
+61900 0.775628
+62000 0.774253
+62100 0.773082
+62200 0.77154
+62300 0.769973
+62400 0.768829
+62500 0.767534
+62600 0.766397
+62700 0.765307
+62800 0.764124
+62900 0.762928
+63000 0.761735
+63100 0.760461
+63200 0.759559
+63300 0.758824
+63400 0.757835
+63500 0.756928
+63600 0.756001
+63700 0.754997
+63800 0.754247
+63900 0.753634
+64000 0.752655
+64100 0.751713
+64200 0.750792
+64300 0.749682
+64400 0.748547
+64500 0.747438
+64600 0.746373
+64700 0.745082
+64800 0.743836
+64900 0.742571
+65000 0.741549
+65100 0.740619
+65200 0.739457
+65300 0.738604
+65400 0.737582
+65500 0.736744
+65600 0.735838
+65700 0.734897
+65800 0.733948
+65900 0.732869
+66000 0.732019
+66100 0.73139
+66200 0.730392
+66300 0.729322
+66400 0.728242
+66500 0.727138
+66600 0.726064
+66700 0.724934
+66800 0.724212
+66900 0.723582
+67000 0.722874
+67100 0.722122
+67200 0.721163
+67300 0.720286
+67400 0.71931
+67500 0.71823
+67600 0.717336
+67700 0.716201
+67800 0.715092
+67900 0.714099
+68000 0.713032
+68100 0.712015
+68200 0.711043
+68300 0.710022
+68400 0.709137
+68500 0.708169
+68600 0.707412
+68700 0.706581
+68800 0.705646
+68900 0.704988
+69000 0.703997
+69100 0.702899
+69200 0.701704
+69300 0.700666
+69400 0.699472
+69500 0.698544
+69600 0.697561
+69700 0.696379
+69800 0.69528
+69900 0.694177
+70000 0.693226
+70100 0.692213
+70200 0.691211
+70300 0.690259
+70400 0.689278
+70500 0.688461
+70600 0.687695
+70700 0.686884
+70800 0.686039
+70900 0.684974
+71000 0.684104
+71100 0.682981
+71200 0.682117
+71300 0.681291
+71400 0.680607
+71500 0.679643
+71600 0.678641
+71700 0.677867
+71800 0.677001
+71900 0.676389
+72000 0.675615
+72100 0.674912
+72200 0.674336
+72300 0.673547
+72400 0.672899
+72500 0.672138
+72600 0.671223
+72700 0.670359
+72800 0.669618
+72900 0.668625
+73000 0.667845
+73100 0.667054
+73200 0.666182
+73300 0.665389
+73400 0.664542
+73500 0.66391
+73600 0.663269
+73700 0.662735
+73800 0.662289
+73900 0.661739
+74000 0.661093
+74100 0.660537
+74200 0.660105
+74300 0.659512
+74400 0.658859
+74500 0.658292
+74600 0.657549
+74700 0.656873
+74800 0.656181
+74900 0.65552
+75000 0.654773
+75100 0.653876
+75200 0.653011
+75300 0.652216
+75400 0.651421
+75500 0.650686
+75600 0.650102
+75700 0.649197
+75800 0.648556
+75900 0.647906
+76000 0.647236
+76100 0.646505
+76200 0.645838
+76300 0.645102
+76400 0.644603
+76500 0.644059
+76600 0.643478
+76700 0.642939
+76800 0.642385
+76900 0.642043
+77000 0.641639
+77100 0.641218
+77200 0.640751
+77300 0.640276
+77400 0.63986
+77500 0.639149
+77600 0.638661
+77700 0.638252
+77800 0.637831
+77900 0.637272
+78000 0.636619
+78100 0.636123
+78200 0.635648
+78300 0.635094
+78400 0.634683
+78500 0.634197
+78600 0.633654
+78700 0.633059
+78800 0.632414
+78900 0.631893
+79000 0.631495
+79100 0.631145
+79200 0.630878
+79300 0.630617
+79400 0.630355
+79500 0.630194
+79600 0.629954
+79700 0.629769
+79800 0.629354
+79900 0.629133
+80000 0.628885
+80100 0.628729
+80200 0.628535
+80300 0.628411
+80400 0.628277
+80500 0.627986
+80600 0.62784
+80700 0.627534
+80800 0.62737
+80900 0.626952
+81000 0.626499
+81100 0.626257
+81200 0.626104
+81300 0.625908
+81400 0.625828
+81500 0.625553
+81600 0.625551
+81700 0.625372
+81800 0.6251
+81900 0.624824
+82000 0.624672
+82100 0.624522
+82200 0.624391
+82300 0.624175
+82400 0.623978
+82500 0.623792
+82600 0.623628
+82700 0.62342
+82800 0.623099
+82900 0.62258
+83000 0.622055
+83100 0.621574
+83200 0.621076
+83300 0.620437
+83400 0.619881
+83500 0.619344
+83600 0.618644
+83700 0.617913
+83800 0.617242
+83900 0.616461
+84000 0.615747
+84100 0.615047
+84200 0.614399
+84300 0.613698
+84400 0.612916
+84500 0.612273
+84600 0.611583
+84700 0.610916
+84800 0.610097
+84900 0.609305
+85000 0.608522
+85100 0.60773
+85200 0.606985
+85300 0.60636
+85400 0.605582
+85500 0.604848
+85600 0.604019
+85700 0.603243
+85800 0.602453
+85900 0.601529
+86000 0.600736
+86100 0.600174
+86200 0.599551
+86300 0.598832
+86400 0.59806
+86500 0.597363
+86600 0.596591
+86700 0.59594
+86800 0.595369
+86900 0.594625
+87000 0.593917
+87100 0.593273
+87200 0.592624
+87300 0.592033
+87400 0.591266
+87500 0.590477
+87600 0.58978
+87700 0.588904
+87800 0.588278
+87900 0.587489
+88000 0.586743
+88100 0.586018
+88200 0.585419
+88300 0.584815
+88400 0.584202
+88500 0.583502
+88600 0.582732
+88700 0.581957
+88800 0.58143
+88900 0.58085
+89000 0.580181
+89100 0.579513
+89200 0.579029
+89300 0.57832
+89400 0.577664
+89500 0.57698
+89600 0.576253
+89700 0.5756
+89800 0.574887
+89900 0.574267
+90000 0.573574
+90100 0.572786
+90200 0.572115
+90300 0.571411
+90400 0.570692
+90500 0.570007
+90600 0.569263
+90700 0.568412
+90800 0.567526
+90900 0.566632
+91000 0.565907
+91100 0.565218
+91200 0.564471
+91300 0.563948
+91400 0.563411
+91500 0.563061
+91600 0.562584
+91700 0.562111
+91800 0.561833
+91900 0.561562
+92000 0.56119
+92100 0.56077
+92200 0.560462
+92300 0.559755
+92400 0.559084
+92500 0.558393
+92600 0.557645
+92700 0.556977
+92800 0.556347
+92900 0.55585
+93000 0.555163
+93100 0.554612
+93200 0.55418
+93300 0.553698
+93400 0.553158
+93500 0.552648
+93600 0.552306
+93700 0.551762
+93800 0.551431
+93900 0.551188
+94000 0.550844
+94100 0.550556
+94200 0.550397
+94300 0.550348
+94400 0.550187
+94500 0.549953
+94600 0.549603
+94700 0.549303
+94800 0.548974
+94900 0.548514
+95000 0.548329
+95100 0.54803
+95200 0.54768
+95300 0.547368
+95400 0.546964
+95500 0.54655
+95600 0.546227
+95700 0.545955
+95800 0.545721
+95900 0.545403
+96000 0.545011
+96100 0.544617
+96200 0.544272
+96300 0.544028
+96400 0.543975
+96500 0.543863
+96600 0.543737
+96700 0.543726
+96800 0.543617
+96900 0.543556
+97000 0.543515
+97100 0.543441
+97200 0.543238
+97300 0.542658
+97400 0.542202
+97500 0.541758
+97600 0.541497
+97700 0.541226
+97800 0.541031
+97900 0.540748
+98000 0.540338
+98100 0.540103
+98200 0.539839
+98300 0.539557
+98400 0.539172
+98500 0.538791
+98600 0.538539
+98700 0.53823
+98800 0.537913
+98900 0.537459
+99000 0.537086
+99100 0.536608
+99200 0.536272
+99300 0.535869
+99400 0.535441
+99500 0.535091
+99600 0.534706
+99700 0.534316
+99800 0.534
+99900 0.533669
+100000 0.53339
+&
+@target G0.S1
+@type xy
+0 4.1331
+100 3.86819
+200 1.07188
+300 0.963955
+400 0.934976
+500 0.890053
+600 0.849346
+700 0.817855
+800 0.791782
+900 0.767205
+1000 0.743533
+1100 0.721569
+1200 0.698667
+1300 0.680388
+1400 0.661633
+1500 0.643031
+1600 0.627656
+1700 0.613658
+1800 0.6036
+1900 0.598186
+2000 0.589864
+2100 0.581485
+2200 0.572875
+2300 0.565083
+2400 0.556172
+2500 0.547958
+2600 0.5412
+2700 0.535218
+2800 0.529947
+2900 0.52426
+3000 0.519159
+3100 0.514646
+3200 0.51071
+3300 0.506732
+3400 0.503413
+3500 0.500423
+3600 0.497984
+3700 0.495903
+3800 0.493152
+3900 0.490329
+4000 0.487981
+4100 0.485563
+4200 0.48256
+4300 0.478807
+4400 0.475791
+4500 0.473185
+4600 0.470553
+4700 0.468702
+4800 0.467651
+4900 0.465941
+5000 0.463922
+5100 0.461778
+5200 0.459945
+5300 0.457966
+5400 0.455601
+5500 0.453317
+5600 0.451085
+5700 0.448965
+5800 0.446375
+5900 0.444067
+6000 0.441637
+6100 0.439497
+6200 0.437627
+6300 0.434997
+6400 0.432806
+6500 0.43081
+6600 0.428663
+6700 0.42628
+6800 0.42432
+6900 0.422718
+7000 0.421044
+7100 0.418919
+7200 0.416884
+7300 0.414764
+7400 0.413018
+7500 0.411262
+7600 0.410268
+7700 0.409332
+7800 0.407792
+7900 0.406302
+8000 0.404952
+8100 0.403504
+8200 0.402175
+8300 0.40057
+8400 0.398951
+8500 0.397296
+8600 0.395386
+8700 0.393303
+8800 0.391734
+8900 0.390586
+9000 0.389185
+9100 0.387523
+9200 0.386079
+9300 0.385152
+9400 0.38417
+9500 0.383195
+9600 0.381753
+9700 0.379806
+9800 0.377809
+9900 0.375762
+10000 0.373699
+10100 0.371816
+10200 0.370084
+10300 0.368469
+10400 0.366733
+10500 0.364406
+10600 0.361964
+10700 0.359924
+10800 0.358123
+10900 0.356536
+11000 0.355072
+11100 0.353648
+11200 0.351996
+11300 0.350248
+11400 0.348687
+11500 0.347172
+11600 0.345368
+11700 0.343644
+11800 0.341786
+11900 0.339856
+12000 0.337807
+12100 0.33575
+12200 0.333818
+12300 0.332107
+12400 0.330601
+12500 0.329028
+12600 0.327287
+12700 0.32562
+12800 0.324115
+12900 0.322581
+13000 0.320895
+13100 0.31936
+13200 0.318122
+13300 0.316725
+13400 0.315244
+13500 0.314095
+13600 0.312818
+13700 0.311376
+13800 0.309555
+13900 0.307731
+14000 0.305915
+14100 0.304066
+14200 0.30224
+14300 0.300614
+14400 0.298929
+14500 0.297132
+14600 0.295386
+14700 0.29372
+14800 0.292246
+14900 0.290707
+15000 0.28917
+15100 0.287666
+15200 0.286152
+15300 0.28467
+15400 0.283072
+15500 0.281665
+15600 0.280361
+15700 0.27901
+15800 0.277515
+15900 0.276063
+16000 0.274743
+16100 0.273494
+16200 0.272299
+16300 0.271141
+16400 0.269807
+16500 0.268446
+16600 0.267124
+16700 0.26613
+16800 0.264959
+16900 0.263698
+17000 0.262337
+17100 0.261068
+17200 0.259894
+17300 0.258793
+17400 0.25763
+17500 0.256394
+17600 0.255164
+17700 0.253986
+17800 0.252707
+17900 0.251352
+18000 0.250097
+18100 0.249005
+18200 0.247775
+18300 0.246477
+18400 0.245125
+18500 0.244026
+18600 0.24307
+18700 0.242077
+18800 0.241067
+18900 0.239917
+19000 0.238877
+19100 0.237864
+19200 0.236991
+19300 0.236046
+19400 0.235143
+19500 0.234442
+19600 0.23374
+19700 0.23281
+19800 0.231755
+19900 0.230821
+20000 0.230034
+20100 0.22904
+20200 0.228158
+20300 0.22744
+20400 0.226703
+20500 0.226058
+20600 0.225324
+20700 0.224519
+20800 0.22354
+20900 0.222524
+21000 0.221638
+21100 0.220876
+21200 0.220387
+21300 0.219794
+21400 0.219373
+21500 0.218763
+21600 0.218117
+21700 0.217511
+21800 0.216795
+21900 0.216369
+22000 0.215869
+22100 0.215436
+22200 0.21498
+22300 0.214443
+22400 0.214016
+22500 0.213568
+22600 0.213262
+22700 0.212762
+22800 0.212074
+22900 0.211506
+23000 0.210933
+23100 0.210589
+23200 0.21017
+23300 0.20965
+23400 0.209139
+23500 0.208477
+23600 0.207827
+23700 0.207315
+23800 0.206795
+23900 0.206358
+24000 0.205941
+24100 0.205382
+24200 0.204846
+24300 0.204179
+24400 0.203565
+24500 0.202985
+24600 0.202411
+24700 0.201811
+24800 0.20134
+24900 0.200915
+25000 0.200529
+25100 0.200304
+25200 0.199984
+25300 0.199655
+25400 0.199199
+25500 0.198705
+25600 0.198269
+25700 0.197892
+25800 0.197673
+25900 0.197459
+26000 0.197304
+26100 0.197161
+26200 0.197053
+26300 0.196878
+26400 0.196766
+26500 0.196576
+26600 0.196413
+26700 0.196225
+26800 0.19604
+26900 0.196064
+27000 0.195872
+27100 0.195641
+27200 0.195412
+27300 0.195214
+27400 0.194942
+27500 0.194751
+27600 0.19457
+27700 0.19435
+27800 0.194116
+27900 0.193693
+28000 0.193303
+28100 0.192981
+28200 0.192569
+28300 0.192282
+28400 0.192004
+28500 0.191813
+28600 0.19147
+28700 0.191176
+28800 0.190895
+28900 0.190567
+29000 0.190029
+29100 0.189512
+29200 0.189094
+29300 0.188741
+29400 0.188482
+29500 0.18813
+29600 0.18778
+29700 0.187357
+29800 0.186892
+29900 0.18642
+30000 0.186012
+30100 0.18549
+30200 0.184979
+30300 0.184386
+30400 0.183925
+30500 0.183435
+30600 0.182984
+30700 0.182556
+30800 0.182125
+30900 0.181653
+31000 0.181341
+31100 0.180992
+31200 0.18072
+31300 0.180604
+31400 0.180368
+31500 0.180294
+31600 0.180115
+31700 0.179959
+31800 0.179824
+31900 0.179625
+32000 0.179403
+32100 0.17915
+32200 0.178875
+32300 0.178627
+32400 0.178338
+32500 0.178002
+32600 0.177601
+32700 0.177189
+32800 0.176792
+32900 0.176313
+33000 0.175904
+33100 0.175546
+33200 0.175193
+33300 0.174826
+33400 0.174445
+33500 0.174185
+33600 0.173886
+33700 0.173553
+33800 0.173178
+33900 0.172844
+34000 0.172516
+34100 0.172171
+34200 0.171944
+34300 0.171665
+34400 0.17138
+34500 0.171148
+34600 0.1709
+34700 0.170753
+34800 0.170603
+34900 0.170478
+35000 0.17035
+35100 0.17023
+35200 0.170204
+35300 0.17011
+35400 0.169888
+35500 0.169613
+35600 0.169343
+35700 0.169005
+35800 0.168743
+35900 0.16848
+36000 0.168151
+36100 0.16783
+36200 0.167687
+36300 0.167548
+36400 0.167396
+36500 0.167181
+36600 0.166985
+36700 0.166844
+36800 0.1667
+36900 0.166545
+37000 0.16638
+37100 0.16618
+37200 0.166045
+37300 0.165927
+37400 0.165768
+37500 0.16566
+37600 0.165505
+37700 0.165351
+37800 0.165108
+37900 0.165002
+38000 0.164904
+38100 0.164831
+38200 0.164799
+38300 0.164764
+38400 0.1647
+38500 0.164671
+38600 0.164635
+38700 0.164615
+38800 0.164465
+38900 0.164368
+39000 0.164255
+39100 0.164017
+39200 0.163782
+39300 0.163637
+39400 0.163499
+39500 0.163346
+39600 0.163174
+39700 0.162981
+39800 0.162766
+39900 0.162598
+40000 0.162371
+40100 0.162015
+40200 0.161725
+40300 0.16144
+40400 0.161175
+40500 0.160941
+40600 0.160823
+40700 0.160628
+40800 0.160402
+40900 0.160309
+41000 0.160217
+41100 0.160092
+41200 0.159907
+41300 0.159706
+41400 0.159535
+41500 0.159332
+41600 0.159073
+41700 0.15888
+41800 0.158724
+41900 0.158546
+42000 0.158339
+42100 0.158126
+42200 0.157901
+42300 0.157649
+42400 0.157425
+42500 0.157172
+42600 0.156813
+42700 0.156575
+42800 0.156326
+42900 0.155942
+43000 0.155669
+43100 0.155454
+43200 0.155308
+43300 0.155137
+43400 0.155
+43500 0.154884
+43600 0.15476
+43700 0.154661
+43800 0.154642
+43900 0.154505
+44000 0.15432
+44100 0.15418
+44200 0.154091
+44300 0.153962
+44400 0.153846
+44500 0.153703
+44600 0.153536
+44700 0.153354
+44800 0.153124
+44900 0.152873
+45000 0.152599
+45100 0.152313
+45200 0.151985
+45300 0.151723
+45400 0.151487
+45500 0.151215
+45600 0.151009
+45700 0.150791
+45800 0.150587
+45900 0.150384
+46000 0.150163
+46100 0.14999
+46200 0.149736
+46300 0.149547
+46400 0.149344
+46500 0.149115
+46600 0.148839
+46700 0.148603
+46800 0.148307
+46900 0.148031
+47000 0.14781
+47100 0.147576
+47200 0.14747
+47300 0.147287
+47400 0.147096
+47500 0.146827
+47600 0.146572
+47700 0.146339
+47800 0.146088
+47900 0.145759
+48000 0.145428
+48100 0.145168
+48200 0.144841
+48300 0.144554
+48400 0.144307
+48500 0.144059
+48600 0.143748
+48700 0.143463
+48800 0.143196
+48900 0.142919
+49000 0.142634
+49100 0.142305
+49200 0.14206
+49300 0.141754
+49400 0.141455
+49500 0.141198
+49600 0.140904
+49700 0.140675
+49800 0.140457
+49900 0.140321
+50000 0.140205
+50100 0.140084
+50200 0.139972
+50300 0.139838
+50400 0.13972
+50500 0.139549
+50600 0.139366
+50700 0.139191
+50800 0.138969
+50900 0.138858
+51000 0.138759
+51100 0.138623
+51200 0.138489
+51300 0.138303
+51400 0.138211
+51500 0.138155
+51600 0.138131
+51700 0.138033
+51800 0.137815
+51900 0.137653
+52000 0.137549
+52100 0.137475
+52200 0.137377
+52300 0.137288
+52400 0.137211
+52500 0.137086
+52600 0.13693
+52700 0.136885
+52800 0.136839
+52900 0.136745
+53000 0.136678
+53100 0.13665
+53200 0.136512
+53300 0.136397
+53400 0.136325
+53500 0.136276
+53600 0.136278
+53700 0.136226
+53800 0.136133
+53900 0.13605
+54000 0.135898
+54100 0.135781
+54200 0.135727
+54300 0.135639
+54400 0.13558
+54500 0.135522
+54600 0.135454
+54700 0.135404
+54800 0.135357
+54900 0.135209
+55000 0.135022
+55100 0.134844
+55200 0.134703
+55300 0.134564
+55400 0.134319
+55500 0.134073
+55600 0.133873
+55700 0.13375
+55800 0.133621
+55900 0.133492
+56000 0.133371
+56100 0.133237
+56200 0.133059
+56300 0.132878
+56400 0.132691
+56500 0.132552
+56600 0.132432
+56700 0.132303
+56800 0.132164
+56900 0.131998
+57000 0.131776
+57100 0.131583
+57200 0.131376
+57300 0.131168
+57400 0.130968
+57500 0.130811
+57600 0.130606
+57700 0.130385
+57800 0.130175
+57900 0.129896
+58000 0.129654
+58100 0.129409
+58200 0.129189
+58300 0.128903
+58400 0.128626
+58500 0.12832
+58600 0.128039
+58700 0.127779
+58800 0.12755
+58900 0.127277
+59000 0.127017
+59100 0.126854
+59200 0.126629
+59300 0.126329
+59400 0.126069
+59500 0.125812
+59600 0.125554
+59700 0.125277
+59800 0.124976
+59900 0.124697
+60000 0.124426
+60100 0.124138
+60200 0.123853
+60300 0.123535
+60400 0.123196
+60500 0.12283
+60600 0.122441
+60700 0.122063
+60800 0.121803
+60900 0.121585
+61000 0.12134
+61100 0.121081
+61200 0.120846
+61300 0.120665
+61400 0.120515
+61500 0.12038
+61600 0.120294
+61700 0.120258
+61800 0.120229
+61900 0.12012
+62000 0.120069
+62100 0.120003
+62200 0.119897
+62300 0.119748
+62400 0.119682
+62500 0.119585
+62600 0.119546
+62700 0.119507
+62800 0.119488
+62900 0.119461
+63000 0.119497
+63100 0.119515
+63200 0.119527
+63300 0.119542
+63400 0.119484
+63500 0.119446
+63600 0.119424
+63700 0.119468
+63800 0.119441
+63900 0.11939
+64000 0.119341
+64100 0.119327
+64200 0.119344
+64300 0.119323
+64400 0.119224
+64500 0.119146
+64600 0.118979
+64700 0.118919
+64800 0.118854
+64900 0.118729
+65000 0.118605
+65100 0.118552
+65200 0.118506
+65300 0.11843
+65400 0.118392
+65500 0.118361
+65600 0.118309
+65700 0.118245
+65800 0.118201
+65900 0.118193
+66000 0.118147
+66100 0.118103
+66200 0.117998
+66300 0.117928
+66400 0.117869
+66500 0.117786
+66600 0.117721
+66700 0.117657
+66800 0.117591
+66900 0.117536
+67000 0.117509
+67100 0.117455
+67200 0.117354
+67300 0.11729
+67400 0.11724
+67500 0.117207
+67600 0.117105
+67700 0.116925
+67800 0.116818
+67900 0.116734
+68000 0.116637
+68100 0.116563
+68200 0.116505
+68300 0.11647
+68400 0.116424
+68500 0.116319
+68600 0.116255
+68700 0.116172
+68800 0.116033
+68900 0.115849
+69000 0.115675
+69100 0.115557
+69200 0.115477
+69300 0.115444
+69400 0.1154
+69500 0.115391
+69600 0.115327
+69700 0.11532
+69800 0.115343
+69900 0.115354
+70000 0.115366
+70100 0.115352
+70200 0.115324
+70300 0.115268
+70400 0.115221
+70500 0.115228
+70600 0.115181
+70700 0.115133
+70800 0.115129
+70900 0.115106
+71000 0.115061
+71100 0.11501
+71200 0.114993
+71300 0.115009
+71400 0.114987
+71500 0.11495
+71600 0.114858
+71700 0.114774
+71800 0.114685
+71900 0.114634
+72000 0.114618
+72100 0.114597
+72200 0.114604
+72300 0.114571
+72400 0.114572
+72500 0.114507
+72600 0.114426
+72700 0.114415
+72800 0.114351
+72900 0.114309
+73000 0.11429
+73100 0.114297
+73200 0.114328
+73300 0.114384
+73400 0.114415
+73500 0.114371
+73600 0.114317
+73700 0.114309
+73800 0.114284
+73900 0.114221
+74000 0.114207
+74100 0.114202
+74200 0.114245
+74300 0.114256
+74400 0.114208
+74500 0.114144
+74600 0.114076
+74700 0.114064
+74800 0.114054
+74900 0.114041
+75000 0.114061
+75100 0.114025
+75200 0.11398
+75300 0.113998
+75400 0.114026
+75500 0.114053
+75600 0.114087
+75700 0.114127
+75800 0.114141
+75900 0.11412
+76000 0.114111
+76100 0.114054
+76200 0.114014
+76300 0.113978
+76400 0.113977
+76500 0.113967
+76600 0.113922
+76700 0.113898
+76800 0.113908
+76900 0.113929
+77000 0.113968
+77100 0.113986
+77200 0.113953
+77300 0.113915
+77400 0.113893
+77500 0.113874
+77600 0.113851
+77700 0.113839
+77800 0.113875
+77900 0.113924
+78000 0.113982
+78100 0.11403
+78200 0.114104
+78300 0.114175
+78400 0.114305
+78500 0.114377
+78600 0.114401
+78700 0.114382
+78800 0.114364
+78900 0.114371
+79000 0.114377
+79100 0.114366
+79200 0.11436
+79300 0.114336
+79400 0.114322
+79500 0.114246
+79600 0.114205
+79700 0.114193
+79800 0.114198
+79900 0.114205
+80000 0.114198
+80100 0.114257
+80200 0.114265
+80300 0.114256
+80400 0.114241
+80500 0.11427
+80600 0.114299
+80700 0.114323
+80800 0.11434
+80900 0.114361
+81000 0.114371
+81100 0.114361
+81200 0.114366
+81300 0.114311
+81400 0.114294
+81500 0.114232
+81600 0.114146
+81700 0.114102
+81800 0.114036
+81900 0.113994
+82000 0.113957
+82100 0.113893
+82200 0.113805
+82300 0.113786
+82400 0.113801
+82500 0.113824
+82600 0.113804
+82700 0.113788
+82800 0.113727
+82900 0.113676
+83000 0.113618
+83100 0.113589
+83200 0.113541
+83300 0.113468
+83400 0.113393
+83500 0.113308
+83600 0.113248
+83700 0.113234
+83800 0.113194
+83900 0.113146
+84000 0.113103
+84100 0.113081
+84200 0.113048
+84300 0.113048
+84400 0.113062
+84500 0.113089
+84600 0.113073
+84700 0.11304
+84800 0.112995
+84900 0.112887
+85000 0.112822
+85100 0.112778
+85200 0.112676
+85300 0.112565
+85400 0.112441
+85500 0.112317
+85600 0.112213
+85700 0.112096
+85800 0.112007
+85900 0.111914
+86000 0.111804
+86100 0.111665
+86200 0.111551
+86300 0.111456
+86400 0.11139
+86500 0.111343
+86600 0.111268
+86700 0.111156
+86800 0.111057
+86900 0.11099
+87000 0.110946
+87100 0.110931
+87200 0.110911
+87300 0.110866
+87400 0.110795
+87500 0.110738
+87600 0.110685
+87700 0.110654
+87800 0.110643
+87900 0.110671
+88000 0.110692
+88100 0.110682
+88200 0.110655
+88300 0.110623
+88400 0.110571
+88500 0.110548
+88600 0.110528
+88700 0.110498
+88800 0.110462
+88900 0.110429
+89000 0.110384
+89100 0.110377
+89200 0.110326
+89300 0.110211
+89400 0.110122
+89500 0.110061
+89600 0.109967
+89700 0.109906
+89800 0.10985
+89900 0.109775
+90000 0.109681
+90100 0.109545
+90200 0.109443
+90300 0.109362
+90400 0.109271
+90500 0.109184
+90600 0.109105
+90700 0.109039
+90800 0.10899
+90900 0.108929
+91000 0.10882
+91100 0.108739
+91200 0.108662
+91300 0.108597
+91400 0.10852
+91500 0.108457
+91600 0.108418
+91700 0.108381
+91800 0.10833
+91900 0.108253
+92000 0.108173
+92100 0.108086
+92200 0.107989
+92300 0.107947
+92400 0.107826
+92500 0.107719
+92600 0.107614
+92700 0.107512
+92800 0.107443
+92900 0.107406
+93000 0.107373
+93100 0.107356
+93200 0.107352
+93300 0.107338
+93400 0.107329
+93500 0.107352
+93600 0.107358
+93700 0.107298
+93800 0.107231
+93900 0.107182
+94000 0.107143
+94100 0.1071
+94200 0.10708
+94300 0.106994
+94400 0.106938
+94500 0.106913
+94600 0.106875
+94700 0.106858
+94800 0.106844
+94900 0.106805
+95000 0.106782
+95100 0.106759
+95200 0.106737
+95300 0.106742
+95400 0.106765
+95500 0.10674
+95600 0.106732
+95700 0.106722
+95800 0.106734
+95900 0.106753
+96000 0.106753
+96100 0.106811
+96200 0.10688
+96300 0.106908
+96400 0.106925
+96500 0.106976
+96600 0.106999
+96700 0.107058
+96800 0.107111
+96900 0.107172
+97000 0.107227
+97100 0.107253
+97200 0.107294
+97300 0.107322
+97400 0.107356
+97500 0.107378
+97600 0.107377
+97700 0.107378
+97800 0.107391
+97900 0.107352
+98000 0.107321
+98100 0.107308
+98200 0.107279
+98300 0.107225
+98400 0.107203
+98500 0.107196
+98600 0.107197
+98700 0.107187
+98800 0.107135
+98900 0.10706
+99000 0.106963
+99100 0.106849
+99200 0.106722
+99300 0.106612
+99400 0.106449
+99500 0.106291
+99600 0.106143
+99700 0.105971
+99800 0.105792
+99900 0.105625
+100000 0.105497
+&
+@target G0.S2
+@type xy
+0 4.1331
+100 1.10674
+200 2.07149
+300 3.2404
+400 3.49969
+500 2.72569
+600 2.01737
+700 1.82435
+800 1.9658
+900 1.74664
+1000 1.55448
+1100 1.41958
+1200 1.4696
+1300 1.65186
+1400 1.80884
+1500 1.80104
+1600 1.78358
+1700 1.68833
+1800 1.57464
+1900 1.46631
+2000 1.40107
+2100 1.3563
+2200 1.3202
+2300 1.31829
+2400 1.31874
+2500 1.33291
+2600 1.30709
+2700 1.26004
+2800 1.22145
+2900 1.18787
+3000 1.1591
+3100 1.13087
+3200 1.11067
+3300 1.09796
+3400 1.09181
+3500 1.08452
+3600 1.07408
+3700 1.06579
+3800 1.05596
+3900 1.04411
+4000 1.0374
+4100 1.03524
+4200 1.03341
+4300 1.02615
+4400 1.01989
+4500 1.01717
+4600 1.01384
+4700 1.01176
+4800 1.0062
+4900 0.998208
+5000 0.990064
+5100 0.984447
+5200 0.977481
+5300 0.972956
+5400 0.967664
+5500 0.960541
+5600 0.953894
+5700 0.949558
+5800 0.946358
+5900 0.943432
+6000 0.940716
+6100 0.937154
+6200 0.933311
+6300 0.930283
+6400 0.92758
+6500 0.925155
+6600 0.923503
+6700 0.922792
+6800 0.921438
+6900 0.917235
+7000 0.916582
+7100 0.914803
+7200 0.911992
+7300 0.908405
+7400 0.903454
+7500 0.897996
+7600 0.893405
+7700 0.88788
+7800 0.883417
+7900 0.880929
+8000 0.878413
+8100 0.874343
+8200 0.868495
+8300 0.864277
+8400 0.859967
+8500 0.856927
+8600 0.853587
+8700 0.850739
+8800 0.847798
+8900 0.844043
+9000 0.839594
+9100 0.835562
+9200 0.831852
+9300 0.826615
+9400 0.822293
+9500 0.818795
+9600 0.812907
+9700 0.807371
+9800 0.803452
+9900 0.802069
+10000 0.801783
+10100 0.799254
+10200 0.796481
+10300 0.794446
+10400 0.792922
+10500 0.791678
+10600 0.789542
+10700 0.78713
+10800 0.784939
+10900 0.78306
+11000 0.780991
+11100 0.779487
+11200 0.776843
+11300 0.774855
+11400 0.77247
+11500 0.770527
+11600 0.768508
+11700 0.76599
+11800 0.763755
+11900 0.761429
+12000 0.759451
+12100 0.757062
+12200 0.754834
+12300 0.752948
+12400 0.750279
+12500 0.747874
+12600 0.746467
+12700 0.745781
+12800 0.744707
+12900 0.74245
+13000 0.740575
+13100 0.739488
+13200 0.73671
+13300 0.734234
+13400 0.732343
+13500 0.730058
+13600 0.728019
+13700 0.725892
+13800 0.724882
+13900 0.723357
+14000 0.722097
+14100 0.72073
+14200 0.71952
+14300 0.718663
+14400 0.717308
+14500 0.716544
+14600 0.716
+14700 0.715376
+14800 0.714997
+14900 0.714557
+15000 0.714188
+15100 0.714084
+15200 0.713927
+15300 0.713899
+15400 0.713762
+15500 0.712936
+15600 0.712139
+15700 0.711115
+15800 0.709983
+15900 0.708261
+16000 0.707681
+16100 0.706824
+16200 0.70615
+16300 0.705225
+16400 0.703646
+16500 0.702106
+16600 0.700876
+16700 0.699731
+16800 0.698581
+16900 0.697487
+17000 0.696654
+17100 0.69605
+17200 0.694978
+17300 0.694463
+17400 0.693234
+17500 0.692452
+17600 0.69188
+17700 0.690859
+17800 0.689812
+17900 0.68951
+18000 0.68802
+18100 0.686965
+18200 0.686098
+18300 0.684723
+18400 0.68366
+18500 0.683183
+18600 0.682415
+18700 0.681536
+18800 0.681054
+18900 0.680103
+19000 0.678626
+19100 0.677125
+19200 0.67578
+19300 0.674243
+19400 0.673032
+19500 0.672087
+19600 0.670601
+19700 0.668873
+19800 0.667546
+19900 0.666394
+20000 0.665258
+20100 0.664322
+20200 0.663555
+20300 0.662816
+20400 0.661914
+20500 0.660838
+20600 0.659652
+20700 0.658615
+20800 0.65772
+20900 0.656525
+21000 0.655843
+21100 0.654465
+21200 0.65327
+21300 0.652037
+21400 0.65126
+21500 0.649898
+21600 0.648829
+21700 0.647919
+21800 0.646626
+21900 0.64555
+22000 0.644933
+22100 0.64453
+22200 0.64372
+22300 0.643346
+22400 0.64287
+22500 0.642107
+22600 0.64161
+22700 0.640929
+22800 0.640094
+22900 0.639778
+23000 0.639345
+23100 0.638622
+23200 0.638089
+23300 0.6378
+23400 0.636676
+23500 0.635632
+23600 0.634438
+23700 0.633122
+23800 0.632008
+23900 0.63154
+24000 0.630668
+24100 0.62942
+24200 0.628316
+24300 0.627281
+24400 0.625819
+24500 0.625023
+24600 0.623779
+24700 0.622645
+24800 0.621491
+24900 0.62046
+25000 0.619694
+25100 0.618177
+25200 0.616873
+25300 0.615581
+25400 0.614108
+25500 0.613307
+25600 0.612216
+25700 0.610667
+25800 0.609245
+25900 0.607801
+26000 0.606555
+26100 0.604972
+26200 0.603268
+26300 0.601422
+26400 0.599884
+26500 0.597788
+26600 0.596142
+26700 0.595051
+26800 0.594091
+26900 0.592841
+27000 0.591628
+27100 0.590255
+27200 0.589179
+27300 0.588279
+27400 0.587578
+27500 0.586851
+27600 0.585679
+27700 0.58427
+27800 0.582386
+27900 0.580674
+28000 0.579031
+28100 0.577719
+28200 0.576221
+28300 0.574506
+28400 0.572939
+28500 0.571582
+28600 0.570502
+28700 0.569084
+28800 0.567501
+28900 0.566167
+29000 0.564632
+29100 0.563133
+29200 0.561573
+29300 0.559549
+29400 0.557621
+29500 0.555479
+29600 0.553641
+29700 0.551456
+29800 0.549239
+29900 0.546958
+30000 0.544431
+30100 0.541969
+30200 0.539714
+30300 0.537633
+30400 0.535288
+30500 0.533205
+30600 0.531354
+30700 0.529422
+30800 0.527805
+30900 0.52626
+31000 0.52476
+31100 0.522946
+31200 0.521223
+31300 0.519639
+31400 0.518088
+31500 0.516738
+31600 0.515704
+31700 0.514607
+31800 0.513569
+31900 0.512682
+32000 0.512176
+32100 0.511298
+32200 0.510546
+32300 0.50935
+32400 0.50824
+32500 0.507494
+32600 0.506408
+32700 0.505365
+32800 0.504659
+32900 0.503915
+33000 0.503231
+33100 0.5024
+33200 0.501684
+33300 0.501041
+33400 0.500069
+33500 0.499392
+33600 0.498408
+33700 0.497306
+33800 0.496178
+33900 0.495067
+34000 0.494153
+34100 0.493351
+34200 0.49223
+34300 0.491048
+34400 0.490205
+34500 0.489404
+34600 0.488185
+34700 0.487413
+34800 0.486594
+34900 0.485696
+35000 0.484561
+35100 0.483487
+35200 0.482521
+35300 0.481918
+35400 0.481552
+35500 0.481277
+35600 0.480695
+35700 0.48015
+35800 0.479688
+35900 0.47948
+36000 0.479075
+36100 0.478684
+36200 0.478558
+36300 0.478004
+36400 0.477889
+36500 0.477861
+36600 0.477697
+36700 0.477642
+36800 0.477475
+36900 0.476889
+37000 0.47666
+37100 0.476554
+37200 0.476452
+37300 0.476321
+37400 0.476086
+37500 0.476013
+37600 0.475718
+37700 0.47531
+37800 0.474762
+37900 0.474501
+38000 0.47401
+38100 0.473417
+38200 0.472368
+38300 0.471434
+38400 0.470524
+38500 0.469787
+38600 0.469109
+38700 0.46849
+38800 0.468031
+38900 0.467859
+39000 0.46777
+39100 0.467385
+39200 0.466999
+39300 0.466579
+39400 0.466167
+39500 0.465752
+39600 0.465284
+39700 0.464625
+39800 0.463758
+39900 0.463052
+40000 0.462433
+40100 0.461908
+40200 0.461591
+40300 0.461438
+40400 0.460887
+40500 0.460596
+40600 0.460276
+40700 0.459775
+40800 0.459238
+40900 0.45876
+41000 0.458288
+41100 0.457891
+41200 0.45737
+41300 0.456844
+41400 0.456025
+41500 0.455284
+41600 0.454499
+41700 0.45377
+41800 0.453046
+41900 0.452344
+42000 0.45183
+42100 0.451211
+42200 0.450772
+42300 0.450192
+42400 0.449789
+42500 0.449038
+42600 0.448203
+42700 0.447604
+42800 0.447061
+42900 0.446494
+43000 0.446057
+43100 0.445266
+43200 0.444549
+43300 0.444024
+43400 0.443312
+43500 0.442517
+43600 0.441996
+43700 0.441396
+43800 0.440604
+43900 0.439755
+44000 0.439232
+44100 0.438639
+44200 0.437762
+44300 0.437118
+44400 0.436555
+44500 0.43597
+44600 0.435247
+44700 0.434782
+44800 0.434031
+44900 0.433258
+45000 0.432454
+45100 0.43198
+45200 0.431485
+45300 0.430992
+45400 0.430285
+45500 0.429607
+45600 0.429072
+45700 0.428471
+45800 0.427702
+45900 0.426837
+46000 0.42597
+46100 0.425237
+46200 0.42438
+46300 0.423599
+46400 0.422718
+46500 0.421968
+46600 0.421243
+46700 0.420516
+46800 0.42017
+46900 0.419705
+47000 0.419271
+47100 0.418663
+47200 0.418054
+47300 0.417819
+47400 0.417324
+47500 0.416955
+47600 0.416381
+47700 0.415907
+47800 0.415454
+47900 0.414782
+48000 0.413825
+48100 0.413141
+48200 0.412465
+48300 0.411649
+48400 0.410557
+48500 0.40968
+48600 0.408868
+48700 0.408199
+48800 0.4075
+48900 0.4069
+49000 0.406493
+49100 0.406018
+49200 0.405413
+49300 0.40469
+49400 0.404046
+49500 0.40327
+49600 0.402516
+49700 0.401723
+49800 0.400695
+49900 0.399675
+50000 0.398738
+50100 0.397765
+50200 0.396955
+50300 0.396251
+50400 0.395504
+50500 0.394559
+50600 0.393636
+50700 0.392712
+50800 0.391873
+50900 0.391002
+51000 0.390215
+51100 0.389447
+51200 0.388565
+51300 0.387772
+51400 0.386949
+51500 0.38612
+51600 0.385364
+51700 0.384712
+51800 0.384066
+51900 0.38334
+52000 0.382621
+52100 0.381875
+52200 0.380956
+52300 0.380095
+52400 0.379395
+52500 0.378763
+52600 0.378107
+52700 0.377541
+52800 0.376952
+52900 0.376346
+53000 0.375774
+53100 0.375331
+53200 0.374956
+53300 0.374729
+53400 0.374638
+53500 0.374445
+53600 0.374021
+53700 0.373618
+53800 0.373042
+53900 0.372547
+54000 0.372182
+54100 0.371839
+54200 0.371404
+54300 0.371138
+54400 0.370797
+54500 0.370463
+54600 0.370006
+54700 0.369358
+54800 0.368882
+54900 0.368454
+55000 0.367983
+55100 0.367428
+55200 0.366768
+55300 0.366093
+55400 0.365553
+55500 0.365189
+55600 0.364952
+55700 0.364544
+55800 0.364112
+55900 0.363468
+56000 0.362693
+56100 0.362219
+56200 0.361706
+56300 0.36119
+56400 0.360605
+56500 0.359859
+56600 0.359117
+56700 0.358529
+56800 0.357944
+56900 0.357549
+57000 0.357207
+57100 0.356771
+57200 0.356085
+57300 0.355723
+57400 0.355228
+57500 0.354665
+57600 0.354138
+57700 0.353497
+57800 0.352703
+57900 0.351837
+58000 0.350937
+58100 0.350315
+58200 0.34965
+58300 0.349126
+58400 0.348729
+58500 0.348291
+58600 0.347929
+58700 0.347618
+58800 0.347114
+58900 0.346431
+59000 0.345654
+59100 0.344981
+59200 0.344535
+59300 0.344125
+59400 0.343723
+59500 0.343239
+59600 0.342737
+59700 0.342279
+59800 0.34174
+59900 0.341264
+60000 0.340722
+60100 0.339956
+60200 0.339227
+60300 0.338493
+60400 0.337811
+60500 0.337072
+60600 0.336255
+60700 0.335407
+60800 0.334578
+60900 0.333744
+61000 0.332878
+61100 0.331897
+61200 0.330944
+61300 0.32987
+61400 0.329017
+61500 0.328184
+61600 0.327293
+61700 0.326454
+61800 0.325701
+61900 0.324884
+62000 0.323996
+62100 0.323178
+62200 0.322528
+62300 0.321994
+62400 0.321641
+62500 0.321338
+62600 0.320892
+62700 0.320312
+62800 0.319933
+62900 0.319592
+63000 0.319319
+63100 0.319168
+63200 0.318957
+63300 0.318556
+63400 0.318034
+63500 0.317634
+63600 0.317401
+63700 0.317072
+63800 0.31672
+63900 0.316186
+64000 0.315749
+64100 0.315186
+64200 0.314724
+64300 0.314212
+64400 0.313683
+64500 0.313245
+64600 0.312779
+64700 0.312319
+64800 0.312093
+64900 0.311821
+65000 0.311546
+65100 0.311174
+65200 0.310718
+65300 0.310136
+65400 0.309552
+65500 0.309034
+65600 0.308506
+65700 0.308042
+65800 0.307571
+65900 0.307133
+66000 0.306651
+66100 0.306167
+66200 0.305805
+66300 0.305444
+66400 0.305059
+66500 0.304673
+66600 0.304517
+66700 0.304083
+66800 0.303627
+66900 0.303431
+67000 0.303166
+67100 0.303021
+67200 0.302868
+67300 0.302515
+67400 0.30223
+67500 0.302189
+67600 0.301891
+67700 0.301772
+67800 0.301691
+67900 0.301499
+68000 0.301204
+68100 0.300957
+68200 0.300652
+68300 0.300495
+68400 0.300369
+68500 0.300354
+68600 0.300275
+68700 0.29993
+68800 0.299527
+68900 0.299221
+69000 0.298939
+69100 0.29858
+69200 0.29815
+69300 0.297742
+69400 0.29733
+69500 0.296833
+69600 0.296331
+69700 0.295989
+69800 0.295688
+69900 0.295375
+70000 0.295108
+70100 0.29486
+70200 0.294538
+70300 0.294164
+70400 0.293814
+70500 0.293656
+70600 0.293562
+70700 0.293567
+70800 0.293422
+70900 0.293383
+71000 0.293337
+71100 0.293224
+71200 0.293111
+71300 0.292857
+71400 0.29257
+71500 0.292186
+71600 0.291847
+71700 0.291636
+71800 0.291499
+71900 0.291134
+72000 0.290846
+72100 0.290624
+72200 0.290228
+72300 0.28975
+72400 0.289445
+72500 0.289229
+72600 0.289013
+72700 0.288747
+72800 0.288527
+72900 0.2883
+73000 0.288141
+73100 0.288037
+73200 0.287907
+73300 0.28774
+73400 0.287718
+73500 0.287644
+73600 0.287618
+73700 0.287433
+73800 0.287389
+73900 0.287241
+74000 0.287011
+74100 0.286747
+74200 0.286534
+74300 0.286309
+74400 0.286255
+74500 0.286132
+74600 0.285976
+74700 0.285903
+74800 0.285732
+74900 0.285392
+75000 0.285016
+75100 0.284758
+75200 0.284594
+75300 0.284547
+75400 0.284354
+75500 0.284107
+75600 0.283768
+75700 0.283484
+75800 0.283381
+75900 0.283371
+76000 0.283338
+76100 0.283192
+76200 0.283107
+76300 0.283028
+76400 0.283011
+76500 0.282762
+76600 0.282487
+76700 0.282059
+76800 0.281835
+76900 0.281449
+77000 0.281172
+77100 0.280792
+77200 0.280568
+77300 0.280282
+77400 0.28003
+77500 0.279736
+77600 0.279336
+77700 0.278949
+77800 0.278514
+77900 0.278112
+78000 0.277936
+78100 0.277881
+78200 0.277834
+78300 0.277757
+78400 0.277671
+78500 0.277388
+78600 0.277216
+78700 0.276952
+78800 0.276719
+78900 0.276422
+79000 0.275935
+79100 0.275642
+79200 0.27533
+79300 0.275061
+79400 0.274836
+79500 0.274589
+79600 0.274376
+79700 0.274242
+79800 0.27411
+79900 0.273825
+80000 0.273635
+80100 0.273612
+80200 0.273564
+80300 0.273555
+80400 0.273472
+80500 0.273341
+80600 0.273188
+80700 0.273043
+80800 0.272952
+80900 0.272894
+81000 0.272742
+81100 0.272579
+81200 0.272468
+81300 0.272287
+81400 0.272123
+81500 0.271998
+81600 0.271906
+81700 0.27167
+81800 0.271504
+81900 0.27141
+82000 0.2713
+82100 0.271273
+82200 0.271162
+82300 0.271026
+82400 0.270795
+82500 0.270724
+82600 0.270691
+82700 0.270677
+82800 0.270692
+82900 0.270624
+83000 0.270457
+83100 0.270402
+83200 0.27033
+83300 0.270288
+83400 0.270253
+83500 0.270255
+83600 0.270194
+83700 0.270208
+83800 0.270236
+83900 0.270331
+84000 0.270423
+84100 0.270515
+84200 0.2706
+84300 0.270769
+84400 0.270917
+84500 0.271023
+84600 0.27111
+84700 0.271184
+84800 0.271299
+84900 0.271358
+85000 0.271428
+85100 0.271425
+85200 0.271287
+85300 0.271072
+85400 0.271008
+85500 0.270953
+85600 0.270836
+85700 0.270604
+85800 0.270336
+85900 0.27016
+86000 0.269976
+86100 0.26979
+86200 0.26967
+86300 0.269395
+86400 0.269062
+86500 0.268686
+86600 0.268472
+86700 0.268127
+86800 0.267697
+86900 0.26742
+87000 0.267048
+87100 0.266739
+87200 0.266327
+87300 0.266024
+87400 0.265717
+87500 0.265406
+87600 0.265184
+87700 0.265041
+87800 0.26495
+87900 0.264759
+88000 0.264506
+88100 0.264313
+88200 0.264084
+88300 0.263945
+88400 0.26377
+88500 0.263564
+88600 0.263464
+88700 0.263423
+88800 0.263369
+88900 0.263186
+89000 0.263081
+89100 0.263118
+89200 0.263133
+89300 0.263237
+89400 0.263382
+89500 0.263485
+89600 0.263674
+89700 0.263841
+89800 0.263975
+89900 0.264151
+90000 0.264242
+90100 0.264252
+90200 0.264185
+90300 0.26414
+90400 0.264116
+90500 0.264107
+90600 0.264068
+90700 0.263891
+90800 0.263616
+90900 0.263421
+91000 0.26308
+91100 0.262781
+91200 0.262672
+91300 0.262573
+91400 0.262429
+91500 0.26231
+91600 0.26218
+91700 0.261976
+91800 0.261754
+91900 0.261575
+92000 0.261426
+92100 0.261176
+92200 0.260676
+92300 0.260408
+92400 0.259964
+92500 0.259597
+92600 0.259402
+92700 0.259206
+92800 0.259073
+92900 0.258844
+93000 0.258628
+93100 0.258476
+93200 0.258229
+93300 0.257931
+93400 0.257628
+93500 0.257518
+93600 0.257397
+93700 0.257323
+93800 0.257273
+93900 0.257374
+94000 0.257486
+94100 0.257491
+94200 0.257423
+94300 0.257325
+94400 0.257324
+94500 0.257244
+94600 0.257111
+94700 0.25693
+94800 0.25672
+94900 0.256539
+95000 0.256309
+95100 0.256154
+95200 0.256053
+95300 0.255911
+95400 0.255847
+95500 0.255782
+95600 0.255823
+95700 0.255776
+95800 0.255801
+95900 0.255761
+96000 0.255732
+96100 0.255706
+96200 0.255604
+96300 0.255551
+96400 0.255611
+96500 0.255585
+96600 0.255707
+96700 0.255797
+96800 0.255856
+96900 0.255963
+97000 0.256079
+97100 0.256192
+97200 0.256303
+97300 0.256345
+97400 0.256455
+97500 0.256593
+97600 0.256788
+97700 0.25702
+97800 0.257224
+97900 0.257289
+98000 0.257383
+98100 0.257428
+98200 0.257588
+98300 0.25765
+98400 0.257748
+98500 0.25769
+98600 0.257581
+98700 0.257563
+98800 0.257507
+98900 0.257465
+99000 0.25745
+99100 0.257448
+99200 0.257503
+99300 0.257593
+99400 0.257672
+99500 0.25765
+99600 0.257634
+99700 0.257698
+99800 0.257763
+99900 0.25785
+100000 0.257837
+&
+@target G0.S3
+@type xy
+0 4.1331
+100 1.68238
+200 1.02921
+300 0.932024
+400 0.84461
+500 0.788943
+600 0.741742
+700 0.704447
+800 0.674232
+900 0.649766
+1000 0.626174
+1100 0.605459
+1200 0.585273
+1300 0.566179
+1400 0.551079
+1500 0.536188
+1600 0.520977
+1700 0.508477
+1800 0.497771
+1900 0.485978
+2000 0.476464
+2100 0.468101
+2200 0.46211
+2300 0.458021
+2400 0.454846
+2500 0.451245
+2600 0.44791
+2700 0.44485
+2800 0.442706
+2900 0.440438
+3000 0.438069
+3100 0.435901
+3200 0.434044
+3300 0.432829
+3400 0.430471
+3500 0.428597
+3600 0.427144
+3700 0.425536
+3800 0.423199
+3900 0.420533
+4000 0.418093
+4100 0.416007
+4200 0.414249
+4300 0.412205
+4400 0.410241
+4500 0.408375
+4600 0.406535
+4700 0.40455
+4800 0.402319
+4900 0.400266
+5000 0.397694
+5100 0.395481
+5200 0.393173
+5300 0.390736
+5400 0.388263
+5500 0.385213
+5600 0.382218
+5700 0.379829
+5800 0.37782
+5900 0.375901
+6000 0.373804
+6100 0.371242
+6200 0.369052
+6300 0.367218
+6400 0.365048
+6500 0.362725
+6600 0.360641
+6700 0.358792
+6800 0.356875
+6900 0.35471
+7000 0.35278
+7100 0.350901
+7200 0.349079
+7300 0.347165
+7400 0.34485
+7500 0.342836
+7600 0.340724
+7700 0.338691
+7800 0.336825
+7900 0.335059
+8000 0.333116
+8100 0.331035
+8200 0.328729
+8300 0.326476
+8400 0.324085
+8500 0.321461
+8600 0.319148
+8700 0.317049
+8800 0.314922
+8900 0.31285
+9000 0.310965
+9100 0.309126
+9200 0.307384
+9300 0.305415
+9400 0.303265
+9500 0.301302
+9600 0.299414
+9700 0.297609
+9800 0.295934
+9900 0.294123
+10000 0.29241
+10100 0.290827
+10200 0.289431
+10300 0.288287
+10400 0.286991
+10500 0.285702
+10600 0.284324
+10700 0.283096
+10800 0.281842
+10900 0.280708
+11000 0.279473
+11100 0.278626
+11200 0.277586
+11300 0.276477
+11400 0.275152
+11500 0.273749
+11600 0.272238
+11700 0.270641
+11800 0.269268
+11900 0.267925
+12000 0.266503
+12100 0.265038
+12200 0.263519
+12300 0.262071
+12400 0.260747
+12500 0.259503
+12600 0.258238
+12700 0.257073
+12800 0.25594
+12900 0.254534
+13000 0.253255
+13100 0.251967
+13200 0.250721
+13300 0.249305
+13400 0.248162
+13500 0.247076
+13600 0.246105
+13700 0.24516
+13800 0.244082
+13900 0.243151
+14000 0.242152
+14100 0.241226
+14200 0.240071
+14300 0.238877
+14400 0.23778
+14500 0.236762
+14600 0.235605
+14700 0.234397
+14800 0.233216
+14900 0.232
+15000 0.230933
+15100 0.229961
+15200 0.229202
+15300 0.228487
+15400 0.227613
+15500 0.226725
+15600 0.225834
+15700 0.224953
+15800 0.22409
+15900 0.223274
+16000 0.222384
+16100 0.2216
+16200 0.220701
+16300 0.219824
+16400 0.21897
+16500 0.21816
+16600 0.217381
+16700 0.216544
+16800 0.21567
+16900 0.214557
+17000 0.213453
+17100 0.2125
+17200 0.211542
+17300 0.210667
+17400 0.209791
+17500 0.208774
+17600 0.207817
+17700 0.206973
+17800 0.206141
+17900 0.205354
+18000 0.204502
+18100 0.203645
+18200 0.202781
+18300 0.201856
+18400 0.200909
+18500 0.200207
+18600 0.199599
+18700 0.198961
+18800 0.198357
+18900 0.197725
+19000 0.197188
+19100 0.196704
+19200 0.196065
+19300 0.19541
+19400 0.194838
+19500 0.194404
+19600 0.193753
+19700 0.193202
+19800 0.192703
+19900 0.192119
+20000 0.191418
+20100 0.190835
+20200 0.190269
+20300 0.189683
+20400 0.189121
+20500 0.188443
+20600 0.187613
+20700 0.186814
+20800 0.186038
+20900 0.185299
+21000 0.184611
+21100 0.184096
+21200 0.183541
+21300 0.182933
+21400 0.182381
+21500 0.181905
+21600 0.181391
+21700 0.180888
+21800 0.180377
+21900 0.179789
+22000 0.179106
+22100 0.178374
+22200 0.177591
+22300 0.176777
+22400 0.17602
+22500 0.175238
+22600 0.174458
+22700 0.17368
+22800 0.172942
+22900 0.172235
+23000 0.171525
+23100 0.170896
+23200 0.170257
+23300 0.169521
+23400 0.168759
+23500 0.167934
+23600 0.16711
+23700 0.166288
+23800 0.16543
+23900 0.164686
+24000 0.163958
+24100 0.163237
+24200 0.162471
+24300 0.161647
+24400 0.160935
+24500 0.160244
+24600 0.15961
+24700 0.158911
+24800 0.158284
+24900 0.157579
+25000 0.156898
+25100 0.156183
+25200 0.155447
+25300 0.154763
+25400 0.154157
+25500 0.153595
+25600 0.152952
+25700 0.152227
+25800 0.151504
+25900 0.150861
+26000 0.150207
+26100 0.149532
+26200 0.148918
+26300 0.148272
+26400 0.147562
+26500 0.14685
+26600 0.146171
+26700 0.145595
+26800 0.145027
+26900 0.14444
+27000 0.143799
+27100 0.14328
+27200 0.142607
+27300 0.141938
+27400 0.141275
+27500 0.140679
+27600 0.140088
+27700 0.139436
+27800 0.138789
+27900 0.138123
+28000 0.137457
+28100 0.13691
+28200 0.13636
+28300 0.13577
+28400 0.135184
+28500 0.134595
+28600 0.134194
+28700 0.133861
+28800 0.133482
+28900 0.1331
+29000 0.132745
+29100 0.132397
+29200 0.132101
+29300 0.131816
+29400 0.13152
+29500 0.131126
+29600 0.130828
+29700 0.130571
+29800 0.130203
+29900 0.129834
+30000 0.129503
+30100 0.129157
+30200 0.128863
+30300 0.128571
+30400 0.128284
+30500 0.128017
+30600 0.127674
+30700 0.12739
+30800 0.127128
+30900 0.126831
+31000 0.126574
+31100 0.126323
+31200 0.126038
+31300 0.125749
+31400 0.125447
+31500 0.125122
+31600 0.1248
+31700 0.124495
+31800 0.124213
+31900 0.123966
+32000 0.123736
+32100 0.123478
+32200 0.123218
+32300 0.12286
+32400 0.122615
+32500 0.122462
+32600 0.122288
+32700 0.122021
+32800 0.121904
+32900 0.121702
+33000 0.121396
+33100 0.121041
+33200 0.120729
+33300 0.120456
+33400 0.120193
+33500 0.119887
+33600 0.119655
+33700 0.119361
+33800 0.119148
+33900 0.118955
+34000 0.118759
+34100 0.118565
+34200 0.118274
+34300 0.118039
+34400 0.117757
+34500 0.117595
+34600 0.117416
+34700 0.117121
+34800 0.11683
+34900 0.116662
+35000 0.116487
+35100 0.116317
+35200 0.116107
+35300 0.115932
+35400 0.115734
+35500 0.115534
+35600 0.115294
+35700 0.115072
+35800 0.114859
+35900 0.11458
+36000 0.114345
+36100 0.114136
+36200 0.113953
+36300 0.11371
+36400 0.113488
+36500 0.11318
+36600 0.112891
+36700 0.112697
+36800 0.112579
+36900 0.112407
+37000 0.11224
+37100 0.112067
+37200 0.111846
+37300 0.111681
+37400 0.111548
+37500 0.111455
+37600 0.111373
+37700 0.111263
+37800 0.111184
+37900 0.111141
+38000 0.111071
+38100 0.110944
+38200 0.110805
+38300 0.11074
+38400 0.110658
+38500 0.110563
+38600 0.110434
+38700 0.110301
+38800 0.110091
+38900 0.109904
+39000 0.109781
+39100 0.109573
+39200 0.109336
+39300 0.109118
+39400 0.108919
+39500 0.108686
+39600 0.108463
+39700 0.108286
+39800 0.108054
+39900 0.107815
+40000 0.10755
+40100 0.107302
+40200 0.107019
+40300 0.106698
+40400 0.10637
+40500 0.106046
+40600 0.105736
+40700 0.105364
+40800 0.105045
+40900 0.104725
+41000 0.104441
+41100 0.104217
+41200 0.103973
+41300 0.103717
+41400 0.103461
+41500 0.10324
+41600 0.103074
+41700 0.102907
+41800 0.10279
+41900 0.102655
+42000 0.10247
+42100 0.102257
+42200 0.10203
+42300 0.101833
+42400 0.101691
+42500 0.101584
+42600 0.101482
+42700 0.101406
+42800 0.101326
+42900 0.101196
+43000 0.101109
+43100 0.100965
+43200 0.100816
+43300 0.100702
+43400 0.100542
+43500 0.100414
+43600 0.100293
+43700 0.100169
+43800 0.100059
+43900 0.0999683
+44000 0.0999212
+44100 0.099855
+44200 0.0997839
+44300 0.0997843
+44400 0.0997014
+44500 0.099688
+44600 0.0996845
+44700 0.0996961
+44800 0.099707
+44900 0.0996893
+45000 0.0996678
+45100 0.0996518
+45200 0.0996792
+45300 0.0996673
+45400 0.0996727
+45500 0.0997156
+45600 0.0997599
+45700 0.099783
+45800 0.09976
+45900 0.0997342
+46000 0.0997595
+46100 0.0996691
+46200 0.0995245
+46300 0.0993782
+46400 0.0992689
+46500 0.099179
+46600 0.099092
+46700 0.0989826
+46800 0.0988441
+46900 0.0987357
+47000 0.0986485
+47100 0.0985188
+47200 0.0984714
+47300 0.098451
+47400 0.0984354
+47500 0.0984229
+47600 0.0983907
+47700 0.0983666
+47800 0.0983661
+47900 0.098312
+48000 0.0982009
+48100 0.0981483
+48200 0.098121
+48300 0.098169
+48400 0.0982335
+48500 0.0983028
+48600 0.0983608
+48700 0.0984606
+48800 0.0985301
+48900 0.0986158
+49000 0.0986686
+49100 0.0987427
+49200 0.0988096
+49300 0.098877
+49400 0.0989353
+49500 0.0990214
+49600 0.0991021
+49700 0.099156
+49800 0.0991957
+49900 0.0992074
+50000 0.0991833
+50100 0.0991926
+50200 0.0991725
+50300 0.0991557
+50400 0.0991313
+50500 0.0991727
+50600 0.0991874
+50700 0.0992052
+50800 0.0991677
+50900 0.0991572
+51000 0.0991597
+51100 0.0991531
+51200 0.099135
+51300 0.0991382
+51400 0.0991283
+51500 0.0991415
+51600 0.0990782
+51700 0.099062
+51800 0.0990511
+51900 0.0990191
+52000 0.0990164
+52100 0.0990534
+52200 0.0990708
+52300 0.0990869
+52400 0.0991086
+52500 0.0990855
+52600 0.0990206
+52700 0.0989515
+52800 0.0989306
+52900 0.0989123
+53000 0.0988985
+53100 0.0988783
+53200 0.09884
+53300 0.0987599
+53400 0.0987147
+53500 0.0986692
+53600 0.0986625
+53700 0.0986176
+53800 0.0985643
+53900 0.0985267
+54000 0.0984944
+54100 0.0984456
+54200 0.0984174
+54300 0.0983671
+54400 0.0982865
+54500 0.0982024
+54600 0.0981653
+54700 0.0981413
+54800 0.0981682
+54900 0.0981999
+55000 0.0982232
+55100 0.0982549
+55200 0.0982689
+55300 0.0982706
+55400 0.0982958
+55500 0.0983527
+55600 0.0984042
+55700 0.098491
+55800 0.0986227
+55900 0.0987
+56000 0.098773
+56100 0.098807
+56200 0.0988207
+56300 0.0988309
+56400 0.0988376
+56500 0.0988536
+56600 0.0988447
+56700 0.0987786
+56800 0.0987469
+56900 0.0987358
+57000 0.0987319
+57100 0.0987484
+57200 0.098708
+57300 0.0986842
+57400 0.0986384
+57500 0.098568
+57600 0.0985464
+57700 0.0984803
+57800 0.0983924
+57900 0.098313
+58000 0.0982212
+58100 0.0980946
+58200 0.0979564
+58300 0.0978859
+58400 0.0978157
+58500 0.097772
+58600 0.0977693
+58700 0.0977972
+58800 0.0978415
+58900 0.0978751
+59000 0.0978742
+59100 0.0979196
+59200 0.0979255
+59300 0.0979138
+59400 0.0978643
+59500 0.0978327
+59600 0.0977883
+59700 0.0977578
+59800 0.0976928
+59900 0.0976427
+60000 0.0975683
+60100 0.0974845
+60200 0.0974074
+60300 0.0973207
+60400 0.0972292
+60500 0.0971866
+60600 0.0971069
+60700 0.0969982
+60800 0.0969243
+60900 0.0968537
+61000 0.0967799
+61100 0.0967459
+61200 0.0967181
+61300 0.096694
+61400 0.0966581
+61500 0.0965815
+61600 0.0965574
+61700 0.0965229
+61800 0.0965106
+61900 0.0964624
+62000 0.0963644
+62100 0.0962919
+62200 0.0962388
+62300 0.0961417
+62400 0.0960149
+62500 0.095884
+62600 0.0957368
+62700 0.0956151
+62800 0.0955255
+62900 0.0954921
+63000 0.0954354
+63100 0.095376
+63200 0.0953648
+63300 0.0952914
+63400 0.0952002
+63500 0.0951179
+63600 0.0950048
+63700 0.0949334
+63800 0.0949032
+63900 0.0948849
+64000 0.0948897
+64100 0.0948884
+64200 0.0948565
+64300 0.0948816
+64400 0.0948655
+64500 0.0948122
+64600 0.0947818
+64700 0.0947415
+64800 0.0946732
+64900 0.0946026
+65000 0.0945819
+65100 0.0945444
+65200 0.0945186
+65300 0.0944933
+65400 0.0944661
+65500 0.0944405
+65600 0.0944557
+65700 0.0944753
+65800 0.0944851
+65900 0.0944702
+66000 0.0944524
+66100 0.0944334
+66200 0.0944702
+66300 0.0944879
+66400 0.0944801
+66500 0.0944783
+66600 0.0944318
+66700 0.0944093
+66800 0.0943602
+66900 0.094337
+67000 0.0943419
+67100 0.0943508
+67200 0.0944017
+67300 0.0944046
+67400 0.094381
+67500 0.094402
+67600 0.0944446
+67700 0.0944542
+67800 0.0944811
+67900 0.0945111
+68000 0.0945311
+68100 0.0945597
+68200 0.0946078
+68300 0.0946148
+68400 0.0946143
+68500 0.0946131
+68600 0.0946598
+68700 0.0947259
+68800 0.0947415
+68900 0.0947661
+69000 0.0947631
+69100 0.0947564
+69200 0.0947393
+69300 0.0947094
+69400 0.0947005
+69500 0.0946763
+69600 0.0946973
+69700 0.0947163
+69800 0.0947224
+69900 0.0947365
+70000 0.0947164
+70100 0.0946879
+70200 0.0946528
+70300 0.0946045
+70400 0.094527
+70500 0.0944223
+70600 0.09435
+70700 0.0943139
+70800 0.0943043
+70900 0.094314
+71000 0.0943284
+71100 0.0943341
+71200 0.0943579
+71300 0.0943662
+71400 0.0944027
+71500 0.094421
+71600 0.094438
+71700 0.0944209
+71800 0.0944215
+71900 0.0944369
+72000 0.094452
+72100 0.0944663
+72200 0.0944726
+72300 0.0945026
+72400 0.0945397
+72500 0.0945665
+72600 0.09459
+72700 0.0946198
+72800 0.0946277
+72900 0.0946579
+73000 0.0946631
+73100 0.0946472
+73200 0.0946422
+73300 0.0946465
+73400 0.0946445
+73500 0.0946157
+73600 0.0945962
+73700 0.0945956
+73800 0.0946332
+73900 0.0946755
+74000 0.0947172
+74100 0.0947561
+74200 0.0947624
+74300 0.0947987
+74400 0.0948117
+74500 0.0948088
+74600 0.0947934
+74700 0.0947689
+74800 0.0947354
+74900 0.094688
+75000 0.0946101
+75100 0.0945782
+75200 0.0945644
+75300 0.0945445
+75400 0.0945184
+75500 0.0945111
+75600 0.0945288
+75700 0.094552
+75800 0.0945944
+75900 0.0946404
+76000 0.0946852
+76100 0.0947369
+76200 0.0948276
+76300 0.0949244
+76400 0.0950129
+76500 0.0950617
+76600 0.0951555
+76700 0.0952465
+76800 0.0953719
+76900 0.0955343
+77000 0.095639
+77100 0.0957888
+77200 0.0959078
+77300 0.0960101
+77400 0.0961086
+77500 0.096244
+77600 0.0963635
+77700 0.0964831
+77800 0.0965726
+77900 0.0966631
+78000 0.0967496
+78100 0.0968167
+78200 0.0968747
+78300 0.0968876
+78400 0.0969358
+78500 0.0969848
+78600 0.0970076
+78700 0.0970445
+78800 0.0970753
+78900 0.097098
+79000 0.0971166
+79100 0.0971868
+79200 0.0972832
+79300 0.0974005
+79400 0.0975036
+79500 0.0976436
+79600 0.0977596
+79700 0.0978654
+79800 0.097973
+79900 0.0980415
+80000 0.0981206
+80100 0.0981834
+80200 0.0982079
+80300 0.0982556
+80400 0.0982864
+80500 0.0983371
+80600 0.098358
+80700 0.0983659
+80800 0.0983635
+80900 0.0983802
+81000 0.0983954
+81100 0.0984083
+81200 0.0984439
+81300 0.0984551
+81400 0.0984627
+81500 0.0984172
+81600 0.0983656
+81700 0.0983254
+81800 0.0982669
+81900 0.0982098
+82000 0.0981314
+82100 0.0980752
+82200 0.0980192
+82300 0.0979961
+82400 0.0979828
+82500 0.0979756
+82600 0.097987
+82700 0.0979637
+82800 0.0979445
+82900 0.0979227
+83000 0.0979163
+83100 0.0979089
+83200 0.0979457
+83300 0.0980018
+83400 0.0979924
+83500 0.0979968
+83600 0.0979853
+83700 0.0979869
+83800 0.0979485
+83900 0.0979097
+84000 0.0978493
+84100 0.0977781
+84200 0.0977303
+84300 0.0976414
+84400 0.0975821
+84500 0.0975409
+84600 0.0975131
+84700 0.0974624
+84800 0.0974071
+84900 0.0973637
+85000 0.0972926
+85100 0.0972387
+85200 0.0971883
+85300 0.0971713
+85400 0.0971533
+85500 0.0971431
+85600 0.0971291
+85700 0.0971028
+85800 0.0971028
+85900 0.0970864
+86000 0.0970725
+86100 0.097058
+86200 0.0970339
+86300 0.0969941
+86400 0.0969593
+86500 0.0969738
+86600 0.096943
+86700 0.0968993
+86800 0.0968574
+86900 0.0968137
+87000 0.0967604
+87100 0.0966969
+87200 0.0966386
+87300 0.0965771
+87400 0.0965437
+87500 0.0965387
+87600 0.0965621
+87700 0.096546
+87800 0.0965427
+87900 0.096498
+88000 0.0964836
+88100 0.0965041
+88200 0.096495
+88300 0.0965031
+88400 0.0965154
+88500 0.0965271
+88600 0.0965277
+88700 0.0965105
+88800 0.0965109
+88900 0.096502
+89000 0.0964758
+89100 0.0964708
+89200 0.0964657
+89300 0.0964238
+89400 0.0963818
+89500 0.0963427
+89600 0.0963111
+89700 0.0962921
+89800 0.0962911
+89900 0.0962793
+90000 0.0962696
+90100 0.0962472
+90200 0.0962104
+90300 0.0962185
+90400 0.0962216
+90500 0.0962344
+90600 0.0962245
+90700 0.0962625
+90800 0.0963427
+90900 0.0963907
+91000 0.0964077
+91100 0.0963788
+91200 0.0963577
+91300 0.0963648
+91400 0.096383
+91500 0.096398
+91600 0.0964005
+91700 0.0964029
+91800 0.0964053
+91900 0.0964149
+92000 0.0963942
+92100 0.0963821
+92200 0.0963658
+92300 0.0963495
+92400 0.0963043
+92500 0.0962906
+92600 0.0962552
+92700 0.096254
+92800 0.0962434
+92900 0.096209
+93000 0.0961815
+93100 0.0961619
+93200 0.0961452
+93300 0.0961047
+93400 0.0960892
+93500 0.0961124
+93600 0.0961215
+93700 0.0961042
+93800 0.0960397
+93900 0.0960046
+94000 0.0959706
+94100 0.0959565
+94200 0.0959462
+94300 0.0959447
+94400 0.0959333
+94500 0.0959371
+94600 0.0959418
+94700 0.0959393
+94800 0.0959146
+94900 0.0959586
+95000 0.0960172
+95100 0.0960573
+95200 0.0960951
+95300 0.0961384
+95400 0.0961518
+95500 0.096172
+95600 0.0962177
+95700 0.096253
+95800 0.0962973
+95900 0.0963105
+96000 0.0962907
+96100 0.0962822
+96200 0.0962679
+96300 0.0962963
+96400 0.096324
+96500 0.0963411
+96600 0.0963711
+96700 0.0963923
+96800 0.0963997
+96900 0.0964291
+97000 0.0964408
+97100 0.0964422
+97200 0.0964302
+97300 0.0964032
+97400 0.0964121
+97500 0.0963937
+97600 0.0963644
+97700 0.096344
+97800 0.0963219
+97900 0.0963546
+98000 0.0963822
+98100 0.0963938
+98200 0.0963923
+98300 0.0963947
+98400 0.0964048
+98500 0.0964219
+98600 0.096455
+98700 0.0964822
+98800 0.0965031
+98900 0.0965142
+99000 0.096498
+99100 0.0965056
+99200 0.0965285
+99300 0.0965663
+99400 0.0966206
+99500 0.0966691
+99600 0.096707
+99700 0.0967405
+99800 0.0967725
+99900 0.0968011
+100000 0.096842
+&
+@target G0.S4
+@type xy
+0 4.1331
+100 2.59247
+200 4.22154
+300 2.87041
+400 2.17878
+500 2.09107
+600 2.03833
+700 2.16901
+800 2.03025
+900 1.97732
+1000 1.72646
+1100 1.6029
+1200 1.52584
+1300 1.48045
+1400 1.44895
+1500 1.4263
+1600 1.40274
+1700 1.38729
+1800 1.37228
+1900 1.3609
+2000 1.34934
+2100 1.33736
+2200 1.32776
+2300 1.31955
+2400 1.31696
+2500 1.31612
+2600 1.30912
+2700 1.30101
+2800 1.29574
+2900 1.28839
+3000 1.28243
+3100 1.2756
+3200 1.26863
+3300 1.26092
+3400 1.25227
+3500 1.2469
+3600 1.24076
+3700 1.23439
+3800 1.22999
+3900 1.2248
+4000 1.21656
+4100 1.20932
+4200 1.20303
+4300 1.20055
+4400 1.19945
+4500 1.19381
+4600 1.18569
+4700 1.17685
+4800 1.16891
+4900 1.1613
+5000 1.15384
+5100 1.14768
+5200 1.14165
+5300 1.13676
+5400 1.13242
+5500 1.12772
+5600 1.12328
+5700 1.11948
+5800 1.11535
+5900 1.11044
+6000 1.10574
+6100 1.10199
+6200 1.09852
+6300 1.09399
+6400 1.08914
+6500 1.08461
+6600 1.07921
+6700 1.07483
+6800 1.06961
+6900 1.06305
+7000 1.05536
+7100 1.0488
+7200 1.04269
+7300 1.03804
+7400 1.03248
+7500 1.02608
+7600 1.01989
+7700 1.01389
+7800 1.00845
+7900 1.00125
+8000 0.993542
+8100 0.986425
+8200 0.980188
+8300 0.973792
+8400 0.967291
+8500 0.96022
+8600 0.953318
+8700 0.947237
+8800 0.940968
+8900 0.934982
+9000 0.929124
+9100 0.923781
+9200 0.919596
+9300 0.914931
+9400 0.910853
+9500 0.906207
+9600 0.902107
+9700 0.89875
+9800 0.895527
+9900 0.891953
+10000 0.887933
+10100 0.884336
+10200 0.881598
+10300 0.878654
+10400 0.875882
+10500 0.872851
+10600 0.870357
+10700 0.867302
+10800 0.863664
+10900 0.858984
+11000 0.854618
+11100 0.850666
+11200 0.847116
+11300 0.842862
+11400 0.838174
+11500 0.833341
+11600 0.829395
+11700 0.82527
+11800 0.821226
+11900 0.817348
+12000 0.812522
+12100 0.808454
+12200 0.804418
+12300 0.799929
+12400 0.795389
+12500 0.791146
+12600 0.786968
+12700 0.783249
+12800 0.779876
+12900 0.776089
+13000 0.772175
+13100 0.768884
+13200 0.765678
+13300 0.762648
+13400 0.760531
+13500 0.758253
+13600 0.756028
+13700 0.753492
+13800 0.751603
+13900 0.749788
+14000 0.747856
+14100 0.745327
+14200 0.742731
+14300 0.740419
+14400 0.738467
+14500 0.736113
+14600 0.733701
+14700 0.731573
+14800 0.729129
+14900 0.726659
+15000 0.724238
+15100 0.721649
+15200 0.719355
+15300 0.717167
+15400 0.714932
+15500 0.712612
+15600 0.71045
+15700 0.707822
+15800 0.705244
+15900 0.703019
+16000 0.700708
+16100 0.698914
+16200 0.697283
+16300 0.695441
+16400 0.694063
+16500 0.692382
+16600 0.690744
+16700 0.68926
+16800 0.687735
+16900 0.686197
+17000 0.684743
+17100 0.682974
+17200 0.681011
+17300 0.679293
+17400 0.677308
+17500 0.675074
+17600 0.672718
+17700 0.670471
+17800 0.668566
+17900 0.666549
+18000 0.664669
+18100 0.662678
+18200 0.661216
+18300 0.660102
+18400 0.658277
+18500 0.656112
+18600 0.654488
+18700 0.652805
+18800 0.651277
+18900 0.649336
+19000 0.647435
+19100 0.645612
+19200 0.643087
+19300 0.640864
+19400 0.63855
+19500 0.636015
+19600 0.633696
+19700 0.631146
+19800 0.628294
+19900 0.625772
+20000 0.623248
+20100 0.620568
+20200 0.617994
+20300 0.615765
+20400 0.613469
+20500 0.611354
+20600 0.608939
+20700 0.606898
+20800 0.605
+20900 0.603038
+21000 0.60074
+21100 0.597883
+21200 0.595127
+21300 0.592674
+21400 0.590413
+21500 0.588267
+21600 0.585988
+21700 0.583872
+21800 0.581733
+21900 0.579545
+22000 0.577595
+22100 0.575246
+22200 0.573112
+22300 0.571044
+22400 0.568803
+22500 0.566606
+22600 0.564577
+22700 0.562512
+22800 0.56041
+22900 0.558518
+23000 0.5567
+23100 0.554983
+23200 0.552652
+23300 0.55025
+23400 0.547902
+23500 0.545967
+23600 0.544285
+23700 0.542576
+23800 0.540585
+23900 0.538641
+24000 0.53679
+24100 0.534833
+24200 0.532778
+24300 0.530775
+24400 0.528702
+24500 0.526894
+24600 0.524998
+24700 0.522847
+24800 0.520821
+24900 0.518964
+25000 0.517061
+25100 0.515245
+25200 0.513591
+25300 0.511895
+25400 0.510164
+25500 0.508654
+25600 0.507092
+25700 0.505462
+25800 0.503955
+25900 0.502652
+26000 0.501154
+26100 0.499295
+26200 0.497469
+26300 0.495671
+26400 0.494015
+26500 0.492169
+26600 0.490611
+26700 0.488851
+26800 0.487387
+26900 0.485874
+27000 0.484328
+27100 0.482724
+27200 0.480787
+27300 0.478943
+27400 0.477128
+27500 0.475436
+27600 0.47375
+27700 0.471939
+27800 0.470235
+27900 0.468595
+28000 0.466899
+28100 0.46513
+28200 0.463342
+28300 0.461963
+28400 0.460483
+28500 0.45895
+28600 0.457447
+28700 0.456031
+28800 0.454553
+28900 0.453094
+29000 0.45175
+29100 0.450301
+29200 0.448695
+29300 0.447124
+29400 0.445603
+29500 0.443907
+29600 0.442476
+29700 0.441064
+29800 0.439475
+29900 0.437953
+30000 0.43652
+30100 0.435145
+30200 0.433857
+30300 0.432435
+30400 0.430871
+30500 0.429179
+30600 0.427424
+30700 0.425838
+30800 0.424532
+30900 0.423195
+31000 0.421708
+31100 0.420399
+31200 0.419281
+31300 0.418167
+31400 0.416927
+31500 0.41539
+31600 0.413974
+31700 0.412739
+31800 0.411738
+31900 0.410677
+32000 0.409536
+32100 0.408475
+32200 0.407527
+32300 0.406656
+32400 0.405729
+32500 0.40498
+32600 0.404216
+32700 0.403453
+32800 0.402498
+32900 0.401664
+33000 0.400826
+33100 0.399528
+33200 0.398163
+33300 0.396829
+33400 0.395545
+33500 0.39435
+33600 0.393092
+33700 0.391796
+33800 0.390458
+33900 0.38916
+34000 0.387995
+34100 0.3869
+34200 0.385636
+34300 0.384392
+34400 0.383215
+34500 0.381961
+34600 0.38089
+34700 0.37988
+34800 0.378912
+34900 0.377992
+35000 0.376999
+35100 0.376041
+35200 0.37508
+35300 0.374131
+35400 0.373504
+35500 0.373062
+35600 0.372357
+35700 0.37157
+35800 0.370677
+35900 0.369856
+36000 0.368956
+36100 0.368239
+36200 0.367373
+36300 0.366514
+36400 0.365512
+36500 0.364248
+36600 0.363068
+36700 0.361984
+36800 0.360845
+36900 0.359766
+37000 0.358616
+37100 0.357507
+37200 0.356424
+37300 0.355295
+37400 0.35422
+37500 0.353117
+37600 0.352088
+37700 0.350943
+37800 0.34993
+37900 0.3489
+38000 0.347792
+38100 0.346699
+38200 0.345613
+38300 0.344466
+38400 0.343223
+38500 0.341897
+38600 0.340861
+38700 0.339894
+38800 0.338987
+38900 0.337966
+39000 0.336927
+39100 0.335977
+39200 0.334997
+39300 0.333876
+39400 0.332766
+39500 0.331763
+39600 0.330776
+39700 0.329726
+39800 0.328735
+39900 0.327766
+40000 0.326884
+40100 0.32589
+40200 0.32503
+40300 0.324176
+40400 0.323456
+40500 0.3226
+40600 0.321619
+40700 0.320716
+40800 0.319853
+40900 0.318992
+41000 0.3182
+41100 0.317272
+41200 0.316503
+41300 0.315592
+41400 0.314568
+41500 0.313559
+41600 0.312733
+41700 0.311793
+41800 0.310958
+41900 0.310206
+42000 0.309401
+42100 0.308508
+42200 0.307501
+42300 0.306357
+42400 0.305155
+42500 0.304212
+42600 0.303309
+42700 0.302516
+42800 0.301815
+42900 0.300834
+43000 0.299707
+43100 0.298779
+43200 0.297834
+43300 0.296907
+43400 0.296024
+43500 0.295049
+43600 0.294157
+43700 0.293297
+43800 0.292467
+43900 0.291694
+44000 0.291051
+44100 0.290194
+44200 0.289564
+44300 0.288853
+44400 0.288259
+44500 0.287769
+44600 0.287301
+44700 0.286661
+44800 0.285931
+44900 0.285085
+45000 0.284264
+45100 0.283431
+45200 0.282745
+45300 0.282036
+45400 0.281252
+45500 0.280599
+45600 0.279879
+45700 0.279259
+45800 0.278649
+45900 0.278118
+46000 0.277473
+46100 0.27698
+46200 0.276368
+46300 0.275664
+46400 0.274959
+46500 0.27439
+46600 0.273812
+46700 0.273143
+46800 0.272538
+46900 0.271889
+47000 0.271191
+47100 0.27055
+47200 0.270053
+47300 0.269581
+47400 0.269015
+47500 0.268364
+47600 0.267933
+47700 0.267381
+47800 0.26684
+47900 0.266308
+48000 0.265851
+48100 0.265354
+48200 0.264786
+48300 0.264147
+48400 0.263556
+48500 0.263165
+48600 0.26291
+48700 0.262584
+48800 0.262185
+48900 0.261813
+49000 0.26158
+49100 0.26141
+49200 0.261205
+49300 0.260863
+49400 0.26054
+49500 0.2603
+49600 0.260048
+49700 0.259851
+49800 0.259672
+49900 0.25946
+50000 0.259192
+50100 0.259033
+50200 0.258842
+50300 0.258481
+50400 0.258091
+50500 0.257767
+50600 0.257397
+50700 0.25704
+50800 0.25654
+50900 0.256085
+51000 0.255563
+51100 0.25506
+51200 0.25464
+51300 0.254285
+51400 0.253854
+51500 0.25358
+51600 0.253408
+51700 0.253213
+51800 0.253074
+51900 0.252871
+52000 0.252815
+52100 0.252579
+52200 0.252415
+52300 0.252132
+52400 0.251675
+52500 0.251354
+52600 0.251086
+52700 0.250823
+52800 0.250542
+52900 0.250237
+53000 0.249916
+53100 0.249506
+53200 0.24913
+53300 0.248702
+53400 0.248236
+53500 0.247835
+53600 0.247464
+53700 0.24717
+53800 0.246784
+53900 0.246452
+54000 0.246095
+54100 0.245712
+54200 0.245262
+54300 0.244973
+54400 0.244573
+54500 0.244087
+54600 0.243587
+54700 0.243201
+54800 0.242767
+54900 0.242315
+55000 0.241753
+55100 0.241103
+55200 0.240541
+55300 0.23999
+55400 0.239446
+55500 0.238898
+55600 0.238413
+55700 0.23794
+55800 0.237484
+55900 0.237136
+56000 0.236819
+56100 0.23647
+56200 0.236128
+56300 0.235739
+56400 0.235383
+56500 0.235044
+56600 0.234498
+56700 0.233983
+56800 0.233569
+56900 0.233053
+57000 0.232448
+57100 0.231936
+57200 0.231405
+57300 0.230876
+57400 0.230361
+57500 0.229905
+57600 0.229385
+57700 0.229033
+57800 0.228632
+57900 0.228302
+58000 0.227978
+58100 0.227606
+58200 0.227228
+58300 0.226999
+58400 0.226757
+58500 0.22645
+58600 0.226172
+58700 0.225696
+58800 0.225197
+58900 0.224838
+59000 0.224446
+59100 0.22401
+59200 0.223692
+59300 0.223461
+59400 0.223305
+59500 0.223103
+59600 0.222926
+59700 0.222804
+59800 0.222705
+59900 0.222574
+60000 0.222528
+60100 0.222561
+60200 0.222635
+60300 0.222603
+60400 0.222556
+60500 0.222421
+60600 0.222438
+60700 0.222454
+60800 0.222519
+60900 0.222525
+61000 0.222464
+61100 0.22237
+61200 0.222399
+61300 0.222372
+61400 0.222291
+61500 0.222197
+61600 0.22215
+61700 0.222005
+61800 0.221832
+61900 0.221693
+62000 0.221571
+62100 0.221517
+62200 0.22146
+62300 0.221371
+62400 0.22132
+62500 0.22116
+62600 0.22094
+62700 0.220738
+62800 0.220446
+62900 0.220286
+63000 0.220127
+63100 0.220116
+63200 0.220163
+63300 0.220216
+63400 0.220272
+63500 0.220332
+63600 0.220235
+63700 0.220052
+63800 0.219939
+63900 0.219784
+64000 0.219684
+64100 0.219625
+64200 0.2195
+64300 0.219357
+64400 0.219223
+64500 0.219002
+64600 0.218764
+64700 0.218502
+64800 0.218283
+64900 0.218088
+65000 0.217712
+65100 0.217346
+65200 0.217041
+65300 0.216646
+65400 0.216276
+65500 0.216074
+65600 0.215843
+65700 0.215624
+65800 0.215396
+65900 0.215158
+66000 0.21499
+66100 0.214939
+66200 0.214907
+66300 0.214851
+66400 0.21474
+66500 0.214767
+66600 0.214863
+66700 0.214872
+66800 0.214855
+66900 0.214878
+67000 0.214904
+67100 0.215041
+67200 0.215102
+67300 0.214998
+67400 0.214885
+67500 0.214688
+67600 0.214527
+67700 0.214393
+67800 0.21432
+67900 0.214268
+68000 0.214242
+68100 0.214133
+68200 0.214005
+68300 0.213798
+68400 0.213565
+68500 0.213265
+68600 0.212905
+68700 0.212553
+68800 0.212128
+68900 0.211839
+69000 0.211529
+69100 0.211165
+69200 0.210819
+69300 0.210545
+69400 0.210414
+69500 0.21031
+69600 0.210138
+69700 0.209913
+69800 0.209621
+69900 0.209346
+70000 0.209116
+70100 0.208902
+70200 0.208686
+70300 0.208411
+70400 0.208164
+70500 0.207954
+70600 0.207718
+70700 0.207514
+70800 0.20727
+70900 0.207086
+71000 0.207096
+71100 0.207067
+71200 0.207032
+71300 0.206855
+71400 0.206685
+71500 0.206473
+71600 0.206313
+71700 0.206087
+71800 0.205925
+71900 0.205785
+72000 0.205595
+72100 0.205465
+72200 0.205348
+72300 0.205202
+72400 0.205172
+72500 0.205227
+72600 0.20514
+72700 0.205173
+72800 0.205193
+72900 0.205241
+73000 0.205317
+73100 0.205363
+73200 0.205487
+73300 0.205614
+73400 0.205659
+73500 0.205775
+73600 0.205858
+73700 0.205865
+73800 0.20593
+73900 0.206063
+74000 0.206185
+74100 0.206341
+74200 0.206533
+74300 0.206625
+74400 0.206651
+74500 0.206714
+74600 0.206794
+74700 0.206849
+74800 0.207033
+74900 0.207118
+75000 0.207177
+75100 0.207239
+75200 0.207255
+75300 0.207255
+75400 0.207259
+75500 0.207249
+75600 0.207325
+75700 0.20736
+75800 0.207475
+75900 0.20764
+76000 0.207653
+76100 0.207656
+76200 0.207651
+76300 0.207554
+76400 0.207462
+76500 0.207463
+76600 0.207426
+76700 0.207324
+76800 0.207259
+76900 0.207166
+77000 0.206978
+77100 0.2069
+77200 0.206829
+77300 0.206739
+77400 0.206653
+77500 0.206691
+77600 0.206698
+77700 0.206737
+77800 0.206877
+77900 0.206937
+78000 0.206889
+78100 0.206871
+78200 0.206831
+78300 0.206873
+78400 0.207048
+78500 0.207343
+78600 0.207578
+78700 0.207816
+78800 0.207938
+78900 0.208078
+79000 0.208218
+79100 0.208453
+79200 0.208714
+79300 0.208906
+79400 0.209098
+79500 0.209338
+79600 0.209526
+79700 0.20973
+79800 0.209793
+79900 0.209771
+80000 0.20977
+80100 0.2099
+80200 0.210006
+80300 0.210144
+80400 0.210307
+80500 0.210436
+80600 0.21064
+80700 0.210763
+80800 0.210826
+80900 0.210835
+81000 0.210898
+81100 0.210882
+81200 0.210828
+81300 0.210858
+81400 0.210891
+81500 0.210925
+81600 0.210981
+81700 0.211071
+81800 0.211135
+81900 0.211278
+82000 0.211512
+82100 0.211619
+82200 0.211667
+82300 0.211571
+82400 0.211613
+82500 0.211605
+82600 0.211581
+82700 0.211604
+82800 0.211688
+82900 0.211675
+83000 0.21167
+83100 0.211592
+83200 0.211572
+83300 0.211592
+83400 0.211642
+83500 0.211569
+83600 0.211472
+83700 0.211531
+83800 0.21159
+83900 0.211638
+84000 0.211644
+84100 0.211581
+84200 0.211554
+84300 0.211558
+84400 0.211498
+84500 0.211553
+84600 0.211602
+84700 0.211553
+84800 0.211542
+84900 0.211565
+85000 0.211642
+85100 0.211687
+85200 0.211769
+85300 0.211747
+85400 0.211764
+85500 0.211833
+85600 0.211819
+85700 0.211826
+85800 0.211805
+85900 0.211717
+86000 0.211563
+86100 0.211449
+86200 0.211373
+86300 0.211302
+86400 0.211276
+86500 0.211232
+86600 0.211166
+86700 0.211086
+86800 0.211026
+86900 0.210994
+87000 0.210797
+87100 0.210622
+87200 0.210431
+87300 0.210267
+87400 0.210104
+87500 0.209916
+87600 0.209654
+87700 0.20941
+87800 0.209141
+87900 0.208866
+88000 0.208635
+88100 0.208371
+88200 0.208089
+88300 0.207883
+88400 0.207712
+88500 0.207669
+88600 0.207567
+88700 0.207448
+88800 0.207303
+88900 0.207198
+89000 0.207101
+89100 0.207029
+89200 0.206994
+89300 0.206873
+89400 0.206783
+89500 0.206724
+89600 0.206666
+89700 0.206576
+89800 0.206481
+89900 0.206408
+90000 0.2064
+90100 0.206404
+90200 0.206492
+90300 0.206573
+90400 0.206681
+90500 0.206748
+90600 0.206707
+90700 0.206613
+90800 0.206502
+90900 0.206402
+91000 0.206225
+91100 0.206047
+91200 0.205873
+91300 0.205667
+91400 0.20537
+91500 0.205107
+91600 0.204783
+91700 0.204477
+91800 0.204129
+91900 0.203781
+92000 0.203469
+92100 0.203194
+92200 0.20287
+92300 0.202571
+92400 0.202299
+92500 0.201975
+92600 0.201644
+92700 0.201386
+92800 0.20109
+92900 0.200693
+93000 0.200302
+93100 0.200044
+93200 0.199791
+93300 0.199601
+93400 0.199382
+93500 0.199164
+93600 0.198949
+93700 0.198623
+93800 0.198354
+93900 0.19811
+94000 0.197789
+94100 0.197465
+94200 0.197139
+94300 0.196917
+94400 0.196602
+94500 0.196272
+94600 0.196046
+94700 0.195733
+94800 0.195465
+94900 0.195256
+95000 0.19499
+95100 0.194696
+95200 0.194442
+95300 0.194143
+95400 0.193815
+95500 0.193518
+95600 0.193248
+95700 0.192869
+95800 0.192518
+95900 0.192097
+96000 0.191698
+96100 0.191297
+96200 0.190942
+96300 0.190482
+96400 0.19006
+96500 0.189669
+96600 0.189355
+96700 0.189042
+96800 0.188768
+96900 0.18843
+97000 0.188101
+97100 0.187785
+97200 0.187459
+97300 0.187069
+97400 0.18668
+97500 0.186339
+97600 0.185936
+97700 0.185569
+97800 0.185179
+97900 0.184815
+98000 0.184512
+98100 0.184213
+98200 0.183858
+98300 0.183551
+98400 0.18322
+98500 0.182873
+98600 0.182556
+98700 0.182219
+98800 0.18195
+98900 0.181674
+99000 0.181462
+99100 0.181268
+99200 0.181022
+99300 0.180741
+99400 0.180558
+99500 0.180341
+99600 0.180111
+99700 0.179965
+99800 0.17979
+99900 0.179647
+100000 0.179421
+&
+@target G0.S5
+@type xy
+0 6000
+100 5.999997
+200 4.2426396
+300 3.464101
+400 2.9999996
+500 2.6832813
+600 2.4494895
+700 2.2677867
+800 2.1213202
+900 1.9999999
+1000 1.8973665
+1100 1.809068
+1200 1.7320507
+1300 1.6641005
+1400 1.6035674
+1500 1.5491933
+1600 1.5
+1700 1.4552137
+1800 1.4142135
+1900 1.3764944
+2000 1.3416408
+2100 1.3093073
+2200 1.2792043
+2300 1.2510865
+2400 1.2247448
+2500 1.2
+2600 1.1766968
+2700 1.1547005
+2800 1.1338934
+2900 1.114172
+3000 1.0954451
+3100 1.0776318
+3200 1.0606602
+3300 1.0444659
+3400 1.0289915
+3500 1.0141851
+3600 0.99999999
+3700 0.98639391
+3800 0.97332851
+3900 0.96076891
+4000 0.94868329
+4100 0.93704256
+4200 0.92582009
+4300 0.91499141
+4400 0.90453402
+4500 0.89442718
+4600 0.88465173
+4700 0.87518994
+4800 0.86602539
+4900 0.85714285
+5000 0.84852813
+5100 0.84016804
+5200 0.83205029
+5300 0.82416338
+5400 0.81649657
+5500 0.80903983
+5600 0.80178372
+5700 0.79471941
+5800 0.78783859
+5900 0.78113346
+6000 0.77459666
+6100 0.76822127
+6200 0.76200076
+6300 0.75592894
+6400 0.74999999
+6500 0.7442084
+6600 0.73854894
+6700 0.73301666
+6800 0.72760687
+6900 0.72231511
+7000 0.71713716
+7100 0.71206899
+7200 0.70710678
+7300 0.70224688
+7400 0.69748583
+7500 0.69282032
+7600 0.6882472
+7700 0.68376345
+7800 0.67936622
+7900 0.67505274
+8000 0.67082039
+8100 0.66666666
+8200 0.66258915
+8300 0.65858556
+8400 0.65465367
+8500 0.65079137
+8600 0.64699664
+8700 0.64326752
+8800 0.63960215
+8900 0.63599872
+9000 0.63245553
+9100 0.6289709
+9200 0.62554324
+9300 0.62217101
+9400 0.61885274
+9500 0.61558701
+9600 0.61237243
+9700 0.6092077
+9800 0.60609152
+9900 0.60302269
+10000 0.6
+10100 0.59702231
+10200 0.59408852
+10300 0.59119756
+10400 0.5883484
+10500 0.58554004
+10600 0.58277151
+10700 0.58004189
+10800 0.57735027
+10900 0.57469577
+11000 0.57207755
+11100 0.56949479
+11200 0.56694671
+11300 0.56443252
+11400 0.56195148
+11500 0.55950288
+11600 0.55708601
+11700 0.55470019
+11800 0.55234477
+11900 0.5500191
+12000 0.54772256
+12100 0.54545454
+12200 0.54321447
+12300 0.54100178
+12400 0.5388159
+12500 0.53665631
+12600 0.53452248
+12700 0.5324139
+12800 0.53033008
+12900 0.52827054
+13000 0.52623481
+13100 0.52422243
+13200 0.52223297
+13300 0.52026598
+13400 0.51832105
+13500 0.51639778
+13600 0.51449575
+13700 0.51261459
+13800 0.51075392
+13900 0.50891336
+14000 0.50709255
+14100 0.50529115
+14200 0.50350881
+14300 0.5017452
+14400 0.5
+14500 0.49827288
+14600 0.49656353
+14700 0.49487166
+14800 0.49319696
+14900 0.49153915
+15000 0.48989795
+15100 0.48827307
+15200 0.48666426
+15300 0.48507125
+15400 0.48349378
+15500 0.4819316
+15600 0.48038446
+15700 0.47885213
+15800 0.47733437
+15900 0.47583095
+16000 0.47434165
+16100 0.47286624
+16200 0.47140452
+16300 0.46995627
+16400 0.46852128
+16500 0.46709937
+16600 0.46569031
+16700 0.46429394
+16800 0.46291005
+16900 0.46153846
+17000 0.46017899
+17100 0.45883147
+17200 0.45749571
+17300 0.45617155
+17400 0.45485882
+17500 0.45355737
+17600 0.45226702
+17700 0.45098762
+17800 0.44971901
+17900 0.44846105
+18000 0.44721359
+18100 0.44597649
+18200 0.44474959
+18300 0.44353276
+18400 0.44232587
+18500 0.44112877
+18600 0.43994134
+18700 0.43876345
+18800 0.43759497
+18900 0.43643578
+19000 0.43528575
+19100 0.43414476
+19200 0.4330127
+19300 0.43188945
+19400 0.43077489
+19500 0.42966892
+19600 0.42857143
+19700 0.4274823
+19800 0.42640143
+19900 0.42532872
+20000 0.42426407
+20100 0.42320737
+20200 0.42215853
+20300 0.42111744
+20400 0.42008402
+20500 0.41905818
+20600 0.41803981
+20700 0.41702883
+20800 0.41602515
+20900 0.41502868
+21000 0.41403933
+21100 0.41305703
+21200 0.41208169
+21300 0.41111322
+21400 0.41015156
+21500 0.4091966
+21600 0.40824829
+21700 0.40730654
+21800 0.40637128
+21900 0.40544243
+22000 0.40451992
+22100 0.40360368
+22200 0.40269363
+22300 0.40178972
+22400 0.40089186
+22500 0.4
+22600 0.39911406
+22700 0.39823399
+22800 0.39735971
+22900 0.39649116
+23000 0.39562828
+23100 0.39477102
+23200 0.3939193
+23300 0.39307307
+23400 0.39223227
+23500 0.39139684
+23600 0.39056673
+23700 0.38974188
+23800 0.38892223
+23900 0.38810774
+24000 0.38729833
+24100 0.38649398
+24200 0.38569461
+24300 0.38490018
+24400 0.38411064
+24500 0.38332594
+24600 0.38254603
+24700 0.38177086
+24800 0.38100038
+24900 0.38023455
+25000 0.37947332
+25100 0.37871664
+25200 0.37796447
+25300 0.37721677
+25400 0.37647348
+25500 0.37573457
+25600 0.375
+25700 0.37426972
+25800 0.37354368
+25900 0.37282186
+26000 0.3721042
+26100 0.37139068
+26200 0.37068124
+26300 0.36997585
+26400 0.36927447
+26500 0.36857707
+26600 0.3678836
+26700 0.36719404
+26800 0.36650833
+26900 0.36582646
+27000 0.36514837
+27100 0.36447404
+27200 0.36380344
+27300 0.36313652
+27400 0.36247326
+27500 0.36181361
+27600 0.36115756
+27700 0.36050506
+27800 0.35985609
+27900 0.3592106
+28000 0.35856858
+28100 0.35792999
+28200 0.3572948
+28300 0.35666298
+28400 0.3560345
+28500 0.35540933
+28600 0.35478744
+28700 0.3541688
+28800 0.35355339
+28900 0.35294118
+29000 0.35233213
+29100 0.35172623
+29200 0.35112344
+29300 0.35052374
+29400 0.34992711
+29500 0.34933351
+29600 0.34874292
+29700 0.34815531
+29800 0.34757067
+29900 0.34698896
+30000 0.34641016
+30100 0.34583425
+30200 0.3452612
+30300 0.34469099
+30400 0.3441236
+30500 0.343559
+30600 0.34299717
+30700 0.34243809
+30800 0.34188173
+30900 0.34132807
+31000 0.3407771
+31100 0.34022879
+31200 0.33968311
+31300 0.33914005
+31400 0.33859959
+31500 0.3380617
+31600 0.33752637
+31700 0.33699357
+31800 0.33646329
+31900 0.33593551
+32000 0.3354102
+32100 0.33488734
+32200 0.33436693
+32300 0.33384893
+32400 0.33333333
+32500 0.33282012
+32600 0.33230926
+32700 0.33180076
+32800 0.33129458
+32900 0.33079071
+33000 0.33028913
+33100 0.32978983
+33200 0.32929278
+33300 0.32879797
+33400 0.32830539
+33500 0.32781502
+33600 0.32732683
+33700 0.32684083
+33800 0.32635698
+33900 0.32587527
+34000 0.32539569
+34100 0.32491822
+34200 0.32444284
+34300 0.32396955
+34400 0.32349832
+34500 0.32302914
+34600 0.322562
+34700 0.32209688
+34800 0.32163376
+34900 0.32117264
+35000 0.32071349
+35100 0.32025631
+35200 0.31980107
+35300 0.31934778
+35400 0.3188964
+35500 0.31844694
+35600 0.31799936
+35700 0.31755367
+35800 0.31710985
+35900 0.31666789
+36000 0.31622777
+36100 0.31578947
+36200 0.315353
+36300 0.31491833
+36400 0.31448545
+36500 0.31405435
+36600 0.31362502
+36700 0.31319745
+36800 0.31277162
+36900 0.31234752
+37000 0.31192515
+37100 0.31150448
+37200 0.31108551
+37300 0.31066822
+37400 0.31025261
+37500 0.30983867
+37600 0.30942637
+37700 0.30901572
+37800 0.3086067
+37900 0.3081993
+38000 0.30779351
+38100 0.30738931
+38200 0.30698671
+38300 0.30658568
+38400 0.30618622
+38500 0.30578831
+38600 0.30539196
+38700 0.30499714
+38800 0.30460385
+38900 0.30421208
+39000 0.30382181
+39100 0.30343304
+39200 0.30304576
+39300 0.30265996
+39400 0.30227563
+39500 0.30189276
+39600 0.30151134
+39700 0.30113137
+39800 0.30075282
+39900 0.3003757
+40000 0.3
+40100 0.2996257
+40200 0.2992528
+40300 0.29888129
+40400 0.29851116
+40500 0.2981424
+40600 0.297775
+40700 0.29740896
+40800 0.29704426
+40900 0.29668091
+41000 0.29631888
+41100 0.29595817
+41200 0.29559878
+41300 0.2952407
+41400 0.29488391
+41500 0.29452842
+41600 0.2941742
+41700 0.29382126
+41800 0.29346959
+41900 0.29311918
+42000 0.29277002
+42100 0.29242211
+42200 0.29207543
+42300 0.29172998
+42400 0.29138576
+42500 0.29104275
+42600 0.29070095
+42700 0.29036035
+42800 0.29002095
+42900 0.28968273
+43000 0.28934569
+43100 0.28900983
+43200 0.28867513
+43300 0.2883416
+43400 0.28800922
+43500 0.28767798
+43600 0.28734789
+43700 0.28701892
+43800 0.28669109
+43900 0.28636438
+44000 0.28603878
+44100 0.28571429
+44200 0.2853909
+44300 0.2850686
+44400 0.2847474
+44500 0.28442728
+44600 0.28410823
+44700 0.28379026
+44800 0.28347335
+44900 0.28315751
+45000 0.28284271
+45100 0.28252897
+45200 0.28221626
+45300 0.28190459
+45400 0.28159395
+45500 0.28128434
+45600 0.28097574
+45700 0.28066816
+45800 0.28036159
+45900 0.28005602
+46000 0.27975144
+46100 0.27944786
+46200 0.27914526
+46300 0.27884365
+46400 0.27854301
+46500 0.27824334
+46600 0.27794463
+46700 0.27764689
+46800 0.2773501
+46900 0.27705426
+47000 0.27675936
+47100 0.27646541
+47200 0.27617239
+47300 0.27588029
+47400 0.27558913
+47500 0.27529888
+47600 0.27500955
+47700 0.27472113
+47800 0.27443361
+47900 0.274147
+48000 0.27386128
+48100 0.27357645
+48200 0.27329251
+48300 0.27300945
+48400 0.27272727
+48500 0.27244597
+48600 0.27216553
+48700 0.27188595
+48800 0.27160724
+48900 0.27132938
+49000 0.27105237
+49100 0.27077621
+49200 0.27050089
+49300 0.27022641
+49400 0.26995276
+49500 0.26967994
+49600 0.26940795
+49700 0.26913678
+49800 0.26886643
+49900 0.26859689
+50000 0.26832816
+50100 0.26806023
+50200 0.26779311
+50300 0.26752678
+50400 0.26726124
+50500 0.2669965
+50600 0.26673253
+50700 0.26646935
+50800 0.26620695
+50900 0.26594532
+51000 0.26568447
+51100 0.26542437
+51200 0.26516504
+51300 0.26490647
+51400 0.26464865
+51500 0.26439159
+51600 0.26413527
+51700 0.2638797
+51800 0.26362486
+51900 0.26337077
+52000 0.26311741
+52100 0.26286477
+52200 0.26261287
+52300 0.26236168
+52400 0.26211122
+52500 0.26186147
+52600 0.26161243
+52700 0.2613641
+52800 0.26111648
+52900 0.26086956
+53000 0.26062335
+53100 0.26037782
+53200 0.26013299
+53300 0.25988885
+53400 0.25964539
+53500 0.25940262
+53600 0.25916053
+53700 0.25891911
+53800 0.25867837
+53900 0.2584383
+54000 0.25819889
+54100 0.25796015
+54200 0.25772207
+54300 0.25748465
+54400 0.25724788
+54500 0.25701176
+54600 0.2567763
+54700 0.25654147
+54800 0.2563073
+54900 0.25607376
+55000 0.25584086
+55100 0.25560859
+55200 0.25537696
+55300 0.25514595
+55400 0.25491557
+55500 0.25468582
+55600 0.25445668
+55700 0.25422816
+55800 0.25400025
+55900 0.25377296
+56000 0.25354628
+56100 0.2533202
+56200 0.25309472
+56300 0.25286985
+56400 0.25264558
+56500 0.2524219
+56600 0.25219881
+56700 0.25197632
+56800 0.25175441
+56900 0.25153308
+57000 0.25131234
+57100 0.25109218
+57200 0.2508726
+57300 0.2506536
+57400 0.25043516
+57500 0.2502173
+57600 0.25
+57700 0.24978327
+57800 0.2495671
+57900 0.24935149
+58000 0.24913644
+58100 0.24892194
+58200 0.248708
+58300 0.24849461
+58400 0.24828177
+58500 0.24806947
+58600 0.24785772
+58700 0.2476465
+58800 0.24743583
+58900 0.24722569
+59000 0.24701609
+59100 0.24680702
+59200 0.24659848
+59300 0.24639047
+59400 0.24618298
+59500 0.24597602
+59600 0.24576958
+59700 0.24556365
+59800 0.24535825
+59900 0.24515335
+60000 0.24494897
+60100 0.2447451
+60200 0.24454174
+60300 0.24433889
+60400 0.24413654
+60500 0.24393469
+60600 0.24373334
+60700 0.24353249
+60800 0.24333213
+60900 0.24313227
+61000 0.2429329
+61100 0.24273402
+61200 0.24253562
+61300 0.24233772
+61400 0.24214029
+61500 0.24194335
+61600 0.24174689
+61700 0.2415509
+61800 0.2413554
+61900 0.24116036
+62000 0.2409658
+62100 0.24077171
+62200 0.24057808
+62300 0.24038492
+62400 0.24019223
+62500 0.24
+62600 0.23980823
+62700 0.23961692
+62800 0.23942607
+62900 0.23923567
+63000 0.23904572
+63100 0.23885623
+63200 0.23866719
+63300 0.23847859
+63400 0.23829044
+63500 0.23810274
+63600 0.23791548
+63700 0.23772866
+63800 0.23754227
+63900 0.23735633
+64000 0.23717082
+64100 0.23698575
+64200 0.23680111
+64300 0.2366169
+64400 0.23643312
+64500 0.23624977
+64600 0.23606684
+64700 0.23588434
+64800 0.23570226
+64900 0.2355206
+65000 0.23533936
+65100 0.23515854
+65200 0.23497813
+65300 0.23479814
+65400 0.23461857
+65500 0.2344394
+65600 0.23426064
+65700 0.23408229
+65800 0.23390435
+65900 0.23372682
+66000 0.23354968
+66100 0.23337295
+66200 0.23319662
+66300 0.23302069
+66400 0.23284516
+66500 0.23267002
+66600 0.23249528
+66700 0.23232093
+66800 0.23214697
+66900 0.2319734
+67000 0.23180022
+67100 0.23162743
+67200 0.23145502
+67300 0.231283
+67400 0.23111136
+67500 0.23094011
+67600 0.23076923
+67700 0.23059873
+67800 0.23042861
+67900 0.23025887
+68000 0.2300895
+68100 0.2299205
+68200 0.22975187
+68300 0.22958362
+68400 0.22941573
+68500 0.22924822
+68600 0.22908106
+68700 0.22891428
+68800 0.22874786
+68900 0.2285818
+69000 0.2284161
+69100 0.22825076
+69200 0.22808578
+69300 0.22792115
+69400 0.22775689
+69500 0.22759297
+69600 0.22742941
+69700 0.22726621
+69800 0.22710335
+69900 0.22694084
+70000 0.22677868
+70100 0.22661687
+70200 0.22645541
+70300 0.22629429
+70400 0.22613351
+70500 0.22597307
+70600 0.22581298
+70700 0.22565322
+70800 0.22549381
+70900 0.22533473
+71000 0.22517599
+71100 0.22501758
+71200 0.22485951
+71300 0.22470177
+71400 0.22454436
+71500 0.22438728
+71600 0.22423053
+71700 0.22407411
+71800 0.22391801
+71900 0.22376224
+72000 0.2236068
+72100 0.22345168
+72200 0.22329688
+72300 0.2231424
+72400 0.22298824
+72500 0.22283441
+72600 0.22268089
+72700 0.22252768
+72800 0.22237479
+72900 0.22222222
+73000 0.22206996
+73100 0.22191802
+73200 0.22176638
+73300 0.22161506
+73400 0.22146404
+73500 0.22131333
+73600 0.22116293
+73700 0.22101284
+73800 0.22086305
+73900 0.22071357
+74000 0.22056439
+74100 0.22041551
+74200 0.22026693
+74300 0.22011865
+74400 0.21997067
+74500 0.21982299
+74600 0.21967561
+74700 0.21952852
+74800 0.21938173
+74900 0.21923523
+75000 0.21908902
+75100 0.21894311
+75200 0.21879749
+75300 0.21865215
+75400 0.21850711
+75500 0.21836236
+75600 0.21821789
+75700 0.21807371
+75800 0.21792981
+75900 0.2177862
+76000 0.21764287
+76100 0.21749983
+76200 0.21735707
+76300 0.21721458
+76400 0.21707238
+76500 0.21693046
+76600 0.21678881
+76700 0.21664744
+76800 0.21650635
+76900 0.21636553
+77000 0.21622499
+77100 0.21608472
+77200 0.21594473
+77300 0.215805
+77400 0.21566555
+77500 0.21552636
+77600 0.21538745
+77700 0.2152488
+77800 0.21511042
+77900 0.21497231
+78000 0.21483446
+78100 0.21469688
+78200 0.21455956
+78300 0.21442251
+78400 0.21428571
+78500 0.21414918
+78600 0.21401291
+78700 0.2138769
+78800 0.21374115
+78900 0.21360566
+79000 0.21347042
+79100 0.21333544
+79200 0.21320072
+79300 0.21306625
+79400 0.21293203
+79500 0.21279807
+79600 0.21266436
+79700 0.2125309
+79800 0.2123977
+79900 0.21226474
+80000 0.21213203
+80100 0.21199958
+80200 0.21186737
+80300 0.2117354
+80400 0.21160368
+80500 0.21147221
+80600 0.21134099
+80700 0.21121
+80800 0.21107926
+80900 0.21094877
+81000 0.21081851
+81100 0.2106885
+81200 0.21055872
+81300 0.21042919
+81400 0.21029989
+81500 0.21017083
+81600 0.21004201
+81700 0.20991343
+81800 0.20978508
+81900 0.20965697
+82000 0.20952909
+82100 0.20940144
+82200 0.20927403
+82300 0.20914685
+82400 0.2090199
+82500 0.20889319
+82600 0.2087667
+82700 0.20864044
+82800 0.20851441
+82900 0.20838861
+83000 0.20826304
+83100 0.20813769
+83200 0.20801257
+83300 0.20788768
+83400 0.20776301
+83500 0.20763856
+83600 0.20751434
+83700 0.20739034
+83800 0.20726656
+83900 0.207143
+84000 0.20701967
+84100 0.20689655
+84200 0.20677365
+84300 0.20665098
+84400 0.20652852
+84500 0.20640627
+84600 0.20628425
+84700 0.20616244
+84800 0.20604085
+84900 0.20591947
+85000 0.2057983
+85100 0.20567735
+85200 0.20555661
+85300 0.20543609
+85400 0.20531577
+85500 0.20519567
+85600 0.20507578
+85700 0.2049561
+85800 0.20483662
+85900 0.20471736
+86000 0.2045983
+86100 0.20447945
+86200 0.20436081
+86300 0.20424238
+86400 0.20412415
+86500 0.20400612
+86600 0.2038883
+86700 0.20377068
+86800 0.20365327
+86900 0.20353606
+87000 0.20341905
+87100 0.20330224
+87200 0.20318564
+87300 0.20306923
+87400 0.20295303
+87500 0.20283702
+87600 0.20272121
+87700 0.2026056
+87800 0.20249019
+87900 0.20237498
+88000 0.20225996
+88100 0.20214514
+88200 0.20203051
+88300 0.20191608
+88400 0.20180184
+88500 0.20168779
+88600 0.20157394
+88700 0.20146028
+88800 0.20134682
+88900 0.20123354
+89000 0.20112046
+89100 0.20100756
+89200 0.20089486
+89300 0.20078234
+89400 0.20067002
+89500 0.20055788
+89600 0.20044593
+89700 0.20033417
+89800 0.20022259
+89900 0.2001112
+90000 0.2
+90100 0.19988898
+90200 0.19977815
+90300 0.1996675
+90400 0.19955703
+90500 0.19944675
+90600 0.19933665
+90700 0.19922673
+90800 0.19911699
+90900 0.19900744
+91000 0.19889806
+91100 0.19878887
+91200 0.19867985
+91300 0.19857102
+91400 0.19846236
+91500 0.19835388
+91600 0.19824558
+91700 0.19813746
+91800 0.19802951
+91900 0.19792174
+92000 0.19781414
+92100 0.19770672
+92200 0.19759948
+92300 0.19749241
+92400 0.19738551
+92500 0.19727878
+92600 0.19717223
+92700 0.19706586
+92800 0.19695965
+92900 0.19685361
+93000 0.19674775
+93100 0.19664206
+93200 0.19653653
+93300 0.19643118
+93400 0.196326
+93500 0.19622098
+93600 0.19611614
+93700 0.19601146
+93800 0.19590694
+93900 0.1958026
+94000 0.19569842
+94100 0.19559441
+94200 0.19549056
+94300 0.19538688
+94400 0.19528337
+94500 0.19518001
+94600 0.19507683
+94700 0.1949738
+94800 0.19487094
+94900 0.19476824
+95000 0.19466571
+95100 0.19456333
+95200 0.19446112
+95300 0.19435906
+95400 0.19425717
+95500 0.19415544
+95600 0.19405387
+95700 0.19395246
+95800 0.1938512
+95900 0.19375011
+96000 0.19364917
+96100 0.19354839
+96200 0.19344776
+96300 0.1933473
+96400 0.19324699
+96500 0.19314683
+96600 0.19304684
+96700 0.19294699
+96800 0.1928473
+96900 0.19274777
+97000 0.19264839
+97100 0.19254916
+97200 0.19245009
+97300 0.19235117
+97400 0.1922524
+97500 0.19215378
+97600 0.19205532
+97700 0.19195701
+97800 0.19185884
+97900 0.19176083
+98000 0.19166297
+98100 0.19156526
+98200 0.19146769
+98300 0.19137028
+98400 0.19127301
+98500 0.1911759
+98600 0.19107893
+98700 0.1909821
+98800 0.19088543
+98900 0.1907889
+99000 0.19069252
+99100 0.19059628
+99200 0.19050019
+99300 0.19040424
+99400 0.19030844
+99500 0.19021279
+99600 0.19011728
+99700 0.19002191
+99800 0.18992668
+99900 0.1898316
+100000 0.18973666
+&
