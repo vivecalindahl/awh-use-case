@@ -18,15 +18,13 @@
 #SBATCH --nodes=320
 #SBATCH --ntasks-per-node=32
 #SBATCH --cpus-per-task=1
-#SBATCH --constraint=
+#SBATCH --constraint=group-1&Haswell
 
 export MPICH_GNI_MAX_EAGER_MSG_SIZE=131072 # maybe useful anymore
 
 module load gromacs/2018.1
 
 # get the nodelist
-##nodelist=( $(for noderange in $(echo $SLURM_NODELIST  | sed 's/nid0\[\(.*\)\]/\1/' | awk -F ',' '{for (f=1; f<=NF; f++){print $f}}'); do echo $noderange  | awk -F '-' '{if (NF==1){print $1; break}; if(NF==2){for(i=$1; i<=$2; i++){print i}}}'; done) )
-#nodelist=( $(for noderange in $(echo $SLURM_NODELIST  | sed 's/nid0\[\(.*\)\]/\1/' | awk -F ',' '{for (f=1; f<=NF; f++){print $f}}'); do echo $noderange  | awk -F '-' '{if (NF==1){print $1; next}; if(NF==2){for(i=$1; i<=$2; i++){print i}}}'; done) )
 nodelist=( $(for noderange in $(echo $SLURM_NODELIST  | sed 's/nid0\[\(.*\)\]/\1/' | awk -F ',' '{for (f=1; f<=NF; f++){print $f}}'); do echo $noderange  | awk -F '-' '{if (NF==1){print $1; next}; if(NF==2){for(i=$1; i<=$2; i++){print i}}}'; done | sed 's/^0*//'))
 
 nnodes=${#nodelist[@]}
@@ -56,7 +54,7 @@ for ((i=0; i<$nreplicas; i++)); do
     run_cmd="$aprun_cmd -L ${nodes_str} $mdrun_cmd &"
     echo '--------> Running: ' "$run_cmd"
 
-    $run_cmd
+    eval $run_cmd
 done
 
 # Wait for all replicas
