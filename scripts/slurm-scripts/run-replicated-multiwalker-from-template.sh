@@ -1,5 +1,15 @@
 #/bin/bash
 
+# Script that takes as input a template directory with mdrun files, and numbers of replicas
+# and walkers and creates and submits the slurm job script for running the corresponding simulation.
+# gmx grompp is called to generate tpr-files based on the template.
+# Output is written to (new) folder "./data/<num-walkers>-walkers/replica-<replica-index>".
+
+# Notes:
+# 1) gmx binaries and modules are set below and generally need to be modified. 
+# 2) the job script is defined below and generally needs to be modified (e.g. might be good to add -noappend to avoid jumbling up log files)
+# 3) May want to do "dry-run" by commenting out sbatch command below.
+
 args=( "$@" )
 function print_usage_exit
 {
