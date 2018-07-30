@@ -1,5 +1,12 @@
 #!/bin/bash -l
 
+# Sbatch job script that runs multiple replicas of multi-walker (i.e. multidir) runs as one big job.
+# Involves aquiring the list of allocated nodes and assigning them to multiple 'gmx mdrun -multi' instances.
+
+# Note: constraint below is for Cray to keep allocated nodes in the same "group".
+# TODO: to efficiently run a job on Cray that is larger than the no of nodes in a group one would neeed to get the group id of the node, 
+# which doesn't seem to be easily obtained.
+
 ## 1x32
 ##SBATCH --account=2017-11-25
 ##SBATCH --time=01:00:00
