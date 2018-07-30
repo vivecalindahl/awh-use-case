@@ -6,7 +6,7 @@
 
 #SBATCH -t 00:15:00
 
-#SBATCH --constraint=[group-0|group-1|group-2|group-3|group-4]
+##SBATCH --constraint=[group-0|group-1|group-2|group-3|group-4]
 
 # On Beskow: 2 cpus x 16 cores (+hyperthreading) = 32 (x 2) 
 #SBATCH -N 1
@@ -17,12 +17,18 @@
 # MPICH
 export MPICH_GNI_MAX_EAGER_MSG_SIZE=131072
 
-# My own gmx build, has the same dependencies as the gromacs module.
+# Environment settings
 module add  gromacs/2018.1
-gmx_mpi=/cfs/klemming/nobackup/v/vivecal/programs/gromacs/2018.1/bin/gmx
+
+grompp_opts="-maxwarn 1"
+
+# gmx binaries
+gmx_mpi=gmx_mpi
+gmx=gmx_seq
 
 # Sequence of runs, depending on each other.
 # Find which stage we are at and continue running from there.
+#stages=( "em" "equil" "dihedral-6-17" )
 stages=( "em" "equil" )
 
 # default in and out config filenames
@@ -68,14 +74,7 @@ template="${current}/template"
 
 cd $data
 
-# aprun settings
-aprun_std_opts="-cc none"
-
-aprun_opts=$aprun_std_opts
-aprun_opts+=" -n 1 -N 1 "
-
 # Make a tpr file if there isn't one already
-grompp_opts="-maxwarn 1"
 tpr="topol.tpr"
 if [ ! -f "$tpr" ]; then	
     mdp="grompp.mdp"
@@ -83,11 +82,13 @@ if [ ! -f "$tpr" ]; then
     ndxflag=""
     [ -e "$ndx" ] && ndxflag="-n"
     echo "---> grompp at stage $current"
-    aprun $aprun_opts $gmx_mpi grompp $ndxflag -c $start_conf -f $mdp $grompp_opts -o $tpr &> grompp.log || exit 1
+    $gmx grompp $ndxflag -c $start_conf -f $mdp $grompp_opts -o $tpr &> grompp.log || exit 1
 fi
 
 # Start/continue mdrun. 
-aprun_opts=$aprun_std_opts
+
+# aprun settings
+aprun_opts="-cc none"
 
 cont_opts="-cpi -maxh 0.25" # NOTE: -maxh should correspond to the allocated time
 if [ "${current}" == "em" ]; then
